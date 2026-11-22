@@ -1,81 +1,65 @@
-# Setup: The Records Office daily Shorts on Claude Code
+# Setup guide: The Records Office daily Shorts (Claude Code)
 
-What you get: every morning two Claude Code routines run in the cloud. Each one finds a fresh
-trending topic (competitors + news), checks it, researches and fact-checks it with two sources per
-claim, writes a 60 to 70 second Short in your style, makes your ElevenLabs voiceover, builds the
-vertical video with captions, and uploads it to YouTube. You check it and make it public.
+## How it works every day
+1. **6:00 AM:** Claude researches trends and competitors, picks 2 new topics, fact-checks them,
+   writes 2 scripts in your style and **emails them to you**.
+2. **You reply to each email:** "OK" (or "sahi hai") to approve, or write the changes you want.
+3. **Every 2 hours (8 AM to 10 PM):** Claude checks your replies.
+   - Approved: it makes the voiceover, the video and the upload, then emails you the YouTube link.
+   - Changes: it fixes the script, checks the facts again and emails you the new version.
+4. You open YouTube Studio and make the video public. Until Google approves your app it stays private.
 
-Time needed: about 1 hour, one time.
-
----
-
-## What is in this kit
-| File | What it is |
-|---|---|
-| `CLAUDE.md` | The rulebook. Claude reads it on every run. This is the "memory" of the pipeline. |
-| `.claude/skills/` | Your skills: topic-validator, research-prompts, facts-checker, video-scripter, kamal-video-style, yt-seo, yt-shorts |
-| `style/MY_SCRIPT_STYLE.md` | **You fill this:** your script style + example scripts |
-| `style/EDIT_STYLE.md` | Look of the Shorts (colours, captions, motion) |
-| `style/LEARNINGS.md` | Your feedback; Claude follows every `RULE:` line |
-| `config/settings.md` | Publish mode, time zone, niches |
-| `config/competitors.txt` | **You fill this:** competitor channels |
-| `scripts/` | Tools: trend research, voiceover, images, video assembly, YouTube upload |
-| `ROUTINE_PROMPT.md` | The prompts for the two daily routines |
-| `data/topics_log.csv` | Every topic made, so nothing repeats |
+Total setup time: about 1 hour, one time only. The kit is already in your repo
+**kamalpreet5674/Record-office**, with your style filled in.
 
 ---
 
-## Step 1: Put the kit on GitHub
-1. On github.com create a **private** repo, e.g. `records-office-shorts` (empty, no README).
-2. Upload everything in this kit folder to it (including the `.claude` folder).
-   Easier: tell Claude the repo name in the project chat and it can push the kit for you.
+## Part 1: Keys you need (collect these first)
 
-## Step 2: Add your style and competitors
-1. Open `style/MY_SCRIPT_STYLE.md` and paste your script style notes and 3 to 5 of your best
-   Short scripts (the ones from your other account).
-2. Open `config/competitors.txt` and add 5 to 15 competitor channels, one per line (`@handle`).
-3. Your skills were copied with their main file only. If your other account has extra files for
-   them (for example `kamal-video-style/references/visual-style.md`,
-   `video-scripter/references/quality-rubric.md`, `facts-checker/references/verdict-policy.md`),
-   upload those into the same folders under `.claude/skills/`.
+### 1A. YouTube upload (Google Cloud), about 15 min
+1. Open https://console.cloud.google.com → top bar → **New project** → name `records-office` → Create.
+2. Left menu **APIs & Services → Library** → search **YouTube Data API v3** → **Enable**.
+3. **APIs & Services → OAuth consent screen** (Google Auth Platform) → Get started:
+   - App name `Records Office Uploader`, your email, Audience **External**, then create.
+   - **Audience** → Test users → add your channel's Google account.
+   - Click **Publish app** so it is "In production". If you skip this, the login stops working
+     after 7 days.
+4. **APIs & Services → Credentials → Create credentials → OAuth client ID** → type **Desktop app** →
+   Create → **Download JSON**. Keep this file private.
 
-## Step 3: Google Cloud, for YouTube upload (about 15 minutes)
-1. Go to https://console.cloud.google.com and create a project, e.g. `records-office`.
-2. **APIs & Services → Library** → search **YouTube Data API v3** → **Enable**.
-3. **APIs & Services → OAuth consent screen** (Google Auth Platform):
-   - User type **External**, app name `Records Office Uploader`, your email as support and developer contact.
-   - Scopes: you can skip, the script asks for them.
-   - Audience: add your channel's Google account as a **test user**.
-   - Then click **Publish app** (set it "In production"). Important: in "Testing" mode the login
-     expires every 7 days and the daily upload would stop. In production it keeps working; Google
-     shows an "unverified app" warning on your one-time login, which is fine because it is your own app.
-4. **APIs & Services → Credentials → Create credentials → OAuth client ID** → type **Desktop app**.
-   Download the JSON file (`client_secret_....json`). Keep it private, never upload it to GitHub.
-
-## Step 4: One-time YouTube login (on your own computer)
-1. Install Python from python.org if you do not have it.
-2. In a terminal, in the kit's `scripts` folder:
+### 1B. One-time YouTube login (on your laptop)
+1. Install Python from python.org if you don't have it.
+2. Download `scripts/get_youtube_token.py` from your repo.
+3. Open a terminal in that folder and run:
    ```
    pip install google-auth-oauthlib
-   python get_youtube_token.py path/to/client_secret_....json
+   python get_youtube_token.py "C:\path\to\client_secret_xxx.json"
    ```
-3. A browser opens. Choose the Google account of **The Records Office** channel (if it asks for a
-   channel/brand account, pick the channel). Click through the "unverified app" warning (Advanced →
-   Go to app) and allow.
-4. The terminal prints `YT_REFRESH_TOKEN`. Keep it for step 5. Client ID and secret are inside the JSON file.
+4. The browser opens. Pick **The Records Office** channel account. On the "unverified app"
+   warning click **Advanced → Go to app**, then allow.
+5. The terminal shows `YT_REFRESH_TOKEN = ...`. Copy it somewhere safe for Part 2.
+   `YT_CLIENT_ID` and `YT_CLIENT_SECRET` are inside the JSON file.
 
-## Step 5: Other keys
-- **ElevenLabs:** elevenlabs.io → profile → API keys → create one. Voice ID: Voices → your cloned
-  voice → copy ID. (A Short is about 1,000 characters, so 2 a day is about 60,000 a month.)
-- **Pexels (free):** https://www.pexels.com/api → get key.
+### 1C. Gmail, for script emails (5 min)
+1. Open https://myaccount.google.com → **Security** → turn on **2-Step Verification**.
+2. Search "App passwords" at the top → create one named `records-office` → copy the 16-letter password.
+3. You can send from the same Gmail you reply from. That's fine.
 
-## Step 6: Claude Code cloud environment
-1. Open https://claude.ai/code, select your repo, and open the **environment settings**
-   (cloud environment → gear icon).
-2. **Network access:** Full (or allow at least: `api.elevenlabs.io`, `api.pexels.com`,
-   `commons.wikimedia.org`, `upload.wikimedia.org`, `*.googleapis.com`, `oauth2.googleapis.com`,
-   plus news sites for research; Full is simplest since research needs many sites).
-3. **Environment variables / secrets** (type the values yourself, never paste them in a chat):
+### 1D. ElevenLabs and Pexels
+- ElevenLabs: profile → **API Keys** → create. Voices → your cloned voice → copy the **Voice ID**.
+- Pexels (free): https://www.pexels.com/api → get your API key.
+
+---
+
+## Part 2: Claude Code cloud environment (in the browser)
+1. Open https://claude.ai/code and sign in.
+2. Select the repo **kamalpreet5674/Record-office**. If it's not in the list, connect GitHub
+   and allow access to this repo.
+3. Open the **environment** menu (cloud icon near the repo name) → **gear / Edit environment**
+   (or create a new one named `records-office`).
+4. **Network access:** choose **Full**, because research needs many news sites.
+5. **Environment variables:** add these lines, one per line, with your real values.
+   Type them only in this settings box. Never paste them in a chat.
    ```
    YT_CLIENT_ID=...
    YT_CLIENT_SECRET=...
@@ -83,47 +67,67 @@ Time needed: about 1 hour, one time.
    ELEVENLABS_API_KEY=...
    ELEVENLABS_VOICE_ID=...
    PEXELS_API_KEY=...
+   GMAIL_ADDRESS=your-gmail@gmail.com
+   GMAIL_APP_PASSWORD=the16letterpassword
+   OWNER_EMAIL=the-email-you-reply-from@gmail.com
    ```
-4. **Setup script:**
+6. **Setup script:** paste:
    ```
    apt-get update && apt-get install -y ffmpeg fonts-dejavu fonts-noto-core || true
    pip install google-api-python-client google-auth google-auth-oauthlib requests Pillow
    ```
-
-## Step 7: Test once by hand
-Start a normal Claude Code session on the repo (claude.ai/code) and paste the **Manual test
-prompt** from `ROUTINE_PROMPT.md`. It stops after each stage so you can check the topic, sources,
-script, voice and video. Fix your style files until you like the result. Add feedback to
-`style/LEARNINGS.md`.
-
-## Step 8: Turn on the daily routines
-In Claude Code on the web, open **Routines** (scheduled tasks), or type `/schedule` in a Claude
-Code session, and create two routines on this repo and environment:
-- **Slot 1**, every day **6:00 AM** (your time zone), prompt "Routine 1" from `ROUTINE_PROMPT.md`.
-- **Slot 2**, every day **6:20 AM**, prompt "Routine 2".
-Two separate runs are safer than one long run: if one fails, the other still posts.
-Allow the routine to push to the repo so it can save the topic log.
-
-## Step 9: Your daily 5 minutes
-1. Open YouTube Studio → Content. Two new private Shorts are there.
-2. Read the run report in the repo (`videos/<date>-slot1-RUN_REPORT.md`) for sources and flags.
-3. Watch, then set **Public** (or schedule). If something is off, write a `RULE:` line in
-   `style/LEARNINGS.md` so it is fixed tomorrow.
-
-## Step 10: Later, go fully automatic
-- YouTube keeps uploads from unaudited API apps **private**. To let the pipeline publish or schedule
-  by itself, apply for the **YouTube API Services audit** (Google Cloud → YouTube Data API → quotas
-  page → audit form). After approval, set `Publish mode: scheduled` in `config/settings.md`.
-- When vidIQ is back, Claude can add its keyword data to topic validation.
+7. Save.
 
 ---
 
-## Costs (rough)
-- Claude Code: runs on your Claude plan; two research-heavy runs a day need a Max plan to be comfortable.
-- ElevenLabs: about 60k characters a month (Creator plan covers it).
-- YouTube API, Pexels, Wikimedia: free (YouTube gives 10,000 units a day; one upload is about 1,600).
+## Part 3: Fill 1 file in the repo
+Open `config/competitors.txt` on GitHub (pencil icon) and add 5 to 15 competitor channels,
+one per line, like `@channelhandle`. Commit.
+(Your script style is already filled in `style/MY_SCRIPT_STYLE.md`. Edit it anytime.)
 
-## Safety rules built in
-- No fact without two sources opened in that run; failed topics are dropped, not forced.
-- Sources go in the description. No fake documents, no AI faces of real people.
-- Nothing is public until you (or, after the audit, your chosen schedule) say so.
+---
+
+## Part 4: First test (by hand)
+1. At claude.ai/code, start a new session on the repo with the `records-office` environment.
+2. Paste the first **Manual test prompt** from `ROUTINE_PROMPT.md`.
+3. Check your email for the script and reply "OK", or with changes.
+4. In a session, paste the second test prompt. It makes the video and uploads it as **private**.
+5. Watch it in YouTube Studio. If anything feels off, tell Claude. It saves your feedback as a rule
+   in `style/LEARNINGS.md`.
+
+---
+
+## Part 5: Turn on the daily routines
+At claude.ai/code open **Routines** (scheduled tasks) → **New routine**, or type `/schedule` in a session.
+Create two routines, both with the Record-office repo and the `records-office` environment:
+
+| Routine | When | Prompt |
+|---|---|---|
+| A: morning scripts | Every day 6:00 AM | "Routine A" from `ROUTINE_PROMPT.md` |
+| B: check replies + make videos | Every 2 hours, 8 AM to 10 PM | "Routine B" from `ROUTINE_PROMPT.md` |
+
+- Check the time zone in the routine settings: your local time (Dubai, or India if you prefer).
+- If the routine asks about branch pushes, **allow pushing to main**. It saves `data/pending.csv`
+  there, which is how routine B knows which scripts you approved.
+- If you add the Gmail connector to the routines, Claude may use it. The script email works without it.
+
+---
+
+## Your daily routine (5 minutes)
+- Morning: read 2 emails and reply "OK" or with changes.
+- Evening: open YouTube Studio, watch the 2 private Shorts, make them public.
+
+## Later
+- **Fully automatic publishing:** apply for Google's **YouTube API audit** (Google Cloud → YouTube
+  Data API → Quotas → audit form). After approval set `Publish mode: scheduled` in `config/settings.md`.
+- **vidIQ back:** Claude can add keyword data to topic checks.
+
+## Rough costs
+- Claude: runs on your Claude plan. A Max plan is comfortable for daily runs.
+- ElevenLabs: about 60k characters a month.
+- YouTube API, Gmail, Pexels, Wikimedia: free.
+
+## If something goes wrong
+- No email at 6 AM: open the routine's last run at claude.ai/code and read what it says.
+- "Missing secret ...": that value is missing in Part 2, step 5.
+- YouTube login error: run Part 1B again and update `YT_REFRESH_TOKEN`.

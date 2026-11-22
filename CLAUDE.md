@@ -9,11 +9,18 @@ Facts first, always.
 
 ## Daily target
 - **2 Shorts per day**, each **60 to 70 seconds**, vertical 1080x1920, 30 fps.
-- They are made by two scheduled runs. The run prompt says which slot you are:
-  - **Slot 1**: History, Geography or Technology.
-  - **Slot 2**: Finance, Geopolitics/Civics or Current Affairs.
-  If the prompt names no slot, make both Shorts, one per slot, one after the other.
+  - **Short 1**: History, Geography or Technology.
+  - **Short 2**: Finance, Geopolitics/Civics or Current Affairs.
 - Every Short must be brand new: not already on the channel, not made in an earlier run.
+
+## Two phases with an email approval in between
+The owner approves every script by email before any voice or video is made.
+- **Phase A, "script run"** (6:00 AM): research, validate, fact-check and write both scripts, then
+  email them to the owner and stop. Steps 1 to 5 and 5b below.
+- **Phase B, "check run"** (several times a day): read the owner's email replies. Approved scripts
+  go through steps 6 to 10. Scripts with changes are revised, re-checked and emailed again.
+The run prompt says which phase you are. Never make voice, video or uploads for a script whose
+status in `data/pending.csv` is not `approved`.
 
 ## Files you must read at the start of every run
 1. `style/MY_SCRIPT_STYLE.md`: the owner's own script style. It wins over any style advice in the
@@ -40,8 +47,8 @@ The skills were written for a person approving each step in chat. In this pipeli
   topic-validator GO, facts-checker PASS or PASS_WITH_QUALIFICATIONS, and the scripter's
   quality rubric with no hard-stop. If a gate fails, drop that topic and pick the next one. Never
   push a weak topic through.
-- The human check moves to the end: the video is uploaded according to `config/settings.md`
-  (default **private**, the owner reviews and makes it public).
+- The human check is the **email approval of the script** (Phase B), plus the upload mode in
+  `config/settings.md` (default **private**, the owner makes it public).
 - Format is always **Short**, 60 to 70 seconds, so never ask "Short ya Long?".
 - Workspace is `videos/<YYYY-MM-DD>-<slug>/` in this repo (not `yt-agent/videos/`).
 - Scripts the skills mention that do not exist here (`yt_topic_scan.py`, `footage-finder`, `flow-auto`,
@@ -63,7 +70,9 @@ The skills were written for a person approving each step in chat. In this pipeli
 7. Put the main sources in the video description under "Sources".
 
 ## The run, step by step
-Start with `git pull` and `bash scripts/setup.sh`. Then do these steps for your slot's Short.
+Every run starts with `git pull` and `bash scripts/setup.sh`.
+
+**Phase A** does steps 1 to 5 and 5b for Short 1, then for Short 2, then commits and pushes.
 
 ### 1. Trend and competitor research
 - `python scripts/yt_research.py --competitors config/competitors.txt --days 3 --out videos/_research/<date>`
@@ -95,7 +104,35 @@ Run `video-scripter` Stage A as a **Short**, 60 to 70 seconds:
 - Follow `style/MY_SCRIPT_STYLE.md`.
 Then `facts-checker` Gate 2 on the script and the planned title. Then Stage B: write `LINES.tsv`
 (Devanagari) and also `CAPTIONS.tsv` (columns `id`, `caption`: the same line in Roman Hinglish,
-short, for on-screen captions).
+short, for on-screen captions). Also draft the title in `seo/SEO.md`.
+
+### 5b. Email the script for approval (end of Phase A)
+Write `videos/<dir>/EMAIL.md` in simple Hinglish:
+- first line: `Reply "OK" to approve, or write the changes you want.`
+- topic, category, why this topic today (trend/competitor proof, 1 to 2 lines)
+- planned title
+- the **full script** (Roman Hinglish), word count and estimated length
+- fact check: status, every qualifier or flag, and the 3 to 6 main source links
+Send it: `python scripts/mail.py send --subject "[RO-SCRIPT <dir>] <title>" --body-file videos/<dir>/EMAIL.md`
+(If a Gmail connector is available in the run you may use it instead, same subject format.)
+Add a row to `data/pending.csv`: `dir,title,sent_at,status=awaiting,reply_seen=`.
+Commit and push, then end the run. Do **not** continue to step 6.
+
+**Phase B** (check run):
+1. `python scripts/mail.py replies --tag RO-SCRIPT --days 3` and match each reply to a row in
+   `data/pending.csv` by the `<dir>` in the subject. Ignore replies already recorded in `reply_seen`.
+2. Read the reply like a person would (Hinglish is fine):
+   - approval ("ok", "approved", "sahi hai", "done", "chalega", 👍): set `status=approved`.
+   - changes: apply them to SCRIPT.md in the owner's style, re-run facts-checker Gate 2 on the
+     changed lines, email the new version with subject `[RO-SCRIPT <dir>] v2 <title>`, keep `status=awaiting`.
+     If a change would make a claim false or unverified, do not apply it; explain why in the email.
+   - "skip", "cancel", "chhodo": set `status=dropped`.
+   Record the reply's message id in `reply_seen`. Add lasting feedback to `style/LEARNINGS.md`.
+3. For every `approved` row not yet `uploaded`: regenerate LINES.tsv/CAPTIONS.tsv if the script
+   changed, then do steps 6 to 10, then set `status=uploaded` and the video id.
+4. If a row has waited more than 36 hours with no reply, send one short reminder email; after
+   72 hours set `status=expired` (Current Affairs scripts go stale).
+5. If nothing is pending, end quickly with no changes.
 
 ### 6. Voiceover
 `python scripts/voiceover.py videos/<dir>` makes one audio file per line with ElevenLabs and
@@ -131,9 +168,10 @@ motion and optional music from `assets/music/` (royalty-free only). Then check i
   where `upload.json` has `title`, `description`, `tags`, `privacy`, `publish_at` (from settings).
   Set `synthetic: true` only if a realistic AI image of a real event or person was used.
 - Append a row to `data/topics_log.csv`: date, slug, category, title, video id, status.
+- Email the owner a one-line note with the YouTube link (`[RO-DONE <dir>]` subject).
 
 ### 10. Run report
-At the end write `videos/<date>-slot<N>-RUN_REPORT.md`: for each Short the title, YouTube link, gate
+At the end write `videos/<date>-RUN_REPORT.md` (append if it exists): for each Short the title, YouTube link, gate
 results, any qualifiers, sources count, and anything the owner should check. Commit everything
 (except big media files, which are git-ignored) and push.
 
