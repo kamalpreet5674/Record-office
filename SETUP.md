@@ -46,7 +46,9 @@ Total setup time: about 1 hour, one time only. The kit is already in your repo
 3. You can send from the same Gmail you reply from. That's fine.
 
 ### 1D. ElevenLabs and Pexels
-- ElevenLabs: profile → **API Keys** → create. Voices → your cloned voice → copy the **Voice ID**.
+- ElevenLabs: **done.** It works through the ElevenLabs connector, with your voice "Kamal"
+  (`qrQDmG9I6ONIs4PYfwRs`, already set in the repo). No API key needed. Just add the
+  **ElevenLabs connector** to both routines in Part 5.
 - Pexels (free): https://www.pexels.com/api → get your API key.
 
 ---
@@ -64,8 +66,6 @@ Total setup time: about 1 hour, one time only. The kit is already in your repo
    YT_CLIENT_ID=...
    YT_CLIENT_SECRET=...
    YT_REFRESH_TOKEN=...
-   ELEVENLABS_API_KEY=...
-   ELEVENLABS_VOICE_ID=...
    PEXELS_API_KEY=...
    GMAIL_ADDRESS=your-gmail@gmail.com
    GMAIL_APP_PASSWORD=the16letterpassword
@@ -109,6 +109,8 @@ Create two routines, both with the Record-office repo and the `records-office` e
 - Check the time zone in the routine settings: your local time (Dubai, or India if you prefer).
 - If the routine asks about branch pushes, **allow pushing to main**. It saves `data/pending.csv`
   there, which is how routine B knows which scripts you approved.
+- **Add the ElevenLabs connector to both routines** (routine settings → Connectors). Without it the
+  voiceover cannot be made. Routine B needs it most, because it makes the voice.
 - If you add the Gmail connector to the routines, Claude may use it. The script email works without it.
 
 ---

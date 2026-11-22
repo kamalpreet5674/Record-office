@@ -135,8 +135,20 @@ Commit and push, then end the run. Do **not** continue to step 6.
 5. If nothing is pending, end quickly with no changes.
 
 ### 6. Voiceover
-`python scripts/voiceover.py videos/<dir>` makes one audio file per line with ElevenLabs and
-writes `audio/timings.tsv`. Check the total duration it prints:
+Always use the owner's own voice **"Kamal", voice_id `qrQDmG9I6ONIs4PYfwRs`**. Never any other voice.
+Use the **ElevenLabs connector** (no API key needed):
+1. For each row of `LINES.tsv`, call `creative_generate_speech` with the row's `text`,
+   `voice_id` `qrQDmG9I6ONIs4PYfwRs`, `model_id` `eleven_multilingual_v2`, `generations_count` 1.
+   Use one flow per Short: call `creative_create_flow` (name `<dir>`) first and pass its `flow_id`.
+2. Poll `creative_get_flow_run_status` until done. Never call generate twice for the same line to
+   "retry" a run that is still going (each call costs credits); only regenerate a line that failed.
+3. Write `videos/<dir>/audio/urls.tsv` (columns `id`, `url`) with each line's `content_url`.
+4. `python scripts/voiceover.py videos/<dir> --from-urls` downloads the clips, speeds them to 1.10x
+   and writes `audio/timings.tsv`.
+Only if the connector is not available in the run and secret `ELEVENLABS_API_KEY` is set, use
+`python scripts/voiceover.py videos/<dir>` instead. If neither works, stop that Short and report it.
+If you change a line later, regenerate only that line, update its url, delete its mp3 and re-run.
+Check the total duration it prints:
 - under 58 s: add one verified line or raise gaps slightly, re-run.
 - over 72 s: cut the weakest line, re-run.
 

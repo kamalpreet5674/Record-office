@@ -12,7 +12,8 @@ Email each script to me for approval, update data/pending.csv, commit and push. 
 ## Routine B: "Records Office: check replies and make videos", every 2 hours, 8 AM to 10 PM
 ```
 Phase B (check run). Follow CLAUDE.md in this repo exactly. Read my email replies to the
-RO-SCRIPT emails. Approved scripts: make voiceover, video and upload, then email me the link.
+RO-SCRIPT emails. Approved scripts: make the voiceover in my voice (ElevenLabs connector, voice "Kamal"),
+the video and the upload, then email me the link.
 Scripts with changes: revise, re-check facts, and email the new version.
 Update data/pending.csv, commit and push. If nothing is pending, end quickly.
 ```

@@ -10,5 +10,6 @@
   - `public`: publish immediately (only when you fully trust the pipeline)
 - **Niches / categories:** History, Technology, Finance, Current Affairs
 - **Audience region:** India (regionCode IN), Hindi/Hinglish
-- **Voice:** ElevenLabs voice in secret ELEVENLABS_VOICE_ID, model eleven_multilingual_v2
+- **Voice:** owner's ElevenLabs voice "Kamal", voice_id `qrQDmG9I6ONIs4PYfwRs`, model eleven_multilingual_v2,
+  made with the ElevenLabs connector, played at 1.10x
 - **Look:** see style/EDIT_STYLE.md
