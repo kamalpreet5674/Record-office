@@ -1,0 +1,4 @@
+# One competitor channel per line: @handle or channel ID (UC...). Add 5 to 15 channels.
+# Examples (replace with your real competitors):
+# @SomeHindiHistoryChannel
+# @SomeFinanceExplainerChannel

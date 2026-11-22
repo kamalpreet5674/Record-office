@@ -1,0 +1,9 @@
+videos/**/audio/*.mp3
+videos/**/build/
+videos/**/final/
+videos/**/assets/*.jpg
+videos/**/assets/*.png
+videos/**/assets/music/
+client_secret*.json
+.env
+__pycache__/

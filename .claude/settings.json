@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python scripts/*)",
+      "Bash(python3 scripts/*)",
+      "Bash(ffmpeg *)",
+      "Bash(ffprobe *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(mkdir *)",
+      "WebSearch",
+      "WebFetch"
+    ]
+  }
+}
