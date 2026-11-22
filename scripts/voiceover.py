@@ -14,6 +14,7 @@ import time
 import requests
 
 MODEL = os.environ.get("ELEVENLABS_MODEL", "eleven_multilingual_v2")
+SPEED = float(os.environ.get("ELEVENLABS_SPEED", 1.1))  # owner prefers 1.10x
 
 
 def duration(path):
@@ -31,7 +32,7 @@ def tts(text, path):
             f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=mp3_44100_128",
             headers={"xi-api-key": key, "Content-Type": "application/json"},
             json={"text": text, "model_id": MODEL,
-                  "voice_settings": {"stability": 0.5, "similarity_boost": 0.8, "style": 0.2}},
+                  "voice_settings": {"stability": 0.5, "similarity_boost": 0.8, "style": 0.2, "speed": SPEED}},
             timeout=120)
         if r.ok:
             open(path, "wb").write(r.content)

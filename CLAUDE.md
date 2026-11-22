@@ -10,8 +10,8 @@ Facts first, always.
 ## Daily target
 - **2 Shorts per day**, each **60 to 70 seconds**, vertical 1080x1920, 30 fps.
 - They are made by two scheduled runs. The run prompt says which slot you are:
-  - **Slot 1**: History or Technology.
-  - **Slot 2**: Finance or Current Affairs.
+  - **Slot 1**: History, Geography or Technology.
+  - **Slot 2**: Finance, Geopolitics/Civics or Current Affairs.
   If the prompt names no slot, make both Shorts, one per slot, one after the other.
 - Every Short must be brand new: not already on the channel, not made in an earlier run.
 
@@ -89,7 +89,7 @@ Run `facts-checker` Gate 1 on the research. Output in `research/`. BLOCK means d
 
 ### 5. Script
 Run `video-scripter` Stage A as a **Short**, 60 to 70 seconds:
-- about **150 to 175 spoken words**, about 17 to 20 lines, one sentence per line.
+- about **180 to 200 spoken words** (voice runs at 1.10x), about 20 to 25 lines, one sentence per line.
 - Hook in the first line, one central question, one reveal, a payoff, and a last line that loops
   back to the first (from `yt-shorts`).
 - Follow `style/MY_SCRIPT_STYLE.md`.

@@ -12,7 +12,7 @@ Writes final/short.mp4 (and work files in build/).
 
 Look settings come from environment variables so EDIT_STYLE.md can change them:
   CAPTION_FONT (default "DejaVu Sans"), CAPTION_SIZE (78), CAPTION_WORDS (3),
-  ACCENT (hex, default F5C518), BG (hex, default 111111), MUSIC_VOL (0.10)
+  ACCENT (hex, default F5C518), BG (hex, default 111111), MUSIC_VOL (0.16)
 """
 import csv
 import glob
@@ -29,7 +29,7 @@ CAP_SIZE = int(os.environ.get("CAPTION_SIZE", 78))
 CAP_WORDS = int(os.environ.get("CAPTION_WORDS", 3))
 ACCENT = os.environ.get("ACCENT", "F5C518")
 BG = os.environ.get("BG", "111111")
-MUSIC_VOL = float(os.environ.get("MUSIC_VOL", 0.10))
+MUSIC_VOL = float(os.environ.get("MUSIC_VOL", 0.16))
 
 
 def run(cmd):
@@ -109,7 +109,7 @@ PlayResY: {H}
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Cap,{FONT},{CAP_SIZE},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,6,2,2,80,80,560,1
+Style: Cap,{FONT},{CAP_SIZE},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,6,2,2,80,80,{int(os.environ.get('CAPTION_MARGIN_V', 720))},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text

@@ -1,16 +1,35 @@
-# Edit style for Shorts (from kamal-video-style, adapted for automation)
+# Edit style for Shorts (owner's preferences + kamal-video-style, adapted for automation)
 
-- 9:16, 1080x1920, 30 fps. One shot per spoken line, so the picture changes every 2 to 4 seconds.
-- First 2 seconds: strongest image + a short overlay headline (different words from the spoken hook).
-- Treatments: documentary collage (real archive photos, documents, maps) for evidence;
-  bold explainer cards for numbers, dates and comparisons; clean metaphors for abstract ideas.
-- Real material first (Wikimedia Commons, archives), stock (Pexels) second, text cards third.
-- Motion: slow zoom in on reveals, pan across maps and documents, zoom out to show scale. No motion
-  on a card that holds a number for less than 2 seconds is fine.
-- Captions: big bold white, 3 words at a time, numbers in accent yellow (F5C518), lower-middle.
-- Colours: near-black background 111111, accent yellow F5C518, white text.
-- Music: low, royalty-free only, under the voice (MUSIC_VOL 0.10). No music is better than risky music.
-- Never: fake documents shown as real, AI faces of real people, watermarked images, logos you do not own.
+## Look
+- 9:16, 1080x1920, 30 fps. Bright, fast, Vox-style edit.
+- **Real photos and footage first.** An edit made only of motion graphics felt "dry" and was rejected.
+- Documentary collage, cutout or sticker-style images, maps, and 2D motion text on top of real images.
+- **Scene variety.** Never repeat the same visual many times (the Doomsday clock shown 7 or 8 times was rejected).
+  Use a different image or angle on every line where possible. Reuse an image at most twice.
+- Colour: **bright, cool and natural.** Dark or muddy looks were rejected. Pick bright, clear images;
+  use dark text cards only for short number beats.
+- If exact footage doesn't exist, build a visual from related images, maps and text. Never leave a gap.
 
-Change any value here and the assembler can be tuned with env vars:
-CAPTION_FONT, CAPTION_SIZE, CAPTION_WORDS, ACCENT, BG, MUSIC_VOL.
+## Pace and motion
+- One shot per spoken line, so the picture changes every 2 to 4 seconds.
+- First 2 seconds: the strongest image plus a short overlay headline (different words from the spoken hook).
+- Slow zoom in on reveals, pan across maps and documents, zoom out to show scale.
+
+## Captions
+- **Roman Hinglish**, pop style, big bold white, 3 words at a time.
+- Keywords and numbers highlighted in accent yellow (F5C518).
+- Placed **a little below centre** (CAPTION_MARGIN_V 720).
+
+## Audio
+- Voiceover at **1.10x** (ELEVENLABS_SPEED 1.1).
+- BGM and SFX must be **clearly audible** under the voice (MUSIC_VOL 0.16). Royalty-free only.
+
+## Never
+- No AI faces of real public figures. No logos, no news clips, no watermarked images.
+- No fake documents shown as real. Only copyright-safe material (no strikes or Content ID claims).
+
+## Assembler settings (environment variables)
+CAPTION_FONT, CAPTION_SIZE, CAPTION_WORDS, CAPTION_MARGIN_V, ACCENT, BG, MUSIC_VOL, ELEVENLABS_SPEED.
+
+Not yet automated (for later): speed ramps, 3D motion graphics, cutout stickers with shadow, SFX
+cue placement. Claude can add these to `scripts/assemble_short.py` once the basic pipeline works.
