@@ -132,3 +132,9 @@ Create two routines, both with the Record-office repo and the `records-office` e
 - No email at 6 AM: open the routine's last run at claude.ai/code and read what it says.
 - "Missing secret ...": that value is missing in Part 2, step 5.
 - YouTube login error: run Part 1B again and update `YT_REFRESH_TOKEN`.
+
+## Update 23 Nov 2026: let Claude reply to comments
+The YouTube login now also asks for comment access. Run Part 1B again once
+(`python get_youtube_token.py "C:\path\to\client_secret_xxx.json"`, download the new
+`scripts/get_youtube_token.py` from the repo first), allow everything, and put the new
+`YT_REFRESH_TOKEN` in the environment settings. Then `check_setup.py` shows "YouTube comment replies: OK".

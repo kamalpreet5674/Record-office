@@ -41,6 +41,6 @@ will not reach it; the plan is to make every Short a strong attempt and learn fa
 |---|---|---|
 | 24 Nov | Soft follow line on half the Shorts (until 30 Nov) | |
 | 24 Nov | Pinned question comment on every Short | |
-| 24 Nov | Comment reply drafts every check run | |
-| week of 24 Nov | First weekly long video (Sunday 19:00) | |
-| first audit | Paid promotion suggestion for the best Short | |
+| 24 Nov | Claude replies to simple comments, sensitive ones go to the owner | |
+| 26 Nov | Weekly long-video topic ideas to the owner (owner makes the video) | |
+| first audit | Promotion advice for the best Short (owner runs the ad) | |

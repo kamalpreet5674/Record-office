@@ -109,6 +109,18 @@ def mail_ports_open():
         return False
 
 
+def comment_scope():
+    import requests
+    r = requests.post("https://oauth2.googleapis.com/token", timeout=30, data={
+        "client_id": os.environ["YT_CLIENT_ID"], "client_secret": os.environ["YT_CLIENT_SECRET"],
+        "refresh_token": os.environ["YT_REFRESH_TOKEN"], "grant_type": "refresh_token"}).json()
+    if "youtube.force-ssl" not in r.get("scope", ""):
+        raise RuntimeError("token cannot reply to comments yet: run get_youtube_token.py again, "
+                           "then update YT_REFRESH_TOKEN")
+    return "can reply to comments"
+
+
+check("YouTube comment replies", comment_scope)
 check("Phone notification (ntfy)", ntfy_test)
 if mail_ports_open():
     check("Gmail read", gmail)

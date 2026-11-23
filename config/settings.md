@@ -16,7 +16,7 @@
 ## Publish slots (Dubai time). Phase C may move these when the numbers say so.
 - **Morning slot: 07:00**, Short 1 (History / Geography / Technology)
 - **Evening slot: 19:00**, Short 2 (Finance / Geopolitics / Current Affairs)
-- **Long video: Sunday 19:00** (Phase L, once a week)
+- **Long videos:** made by the owner; the pipeline only sends topic ideas (Phase L)
 
 ## Routine times (set in claude.ai/code → Routines, Dubai time)
 | Routine | When | What |
@@ -25,7 +25,7 @@
 | A2 morning script | daily 09:00 | Phase A, only Short 2 (for 19:00 today) |
 | B check replies | daily 05:00, 10:00, 12:00, 14:00, 16:00, 17:00, 21:00, 23:00 | Phase B |
 | C audit | every 3 days 22:30 | Phase C |
-| L long script | weekly, Thursday 21:00 | Phase L, long video for Sunday 19:00 |
+| L long-video ideas | weekly, Thursday 21:00 | Phase L, 3 topic ideas emailed to the owner |
 
 ## Slot history
 - 2026-11-23: owner chose 07:00 and 19:00 to start.

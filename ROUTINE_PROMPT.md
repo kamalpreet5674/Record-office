@@ -27,8 +27,8 @@ Email the script to me for approval, update data/pending.csv, commit and push. T
 Phase B (check run). Follow CLAUDE.md in this repo exactly. Read my email replies to the
 RO-SCRIPT emails. Approved scripts: make voiceover, video and upload for its publish slot,
 then email me the link and notify my phone. Scripts with changes: revise, re-check facts, and
-email the new version. Also handle RO-LONG and RO-DONE replies (feedback → rules and skills),
-and send me reply drafts for new comments. Update data/pending.csv, commit and push.
+email the new version. Also handle RO-DONE replies (feedback → rules and skills), check ElevenLabs credits,
+and reply to new comments (sensitive ones: email me drafts). Update data/pending.csv, commit and push.
 If nothing is pending and there are no new comments, end quickly.
 ```
 
@@ -39,11 +39,11 @@ Phase C (audit run). Follow CLAUDE.md "Phase C" exactly: run the audit, learn fr
 in config/settings.md if the data clearly says so, email me the audit, commit and push.
 ```
 
-## Routine L: "RO long video script", every Thursday 9:00 PM
+## Routine L: "RO long video topic ideas", every Thursday 9:00 PM
 ```
-Phase L (long script run). Follow CLAUDE.md "Phase L" exactly: pick the topic from our best
-recent Short, research, fact-check, write a 6 to 8 minute script in my style, email it to me
-as RO-LONG with Flow and thumbnail prompts, update data/pending.csv, commit and push. Then stop.
+Phase L (topic ideas run). Follow CLAUDE.md "Phase L" exactly: find the 3 best topics for my
+next long video (I make it myself), with proof, angle, chapters and sources, email them to me
+as RO-LONG-IDEAS, commit and push. Then stop.
 ```
 
 ## Setup check (run once, any time, in a normal session)

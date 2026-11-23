@@ -14,6 +14,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 SCOPES = [
     "https://www.googleapis.com/auth/youtube.upload",
     "https://www.googleapis.com/auth/youtube.readonly",
+    "https://www.googleapis.com/auth/youtube.force-ssl",      # reply to comments
+    "https://www.googleapis.com/auth/yt-analytics.readonly",  # audit: retention, subscribers
 ]
 
 if len(sys.argv) != 2:

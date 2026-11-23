@@ -1,19 +1,39 @@
-"""New comments on our recent videos, so Claude can draft replies for the owner.
+"""Comments on our recent videos: list new ones, and post a reply.
 
   python scripts/comments.py --hours 24 [--videos 10]
+  python scripts/comments.py reply --parent <comment id> --text "..."
 
 Prints JSON: one item per top-level comment newer than --hours on our latest --videos uploads,
 with video title, link, author, text, likes, time, and whether we already replied.
-Read-only (the token cannot post comments; the owner replies from the YouTube app).
+`reply` needs the youtube.force-ssl permission (run get_youtube_token.py again after 23 Nov 2026).
 """
 import argparse
 import datetime as dt
 import json
+import sys
 
 from yt_common import youtube
 
 
+def reply(parent, text):
+    try:
+        r = youtube().comments().insert(part="snippet", body={
+            "snippet": {"parentId": parent, "textOriginal": text}}).execute()
+    except Exception as e:
+        if "insufficient" in str(e).lower() or "403" in str(e):
+            sys.exit("No permission to reply yet: run get_youtube_token.py again and update YT_REFRESH_TOKEN.")
+        raise
+    print("replied:", r["id"])
+
+
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "reply":
+        rp = argparse.ArgumentParser()
+        rp.add_argument("cmd")
+        rp.add_argument("--parent", required=True)
+        rp.add_argument("--text", required=True)
+        r = rp.parse_args()
+        return reply(r.parent, r.text)
     ap = argparse.ArgumentParser()
     ap.add_argument("--hours", type=int, default=24)
     ap.add_argument("--videos", type=int, default=10)
@@ -38,7 +58,7 @@ def main():
                 continue
             replied = any(r["snippet"].get("authorChannelId", {}).get("value") == ch["id"]
                           for r in (t.get("replies") or {}).get("comments", []))
-            out.append({"video": title, "link": f"https://www.youtube.com/watch?v={vid}&lc={t['id']}",
+            out.append({"id": t["id"], "video": title, "link": f"https://www.youtube.com/watch?v={vid}&lc={t['id']}",
                         "author": c.get("authorDisplayName"), "text": c.get("textDisplay"),
                         "likes": c.get("likeCount", 0), "at": c["publishedAt"], "we_replied": replied})
     print(json.dumps(out, ensure_ascii=False, indent=2))

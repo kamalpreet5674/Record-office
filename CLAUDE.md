@@ -31,7 +31,7 @@ fail there. **Use the Gmail connector for all email** (it works over HTTPS). Own
   `[RO-AUDIT <date>]`), body = the text of the .md file. End every email you send with the line
   `-- RO-BOT` so your own messages can be told apart from the owner's replies.
   Save the returned `threadId` in `data/pending.csv` (column `thread_id`).
-- **Read replies:** `search_threads` with `subject:(RO-SCRIPT OR RO-LONG OR RO-DONE) newer_than:4d`, then `get_thread`
+- **Read replies:** `search_threads` with `subject:(RO-SCRIPT OR RO-DONE OR RO-LONG-IDEAS) newer_than:4d`, then `get_thread`
   for each. A reply is any message in the thread that does not end with `-- RO-BOT`. Use its message id
   in `reply_seen`. Read only the new text, not the quoted old mail.
 - **Attachments** (Flow images/videos, screenshots of what the owner did not like): `download_gmail_attachment`,
@@ -309,7 +309,9 @@ Routine C runs every 3 days. Do this, then stop:
    whether we are ahead or behind and which test from the plan to run next.
 7. Commit and push.
 
-## Growth tests (owner approved all 5 on 23 Nov 2026; see config/growth_plan.md)
+## Growth tests (owner approved on 23 Nov 2026; see config/growth_plan.md)
+The pipeline makes **Shorts only**. Long videos are made by the owner himself (own voice, own edit);
+the pipeline only sends him topic ideas for them (Phase L).
 1. **Soft follow line (A/B test, 24 Nov to 30 Nov):** this overrides the style's "no like/subscribe" rule
    only for this test. On even dates Short 1, on odd dates Short 2 ends with one story-style follow line
    in the owner's voice, e.g. "Aise hi records roz kholte hain." (never "like, share, subscribe").
@@ -318,32 +320,41 @@ Routine C runs every 3 days. Do this, then stop:
    and asks the owner whether to keep it.
 2. **Pinned comment:** for every Short write one short question comment in Hinglish that invites an
    opinion (not "subscribe"), e.g. "Aapke hisaab se India ko kya karna chahiye?". Put it in the
-   `[RO-DONE]` email as "Pinned comment (copy, post, pin):". The API cannot post or pin it; the owner does.
-3. **Weekly long video (Phase L):** see below.
-4. **Comment replies:** every Phase B run, `python scripts/comments.py --hours 24`. For comments we have
-   not replied to, draft a short friendly Hinglish reply (facts only from our sources; no fights, no
-   politics) and send the owner one email `[RO-COMMENTS <date>]` with link + comment + suggested reply,
-   plus a phone notification. Skip if there are no new comments. Never invent facts in a reply.
-5. **Paid promotion:** in every Phase C audit, name the one Short that holds 65%+ average viewed and
-   has the best subscribers per view, and suggest a small Google Ads (YouTube) test budget for it.
-   The owner runs the ad; never claim an ad was run.
+   `[RO-DONE]` email as "Pinned comment (copy, post, pin):". YouTube has no API to pin; the owner does it.
+3. **Comment replies (every Phase B run):** `python scripts/comments.py --hours 24`. For each comment we
+   have not replied to:
+   - **Reply yourself** (`python scripts/comments.py reply --parent <id> --text "..."`) when it is simple:
+     thanks/praise, a question our sources answer, a topic request. Short, warm, Hinglish, in the
+     channel's voice, no emojis spam, facts only from that video's sources, never a link except our own videos.
+   - **Do not reply; email the owner instead** (`[RO-COMMENTS <date>]`, link + comment + suggested reply)
+     when it is political, angry, a fact dispute, about a real person, spam/scam, or you are unsure.
+     Never argue, never take a political side, never delete or hide comments.
+   - Good topic ideas from comments go into `data/topic_ideas.md` with the link.
+   - If the reply command says there is no permission yet, email all drafts to the owner instead.
+4. **Promotion advice:** in every Phase C audit, name the one Short worth promoting (65%+ average
+   viewed and best subscribers per view) with a suggested small Google Ads (YouTube) budget and why.
+   The owner runs the ad himself; never claim an ad was run.
+5. **Topics from YouTube Studio:** the Studio "Inspiration"/research ideas are not in the API. If the
+   owner pastes or screenshots them (email reply, chat, or `data/studio_ideas.md`), treat them as strong
+   candidates in step 1 and in Phase L. Ask for a fresh copy in the weekly Phase L email.
 
-## Phase L: weekly long video (owner approved)
-Routine L runs once a week. It does Phase A for one **long video**, 6 to 8 minutes, 16:9:
-- Topic: the best-performing Short of the last 7 to 14 days (or its strongest follow-up question),
-  checked with `audit.py`/`channel_insights.md`, then topic-validator, research, Gate 1, script
-  (about 900 to 1,150 spoken words at 1.10x, chapters, a strong cold open, the same style and fact rules),
-  Gate 2, LINES.tsv and CAPTIONS.tsv. Workspace `videos/<date>-long-<slug>/`.
-- Email it as `[RO-LONG <dir>] <title>` with the script, sources, 10 to 15 Flow prompts, and one
-  thumbnail idea plus a Flow image prompt for the thumbnail. Row in `data/pending.csv` as usual.
-- Phase B treats `RO-LONG` replies like `RO-SCRIPT`. When approved: voice with
-  `ELEVENLABS_MAX_CHARS=9000 python scripts/voiceover.py videos/<dir>`, visuals (same order as step 7,
-  a new visual every 4 to 6 seconds), then `LANDSCAPE=1 python scripts/assemble_short.py videos/<dir>`
-  (1920x1080), check 6 frames, upload private with `category_id` 27 and chapters in the description,
-  for the Sunday 19:00 slot. In the `[RO-DONE]` email remind the owner to add the thumbnail in Studio.
-- Before voicing, check ElevenLabs characters left (check_setup.py prints them). If the month cannot
-  cover the long video and the next 7 days of Shorts (about 1,100 characters per Short), email the owner
-  and wait; Shorts come first.
+## ElevenLabs credits
+At the start of every Phase B run that will voice a Short, run `python scripts/credits.py`.
+If it prints `WARN`, also email the owner `[RO-CREDITS <date>]`: characters left, about how many
+Shorts that covers, the reset date, and "Plan upgrade kar do". If a Short does not fit in the credits
+left, do not voice it; email the owner and wait.
+
+## Phase L: weekly long-video topic ideas for the owner (no production)
+Routine L runs once a week (Thursday 21:00). Do this, then stop:
+1. Find the 3 best topics for the owner's next long video: our best Shorts of the last 14 days
+   (`audit.py`), follow-up questions in comments, `data/topic_ideas.md`, `data/studio_ideas.md`,
+   competitors' outlier long videos (`yt_research.py`), and `demand.py` for search demand.
+2. For each: working title, why now (numbers), the angle nobody has done well in Hindi, 5 to 8 chapter
+   points, 5 to 8 main source links (opened in this run), and visuals that exist.
+3. Email `[RO-LONG-IDEAS <date>]` and ask: "Studio ke Inspiration tab ke 3-5 ideas reply mein paste/screenshot
+   kar do, agle hafte unhe bhi check karunga." Save the email as `data/long_ideas/<date>.md`. Commit and push.
+4. Phase B: when the owner replies to `[RO-LONG-IDEAS]` (text or screenshots), copy the ideas into
+   `data/studio_ideas.md` with the date (open each screenshot and type out what it says).
 
 ## Learning loop (owner feedback → rules → skills)
 The owner's feedback is the most valuable data this pipeline has. Every Phase B run, and every normal

@@ -21,6 +21,5 @@ def youtube():
         client_id=os.environ["YT_CLIENT_ID"],
         client_secret=os.environ["YT_CLIENT_SECRET"],
         token_uri="https://oauth2.googleapis.com/token",
-        scopes=SCOPES,
     )
     return build("youtube", "v3", credentials=creds, cache_discovery=False)
