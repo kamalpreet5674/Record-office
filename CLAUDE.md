@@ -36,7 +36,11 @@ fail there. **Use the Gmail connector for all email** (it works over HTTPS). Own
   in `reply_seen`. Read only the new text, not the quoted old mail.
 - **Attachments** (Flow images/videos, screenshots of what the owner did not like): `download_gmail_attachment`,
   save into `videos/<dir>/assets/flow/` (or `feedback/` for screenshots) and open each one.
-- **Phone alerts** still work: `python scripts/mail.py notify --title ... --message ... --click URL` (HTTPS).
+- **Every email you send must also ping the owner's phone** (owner's rule): right after each
+  `send_message`, run `python scripts/mail.py notify --title "<short subject>" --message "<one line>" --click <the email's viewUrl>`.
+  It retries on ntfy's rate limit (HTTP 429). If it still fails, say so in the run report.
+- **Always answer the owner's reply** in the same thread (`replyThreadId`) with one or two lines saying
+  what you understood and what happens next, so he knows the reply was seen.
 - `mail.py send/replies` is only a fallback for a machine where Gmail ports are open.
 Wherever this file says `mail.py send` or `mail.py replies`, do the connector steps above instead.
 
@@ -186,6 +190,10 @@ Commit and push, then end the run. Do **not** continue to step 6.
      changed lines, email the new version with subject `[RO-SCRIPT <dir>] v2 <title>`, keep `status=awaiting`.
      If a change would make a claim false or unverified, do not apply it; explain why in the email.
    - "skip", "cancel", "chhodo": set `status=dropped`.
+   - "OK but wait / don't start / main Flow bhejta hoon": set `status=approved_wait_assets`. Do not build.
+     When a later reply brings the attachments (or says "start" / "bana do"), save them to
+     `assets/flow/`, set `status=approved` and build. If nothing came 90 minutes before the slot,
+     send one reminder (email + phone): build with free visuals, or wait for the next slot?
    Record the reply's message id in `reply_seen`. Add lasting feedback to `style/LEARNINGS.md`.
    Attached Flow images/videos are saved in `videos/<dir>/assets/flow/`. Open each one, match it to
    its F-prompt and script line, and use it in SHOTS.tsv for that line. Set `synthetic: true` on

@@ -46,12 +46,22 @@ def notify(title, message, click=None):
     headers = {"Title": title.encode("utf-8").decode("latin-1", "ignore")[:200], "Priority": "high", "Tags": "clapper"}
     if click:
         headers["Click"] = click
-    req = urllib.request.Request(f"https://ntfy.sh/{topic}", data=message.encode("utf-8"), headers=headers)
-    try:
-        urllib.request.urlopen(req, timeout=20)
-        print("phone notification sent")
-    except Exception as e:
-        print("notification failed:", e)
+    token = os.environ.get("NTFY_TOKEN")  # optional free ntfy.sh account token: own rate limit, not the shared IP's
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    import time
+    last = None
+    for wait in (0, 20, 60, 120):  # ntfy.sh rate-limits shared cloud IPs (HTTP 429): back off and retry
+        time.sleep(wait)
+        try:
+            req = urllib.request.Request(f"https://ntfy.sh/{topic}", data=message.encode("utf-8"), headers=headers)
+            urllib.request.urlopen(req, timeout=20)
+            print("phone notification sent")
+            return True
+        except Exception as e:
+            last = e
+    print("notification failed:", last)
+    return False
 
 
 def send(subject, body):
