@@ -41,6 +41,8 @@ fail there. **Use the Gmail connector for all email** (it works over HTTPS). Own
   It retries on ntfy's rate limit (HTTP 429). If it still fails, say so in the run report.
 - **Always answer the owner's reply** in the same thread (`replyThreadId`) with one or two lines saying
   what you understood and what happens next, so he knows the reply was seen.
+  **Also ping the phone the moment a reply is read** (owner's rule): `mail.py notify --title "Reply mila: <short title>"
+  --message "<what you understood> · <what happens next>"`. Every reply gets both: an email answer and a phone ping.
 - `mail.py send/replies` is only a fallback for a machine where Gmail ports are open.
 Wherever this file says `mail.py send` or `mail.py replies`, do the connector steps above instead.
 

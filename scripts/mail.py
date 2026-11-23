@@ -43,7 +43,7 @@ def notify(title, message, click=None):
     if not topic:
         return
     import urllib.request
-    headers = {"Title": title.encode("utf-8").decode("latin-1", "ignore")[:200], "Priority": "high", "Tags": "clapper"}
+    headers = {"Title": title.encode("utf-8").decode("latin-1", "ignore")[:200], "Priority": "urgent", "Tags": "clapper"}
     if click:
         headers["Click"] = click
     token = os.environ.get("NTFY_TOKEN")  # optional free ntfy.sh account token: own rate limit, not the shared IP's
