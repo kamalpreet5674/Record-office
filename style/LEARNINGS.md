@@ -17,3 +17,4 @@ RULE (2026-11-23): Every video gets transitions on every cut, sticker/cutout fra
 RULE (2026-11-23): Owner rejected plain edits. Every Short: pro hook in first 3 s, script-literal video B-roll, effect on every cut (punch/flash/shake/zoomout), pop captions, strong BGM + layered SFX (riser, hit, cash, pop, camera, whoosh). See EDIT_STYLE.md "Pro edit upgrade".
 RULE (2026-11-23): Videos over stills, always; aim for 40+ shots per 70 s Short. For a game/film/brand topic, official trailer footage muted is allowed by the owner (credited); never its audio.
 RULE (2026-11-23): Strong sound = energetic BGM ~6 dB under voice + music drop before the twist + layered SFX (sub on numbers, riser->hit, cash, pop, camera). Measure: voice must stay the loudest element.
+RULE (2026-11-23): The voice must be clearly heard over everything (owner could not hear it in v6). Measure voice vs music+SFX in speech windows before sending; target 10+ dB gap.

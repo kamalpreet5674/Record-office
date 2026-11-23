@@ -36,10 +36,10 @@ BG = os.environ.get("BG", "111111")
 MUSIC_VOL = float(os.environ.get("MUSIC_VOL", 0.16))
 TRANS = float(os.environ.get("TRANS", 0.25))  # crossover transition length in seconds (0 = hard cuts)
 TRANS_CYCLE = os.environ.get("TRANS_CYCLE", "zoomin,smoothleft,fadewhite,slideup,radial,smoothright,zoomin,wipeup,hblur").split(",")
-SFX_VOL = float(os.environ.get("SFX_VOL", 0.75))
+SFX_VOL = float(os.environ.get("SFX_VOL", 0.3))
 FAST_CLIPS = os.environ.get("FAST_CLIPS", "1") == "1"  # play stock/trailer clips a bit faster
 CLIP_SPEED = float(os.environ.get("CLIP_SPEED", 1.25))
-MUSIC_BASS = float(os.environ.get("MUSIC_BASS", 5))  # dB bass boost on the music
+MUSIC_BASS = float(os.environ.get("MUSIC_BASS", 3))  # dB bass boost on the music
 LEAKS = []  # filled in main() from <video>/assets/fxclips/leak*.mp4
 
 
@@ -370,7 +370,12 @@ def main():
              "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", f"{b}/video.mp4"])
     else:
         run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", f"{b}/video.txt", "-c", "copy", f"{b}/video.mp4"])
-    run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", f"{b}/audio.txt", "-c", "copy", f"{b}/voice.wav"])
+    run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", f"{b}/audio.txt", "-c", "copy", f"{b}/voice_raw.wav"])
+    # broadcast voice chain: clean low end, even out level, presence for phone speakers
+    run(["ffmpeg", "-y", "-i", f"{b}/voice_raw.wav", "-af",
+         "highpass=f=85,acompressor=threshold=0.08:ratio=3:attack=5:release=120:makeup=2,"
+         "equalizer=f=3000:t=o:w=1.2:g=4,equalizer=f=250:t=o:w=1:g=-2,"
+         "loudnorm=I=-16:TP=-2:LRA=7", "-ar", "48000", f"{b}/voice.wav"])
 
     voice = f"{b}/voice.wav"
     music = sorted(glob.glob(f"{d}/assets/music/*.mp3"))
@@ -406,9 +411,9 @@ def main():
             elif mode == "drop":  # music stops just before this cut, comes back on it
                 pass
             elif mode in ("hit", "boom", "sub", "cine"):
-                events.append((t0, f, SFX_VOL * 1.6, 2.5))
-            else:
-                events.append((t0, f, SFX_VOL * 1.1, 1.5))
+                events.append((t0, f, SFX_VOL * (0.75 if mode in ("hit", "cine") else 0.5), 0.8))
+            else:  # cash / pop / camera / glitch: short accents under the voice
+                events.append((t0, f, SFX_VOL * 0.55, 0.9))
         t0 += seg_lens[n]
     if events:
         ins, fc = ["-i", voice], []
@@ -426,10 +431,11 @@ def main():
     if music:
         # music ducks under the voice (sidechain) so words stay clear
         run(["ffmpeg", "-y", "-i", voice, "-stream_loop", "-1", "-ss", os.environ.get("MUSIC_START", "0"), "-i", music[0], "-i", voice_for_duck, "-filter_complex",
-             f"[1:a]volume={MUSIC_VOL * 2.2},bass=g={MUSIC_BASS}:f=90"
+             f"[1:a]volume={MUSIC_VOL * 2.2},bass=g={MUSIC_BASS}:f=90,"
+             f"equalizer=f=2000:t=o:w=2:g=-8,equalizer=f=500:t=o:w=1:g=-3"
              + "".join(f",volume=0:enable='between(t\\,{a:.2f}\\,{b2:.2f})'" for a, b2 in drops) + "[m];"
              f"[2:a]asplit=1[sc];"
-             f"[m][sc]sidechaincompress=threshold=0.06:ratio=3:attack=15:release=250[md];"
+             f"[m][sc]sidechaincompress=threshold=0.02:ratio=6:attack=10:release=300[md];"
              f"[0:a][md]amix=inputs=2:duration=first:normalize=0,afade=t=out:st={sum(line_lens) - 1.2:.2f}:d=1.2[a]",
              "-map", "[a]", f"{b}/mix.wav"])
         voice = f"{b}/mix.wav"
