@@ -50,3 +50,6 @@ cue placement. Claude can add these to `scripts/assemble_short.py` once the basi
 - (23 Nov, v5) Owner approved using official trailer footage MUTED (Content ID risk accepted by owner). Cut vertical 1080x1920 crops straight from the 4K official file (remove letterbox: cropdetect), 2.6 s each, no audio. Skip shots with weapons. Credit in description.
 - New fx: glitch (RGB split + noise, first 0.2 s), blurin; global grade eq contrast 1.06 / saturation 1.15 + vignette + light grain (GRADE env).
 - Hook first frame must be bright and clear behind the big title (not a logo, not a dark shot).
+- (23 Nov, v6 "strong" mix) Music: energetic track from its drop (MUSIC_START), MUSIC_VOL 0.1 + bass +5 dB, gentle ducking (ratio 3): music sits ~6 dB under the voice, never over it. Music DROP (SHOTS sfx "drop") 0.7 s before the big twist, riser over the silence, cinematic hit on the cut.
+- SFX_VOL 0.4: whoosh every cut, sub-bass under every number reveal, cine hit on twist/end, cash on money, pop on titles, camera on documents. Final: loudnorm -14 LUFS + limiter (peak below -1 dBFS).
+- Visuals: clips play at 1.25x (FAST_CLIPS), light leaks / lens flares (fx "leak", Mixkit) on hook, reveals and ending; never a leak on the very first frame.

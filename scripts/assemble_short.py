@@ -36,7 +36,11 @@ BG = os.environ.get("BG", "111111")
 MUSIC_VOL = float(os.environ.get("MUSIC_VOL", 0.16))
 TRANS = float(os.environ.get("TRANS", 0.25))  # crossover transition length in seconds (0 = hard cuts)
 TRANS_CYCLE = os.environ.get("TRANS_CYCLE", "zoomin,smoothleft,fadewhite,slideup,radial,smoothright,zoomin,wipeup,hblur").split(",")
-SFX_VOL = float(os.environ.get("SFX_VOL", 0.35))
+SFX_VOL = float(os.environ.get("SFX_VOL", 0.75))
+FAST_CLIPS = os.environ.get("FAST_CLIPS", "1") == "1"  # play stock/trailer clips a bit faster
+CLIP_SPEED = float(os.environ.get("CLIP_SPEED", 1.25))
+MUSIC_BASS = float(os.environ.get("MUSIC_BASS", 5))  # dB bass boost on the music
+LEAKS = []  # filled in main() from <video>/assets/fxclips/leak*.mp4
 
 
 def run(cmd):
@@ -285,6 +289,7 @@ def main():
              "-ar", "48000", "-ac", "2", wav])
         wav_list.append(wav)
 
+    LEAKS[:] = sorted(glob.glob(f"{d}/assets/fxclips/leak*.mp4"))
     seg_list, seg_lens = [], []
     for n, pt in enumerate(parts):
         tag = f"{pt['line']}_{pt['k']}"
@@ -319,17 +324,30 @@ def main():
         else:
             vf = motion_filter(pt["motion"] or "zoomin", frames)
             cmd = ["ffmpeg", "-y", "-loop", "1", "-i", src]
+        fxn = [x.strip() for x in (pt["fx"] or "punch").split(",")]
+        if kind == "video" and ("fast" in fxn or FAST_CLIPS):
+            vf = f"setpts=PTS/{CLIP_SPEED}," + vf  # a little faster = more energy
         vf += effects_filter(pt["fx"] or "punch", vis)
+        fc, last, nin = [f"[0:v]{vf}[bg]"], "[bg]", 1
+        if "leak" in fxn and LEAKS:
+            # light leak / lens flare laid over the shot in screen blend
+            lk = LEAKS[n % len(LEAKS)]
+            cmd += ["-stream_loop", "-1", "-ss", f"{(n * 1.7) % 4:.2f}", "-i", lk]
+            fc.append(f"[{nin}:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},"
+                      f"format=gbrp[lk];{last}format=gbrp[bgr];[bgr][lk]blend=all_mode=screen:all_opacity=0.8,"
+                      f"format=yuv420p[lkd]")
+            last, nin = "[lkd]", nin + 1
         if pt["overlay"]:
             ov = f"{b}/ov_{tag}.png"
             if pt["overlay"].startswith("big:"):
                 make_big_text(pt["overlay"][4:], ov)
             else:
                 make_overlay(pt["overlay"], ov)
-            cmd += ["-loop", "1", "-i", ov, "-filter_complex", f"[0:v]{vf}[bg];[bg][1:v]overlay=0:0,format=yuv420p[v]",
-                    "-map", "[v]"]
-        else:
-            cmd += ["-vf", vf + ",format=yuv420p"]
+            cmd += ["-loop", "1", "-i", ov]
+            fc.append(f"{last}[{nin}:v]overlay=0:0[ovd]")
+            last = "[ovd]"
+        fc.append(f"{last}format=yuv420p[v]")
+        cmd += ["-filter_complex", ";".join(fc), "-map", "[v]"]
         run(cmd + ["-frames:v", str(frames), "-r", str(FPS), "-c:v", "libx264", "-preset", "veryfast",
                    "-crf", "18", "-an", out])
         seg_list.append(out)
@@ -366,14 +384,17 @@ def main():
     whooshes = sorted(glob.glob(f"{sfx_dir}/whoosh*.mp3"))
     hits = sorted(glob.glob(f"{sfx_dir}/hit*.mp3"))
     bank = {name: sorted(glob.glob(f"{sfx_dir}/{name}*.mp3")) for name in
-            ("whoosh", "hit", "riser", "money", "pop", "camera", "boom", "glitch", "swoosh", "transition")}
-    events, t0 = [], 0.0
+            ("whoosh", "hit", "riser", "money", "pop", "camera", "boom", "glitch", "swoosh", "transition", "sub", "cine")}
+    events, t0, drops = [], 0.0, []
     for n, pt in enumerate(parts):
         modes = [m.strip() for m in (pt["sfx"] or ("whoosh" if n else "")).split(",") if m.strip()]
         if pt["overlay"] and "pop" not in modes:
             modes.append("pop")
         for mode in modes:
             files = bank.get(mode) or []
+            if mode == "drop" and pt["k"] == 0:
+                drops.append((max(t0 - 0.7, 0), t0))
+                continue
             if not files:
                 continue
             f = files[n % len(files)]
@@ -382,7 +403,9 @@ def main():
                 events.append((max(t0 - dur, 0), f, SFX_VOL * 0.9, dur))
             elif mode in ("whoosh", "swoosh", "transition"):
                 events.append((max(t0 - 0.25, 0), f, SFX_VOL * (1.0 if pt["k"] == 0 else 0.7), 1.2))
-            elif mode in ("hit", "boom"):
+            elif mode == "drop":  # music stops just before this cut, comes back on it
+                pass
+            elif mode in ("hit", "boom", "sub", "cine"):
                 events.append((t0, f, SFX_VOL * 1.6, 2.5))
             else:
                 events.append((t0, f, SFX_VOL * 1.1, 1.5))
@@ -403,8 +426,10 @@ def main():
     if music:
         # music ducks under the voice (sidechain) so words stay clear
         run(["ffmpeg", "-y", "-i", voice, "-stream_loop", "-1", "-ss", os.environ.get("MUSIC_START", "0"), "-i", music[0], "-i", voice_for_duck, "-filter_complex",
-             f"[1:a]volume={MUSIC_VOL * 2.2}[m];[2:a]asplit=1[sc];"
-             f"[m][sc]sidechaincompress=threshold=0.05:ratio=4:attack=15:release=300[md];"
+             f"[1:a]volume={MUSIC_VOL * 2.2},bass=g={MUSIC_BASS}:f=90"
+             + "".join(f",volume=0:enable='between(t\\,{a:.2f}\\,{b2:.2f})'" for a, b2 in drops) + "[m];"
+             f"[2:a]asplit=1[sc];"
+             f"[m][sc]sidechaincompress=threshold=0.06:ratio=3:attack=15:release=250[md];"
              f"[0:a][md]amix=inputs=2:duration=first:normalize=0,afade=t=out:st={sum(line_lens) - 1.2:.2f}:d=1.2[a]",
              "-map", "[a]", f"{b}/mix.wav"])
         voice = f"{b}/mix.wav"
@@ -413,7 +438,7 @@ def main():
     grade = os.environ.get("GRADE", "eq=contrast=1.06:saturation=1.15,vignette=PI/5,noise=alls=4:allf=t")
     run(["ffmpeg", "-y", "-i", f"{b}/video.mp4", "-i", voice, "-vf", (grade + "," if grade else "") + f"ass={b}/captions.ass",
          "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
-         "-c:a", "aac", "-b:a", "192k", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
+         "-c:a", "aac", "-b:a", "192k", "-af", "loudnorm=I=-14:TP=-2:LRA=11,alimiter=limit=0.70:level=disabled",
          "-shortest", "-movflags", "+faststart", f"{d}/final/short.mp4"])
     total = sum(line_lens)
     print(f"Built {d}/final/short.mp4  (~{total:.1f} s, {len(ids)} lines)")
