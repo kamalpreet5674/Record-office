@@ -9,3 +9,6 @@ client_secret*.json
 __pycache__/
 library/
 videos/**/assets/stock/*.mp4
+videos/**/assets/rockstar/shots/
+videos/**/assets/rockstar/*.zip
+videos/**/assets/rockstar/*.jpg

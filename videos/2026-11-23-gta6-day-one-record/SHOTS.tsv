@@ -1,21 +1,21 @@
 id	type	source	motion	overlay	trans	sfx
-01	video	video:assets/flow/F1_controller_cinema.mp4@0|video:assets/stock/miami_5391.mp4@1		EK GAME. EK DIN.		none
-02	image	sticker:assets/flow/F2_cinema.jpg|video:assets/stock/cinema_25478.mp4@2	zoomin			
-03	video	video:assets/stock/money_45703.mp4@1|video:assets/flow/F1_controller_cinema.mp4@4				
-04	video	video:assets/stock/miami_11816.mp4@2|video:assets/flow/F9_spotlight.mp4@0		19 NOVEMBER 2026		
-06	doc	doc:assets/doc_retail.png|video:assets/stock/money_47005.mp4@1	zoomin			hit
-07	image	sticker:assets/flow/F4_notes.jpg|video:assets/stock/money_18296.mp4@1	zoomin			
+01	video	video:assets/flow/F1_controller_cinema.mp4@0|image:assets/rockstar/Vice_City_01.jpg	|panright	EK GAME. EK DIN.		none
+02	image	sticker:assets/flow/F2_cinema.jpg|image:assets/rockstar/Vice_City_27.jpg	zoomin|panleft			
+03	video	video:assets/stock/money_45703.mp4@1|image:assets/rockstar/Vice_City_14.jpg	|zoomin			
+04	image	image:assets/rockstar/Vice_City_08.jpg|video:assets/flow/F9_spotlight.mp4@0	panright|	19 NOVEMBER 2026		
+06	doc	doc:assets/doc_retail.png|image:assets/rockstar/Vice_City_24.jpg	zoomin|zoomin			hit
+07	image	sticker:assets/flow/F4_notes.jpg|video:assets/stock/money_47005.mp4@1	zoomin|			
 10	doc	doc:assets/doc_ormax.png|video:assets/stock/cinema_2860.mp4@1|video:assets/stock/cinema_49326.mp4@1	zoomin	INDIA BOX OFFICE 2025		
-11	image	sticker:assets/flow/F5_split.jpg|video:assets/stock/gaming_47140.mp4@1	zoomin			
+11	image	sticker:assets/flow/F5_split.jpg|image:assets/rockstar/Jason_and_Lucia_03.jpg	zoomin|panleft			
 12	image	image:assets/flow/F6_pressrelease.jpg	zoomin	ASLI JHATKA	fadewhite	hit
 13	doc	doc:assets/doc_379.png|doc:assets/doc_footnote.png	zoomin			
 14	card	card:RETAIL SALES	none		zoomin	hit
 15	video	video:assets/flow/F7_buy.mp4@0|video:assets/stock/game_23501.mp4@1				
 16	image	sticker:assets/flow/F8_ledger.jpg	zoomin			
-17	card	card:NET BOOKINGS|video:assets/stock/money_18296.mp4@4	none			
-18	doc	doc:assets/doc_q3.png|video:assets/stock/city_49878.mp4@2	panleft	TAKE-TWO KA ANDAZA		
-19	doc	doc:assets/doc_outlook.png|video:assets/flow/F3_coins.mp4@0|video:assets/stock/car_74.mp4@1	zoomin			
-20	video	video:assets/stock/neon_4447.mp4@1				
-21	image	image:assets/flow/F8_ledger.jpg|video:assets/stock/palm_32669.mp4@1	panright			
-23	video	video:assets/stock/beach_2169.mp4@1|sticker:assets/flow/F2_cinema.jpg	zoomout			
-24	video	video:assets/stock/gaming_43527.mp4@1|video:assets/flow/F9_spotlight.mp4@3			circleopen	
+17	card	card:NET BOOKINGS|image:assets/rockstar/Vice_City_10.jpg	none|zoomin			
+18	doc	doc:assets/doc_q3.png|image:assets/rockstar/Vice_City_11.jpg	panleft|panleft	TAKE-TWO KA ANDAZA		
+19	doc	doc:assets/doc_outlook.png|video:assets/flow/F3_coins.mp4@0|image:assets/rockstar/Vice_City_26.jpg	zoomin|zoomin|zoomin			
+20	image	image:assets/rockstar/Vice_City_22.jpg	zoomin			
+21	image	image:assets/flow/F8_ledger.jpg|image:assets/rockstar/Jason_and_Lucia_06.jpg	panright|panleft			
+23	image	sticker:assets/rockstar/Vice_City_17.jpg|sticker:assets/flow/F2_cinema.jpg	zoomin|zoomout			
+24	image	image:assets/rockstar/Jason_and_Lucia_01.jpg|video:assets/flow/F9_spotlight.mp4@3	zoomin|		circleopen	

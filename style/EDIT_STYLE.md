@@ -33,3 +33,10 @@ CAPTION_FONT, CAPTION_SIZE, CAPTION_WORDS, CAPTION_MARGIN_V, ACCENT, BG, MUSIC_V
 
 Not yet automated (for later): speed ramps, 3D motion graphics, cutout stickers with shadow, SFX
 cue placement. Claude can add these to `scripts/assemble_short.py` once the basic pipeline works.
+
+## Owner's edit rules (23 Nov 2026, GTA 6 Short)
+- New visual every 2-3 seconds; 2-3 visuals per spoken line (SHOTS.tsv source "video:a.mp4@1|sticker:b.jpg").
+- Shot types: `video` (push-in), `image` (Ken Burns), `sticker` (cutout: white border, shadow, tilt, blurred bg), `doc` (real source, highlighted), `card` (number/word).
+- Transitions on every cut (assembler TRANS=0.3, TRANS_CYCLE); `fadewhite` on "asli jhatka", `circleopen` at the end.
+- Sound: whoosh on every cut (assets/sfx/whoosh*.mp3), impact (hit*.mp3) on the 2-3 biggest reveals (SHOTS sfx=hit), BGM in assets/music ducked under voice.
+- Visual sources in order: official media kits/newsrooms, free stock clips (Mixkit/Pexels/Pixabay), owner's Flow, document screenshots. Credits in the description.
