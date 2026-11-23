@@ -1,4 +1,29 @@
-# One competitor channel per line: @handle or channel ID (UC...). Add 5 to 15 channels.
-# Examples (replace with your real competitors):
-# @SomeHindiHistoryChannel
-# @SomeFinanceExplainerChannel
+# One channel per line: @handle, channel ID (UC...), or the channel name (resolved once by search
+# and cached in config/competitors_resolved.csv). Lines starting with # are skipped.
+
+# Big channels (style reference)
+Dhruv Rathee
+HISTORY
+Nitish Rajput
+Think School
+
+# Small Hindi documentary channels like ours
+ALAM E INDIA
+BLACKPEARL DOCUMENTARY
+saamir geopolitics
+Goldenlens09
+FimlyFM
+doc official
+Prachi Pradhan
+The Inset History on a Map
+
+# Ahead of us on average views (study these most)
+Prachin Lìshǐ
+CitySutra
+Terranomics
+
+# Fastest growing (last 30 days)
+GenZ Pov
+THE STORY FILES
+Real Diplomatic
+Gyaan Anukon

@@ -14,7 +14,34 @@ import statistics
 from yt_common import youtube
 
 
+CACHE = "config/competitors_resolved.csv"
+
+
+def resolve(yt, ref):
+    """Turn a plain channel name into a channel ID once (search costs 100 units), then cache it."""
+    if ref.startswith("UC") or ref.startswith("@"):
+        return ref
+    cache = {}
+    if os.path.exists(CACHE):
+        for line in open(CACHE, encoding="utf-8"):
+            name, _, cid = line.rstrip("\n").rpartition(",")
+            cache[name] = cid
+    if ref in cache:
+        return cache[ref]
+    r = yt.search().list(part="snippet", q=ref, type="channel", maxResults=1).execute()
+    if not r.get("items"):
+        return None
+    cid = r["items"][0]["snippet"]["channelId"]
+    with open(CACHE, "a", encoding="utf-8") as f:
+        f.write(f"{ref},{cid}\n")
+    print(f"resolved {ref} -> {cid} ({r['items'][0]['snippet']['title']})")
+    return cid
+
+
 def channel_info(yt, ref):
+    ref = resolve(yt, ref)
+    if not ref:
+        return None
     kw = {"id": ref} if ref.startswith("UC") else {"forHandle": ref.lstrip("@")}
     r = yt.channels().list(part="snippet,contentDetails", **kw).execute()
     if not r.get("items"):
