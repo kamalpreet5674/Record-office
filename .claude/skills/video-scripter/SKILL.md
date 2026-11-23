@@ -114,3 +114,7 @@ Then check: every sentence of the approved script appears once, in order (one se
 
 ## Related reference
 See `references/quality-rubric.md` for a repeatable editorial checklist.
+
+## Owner learnings
+Added by the pipeline from the owner's feedback (newest last). These override the general advice above,
+but never the fact or copyright rules.

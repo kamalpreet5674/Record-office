@@ -40,3 +40,7 @@ Save `videos/<slug>/topic/TOPIC.md`:
 - Verdict
 
 In chat: verdict first, the scorecard in one compact table, the angle, the top 3 risks or gaps, and the file path. Then ask: **GO karein, angle badlein, ya topic chhodein?** Update `PROGRESS.md` once the user decides.
+
+## Owner learnings
+Added by the pipeline from the owner's feedback (newest last). These override the general advice above,
+but never the fact or copyright rules.

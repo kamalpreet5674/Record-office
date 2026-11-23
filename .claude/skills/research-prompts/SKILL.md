@@ -45,3 +45,7 @@ Save `videos/<slug>/research/RESEARCH_PROMPTS.md`:
 - A short "follow-up" list: what to ask next if an answer comes back thin, contradictory or without sources.
 
 In chat: the number of prompts, the 3 most important ones in full, and the file path. When the user says the research is in, run `facts-checker` Gate 1 on it.
+
+## Owner learnings
+Added by the pipeline from the owner's feedback (newest last). These override the general advice above,
+but never the fact or copyright rules.

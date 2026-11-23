@@ -71,3 +71,7 @@ Deliver the rendered video, editable project location, brief validation result a
 ## Future feedback
 
 Store confirmed preferences in the relevant reference section, keep observations separate from suggestions, and update only the applicable defaults. Examples: typography too small, excessive motion, slower pacing, fewer textures, different palette, stronger sound design. Retain room for topic-specific choices. Validate the skill structure after edits.
+
+## Owner learnings
+Added by the pipeline from the owner's feedback (newest last). These override the general advice above,
+but never the fact or copyright rules.

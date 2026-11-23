@@ -42,3 +42,7 @@ problem is the title, not the description.
 
 Nothing here publishes. This skill writes and you publish. Every output ends in a block the user
 copies, and the last line of every run is the question: **ship it, or change it?**
+
+## Owner learnings
+Added by the pipeline from the owner's feedback (newest last). These override the general advice above,
+but never the fact or copyright rules.

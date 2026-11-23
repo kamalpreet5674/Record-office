@@ -105,3 +105,7 @@ Read `references/integration.md` for structured handoff fields.
 
 ## Final self-check
 Before finishing, confirm: all relevant material covered; claim IDs unique; every `VERIFIED` verdict linked to evidence; primary-first sourcing applied; uncertainty preserved; corrected artifact rechecked; no source or quote invented; gate status justified; user can inspect exact changes.
+
+## Owner learnings
+Added by the pipeline from the owner's feedback (newest last). These override the general advice above,
+but never the fact or copyright rules.

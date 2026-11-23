@@ -1,1 +1,1 @@
-dir,title,sent_at,status,reply_seen,video_id
+dir,title,sent_at,status,reply_seen,video_id,thread_id

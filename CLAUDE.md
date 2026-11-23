@@ -24,6 +24,22 @@ The owner approves every script by email before any voice or video is made.
 The run prompt says which phase you are. Never make voice, video or uploads for a script whose
 status in `data/pending.csv` is not `approved`.
 
+## Email: use the Gmail connector
+The cloud machine cannot reach Gmail's IMAP/SMTP ports, so `mail.py send` and `mail.py replies`
+fail there. **Use the Gmail connector for all email** (it works over HTTPS). Owner address: `$OWNER_EMAIL`.
+- **Send:** `send_message` to the owner, same subject format (`[RO-SCRIPT <dir>] ...`, `[RO-DONE <dir>] ...`,
+  `[RO-AUDIT <date>]`), body = the text of the .md file. End every email you send with the line
+  `-- RO-BOT` so your own messages can be told apart from the owner's replies.
+  Save the returned `threadId` in `data/pending.csv` (column `thread_id`).
+- **Read replies:** `search_threads` with `subject:(RO-SCRIPT OR RO-DONE) newer_than:4d`, then `get_thread`
+  for each. A reply is any message in the thread that does not end with `-- RO-BOT`. Use its message id
+  in `reply_seen`. Read only the new text, not the quoted old mail.
+- **Attachments** (Flow images/videos, screenshots of what the owner did not like): `download_gmail_attachment`,
+  save into `videos/<dir>/assets/flow/` (or `feedback/` for screenshots) and open each one.
+- **Phone alerts** still work: `python scripts/mail.py notify --title ... --message ... --click URL` (HTTPS).
+- `mail.py send/replies` is only a fallback for a machine where Gmail ports are open.
+Wherever this file says `mail.py send` or `mail.py replies`, do the connector steps above instead.
+
 ## Files you must read at the start of every run
 1. `style/MY_SCRIPT_STYLE.md`: the owner's own script style. It wins over any style advice in the
    skills, but never over the fact rules below.
@@ -31,6 +47,8 @@ status in `data/pending.csv` is not `approved`.
 3. `style/LEARNINGS.md`: lessons from past Shorts. Apply every line marked `RULE`.
 4. `config/settings.md`: publish mode, voice, niches, competitors.
 5. `data/topics_log.csv`: every topic already made. Never repeat one.
+6. `config/growth_plan.md`: the subscriber target and what we are testing to reach it.
+7. The `## Owner learnings` section at the end of every skill you use.
 
 ## Skills to use (in `.claude/skills/`)
 | Stage | Skill |
@@ -222,6 +240,18 @@ more than twice. Then write
 Look at every image you pick (open it) to check it shows what the line says. A wrong picture is a
 factual error.
 
+### 7a. Hunt for the best visuals (every line)
+The video must look rich and new, so search properly for every line instead of taking the first result:
+- First look in the owner's `library/` (after `sync_assets.py`): `find library -type f` and pick clips,
+  music, sfx and logo by name; open a frame of every clip before you use it. In SHOTS.tsv a library clip
+  is `library/<path>@<start sec>`. If the library has a fitting clip, use it before anything downloaded.
+- Then the real record (doc screenshots), then free archives and stock (the free asset sites list
+  above), trying 3 to 5 different searches in English and Hindi per line (place, object, year, map, document).
+- Pick the most striking, bright, clear image; prefer motion (video) for the hook and for reveals.
+- Add a sound effect from `library/sfx/` (whoosh on cuts, hit on the reveal) when the library has them.
+- Keep a list of good finds in `data/asset_sources.md` (site, query, what worked) so later runs find
+  good material faster.
+
 ### 7b. Owner's own assets
 At the start of Phase B run `python scripts/sync_assets.py`. It downloads the owner's Drive folder
 into `library/` (music, sfx, clips, logo). Prefer the owner's music and clips over anything else.
@@ -241,8 +271,9 @@ motion and optional music from `assets/music/` (royalty-free only). Then check i
   where `upload.json` has `title`, `description`, `tags`, `privacy`, `publish_at` (from the publish slots in `config/settings.md`).
   Set `synthetic: true` only if a realistic AI image of a real event or person was used.
 - Append a row to `data/topics_log.csv`: date, slug, category, title, video id, status.
-- Email the owner a one-line note with the YouTube link (`[RO-DONE <dir>]` subject). mail.py also
-  sends a phone notification when NTFY_TOPIC is set.
+- Email the owner the YouTube link (`[RO-DONE <dir>]` subject) with: "Video dekho. Jo accha nahi laga
+  (koi scene, caption, awaaz, music, pace, title) is email ke reply mein likh do, screenshot bhi bhej sakte ho.
+  Main is video ko theek karunga aur aage ke liye seekh lunga." Then send the phone notification.
 
 ### 10. Run report
 At the end write `videos/<date>-RUN_REPORT.md` (append if it exists): for each Short the title, YouTube link, gate
@@ -273,8 +304,30 @@ Routine C runs every 3 days. Do this, then stop:
    If the owner sent a Studio screenshot of "When your viewers are on YouTube", use it too.
 5. Email the owner a short audit (`[RO-AUDIT <date>]`): top 3 and bottom 3 videos with numbers,
    3 lessons, 3 changes you made (including any slot change), and anything you need from them.
-6. Commit and push.
+6. **Growth check:** read the subscriber count (YouTube Data API `channels().list(mine=True)`), add a row
+   to the table in `config/growth_plan.md`, compare with the target line, and say in the audit email
+   whether we are ahead or behind and which test from the plan to run next.
+7. Commit and push.
 
-## Learning loop
-When the owner gives feedback (in a session or in `style/LEARNINGS.md`), add it to
-`style/LEARNINGS.md` as `RULE:` (confirmed) or `HYPOTHESIS:` (to test). Never delete their lines.
+## Learning loop (owner feedback → rules → skills)
+The owner's feedback is the most valuable data this pipeline has. Every Phase B run, and every normal
+session where the owner comments on a video or script, do this:
+1. **Collect:** replies to `[RO-DONE <dir>]` and `[RO-SCRIPT <dir>]` emails, attached screenshots, and
+   anything the owner says in chat. Look at the frames/timestamps they mention
+   (`ffmpeg -ss <t> -i final/short.mp4 -frames:v 1 ...`) so you understand exactly what they mean.
+2. **Log:** one row per point in `data/feedback_log.csv`: date, dir, area (hook, script, facts, visuals,
+   captions, voice, music, pace, title, thumbnail, other), what the owner said (short), what you changed.
+3. **Rule:** the owner's own words are confirmed, so write each lasting point to `style/LEARNINGS.md`
+   as `RULE:` (with the date and video). Never delete the owner's lines.
+4. **Update the skill:** if the point is about how a stage works, also add it as a bullet to the
+   `## Owner learnings` section at the end of that skill's `SKILL.md` in `.claude/skills/`
+   (script/hook → video-scripter and yt-shorts; visuals/edit → kamal-video-style and style/EDIT_STYLE.md;
+   title/description → yt-seo; topic choice → topic-validator; facts → facts-checker).
+   If a feedback point needs a new tool or setting (a new caption style, a new asset source, a new
+   shot type), add it: change the script in `scripts/`, test it on a sample, and note it in the run report.
+   Never weaken a fact rule or a copyright rule because of feedback; explain instead.
+5. **Fix the video** if the owner asks: rebuild it with the change (reuse the cached voice unless a
+   line's text changed), upload the new version as private, and email the link with
+   "Purana private video Studio se delete kar dena." Never delete a video yourself.
+6. **Check it worked:** the next video must show the change. Phase C checks the numbers of videos made
+   after each rule and reports if it helped.
