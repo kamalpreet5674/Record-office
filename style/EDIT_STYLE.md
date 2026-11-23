@@ -54,3 +54,7 @@ cue placement. Claude can add these to `scripts/assemble_short.py` once the basi
 - SFX_VOL 0.4: whoosh every cut, sub-bass under every number reveal, cine hit on twist/end, cash on money, pop on titles, camera on documents. Final: loudnorm -14 LUFS + limiter (peak below -1 dBFS).
 - Visuals: clips play at 1.25x (FAST_CLIPS), light leaks / lens flares (fx "leak", Mixkit) on hook, reveals and ending; never a leak on the very first frame.
 - (23 Nov, v7) Owner: "voice sun hi nahi raha". Voice is ALWAYS the loudest: voice chain (highpass 85, compressor, +4 dB at 3 kHz, loudnorm -16), music EQ carved -8 dB at 2 kHz and -3 dB at 500 Hz, sidechain ratio 6. Check before delivery: voice at least 10 dB above music+SFX during speech (min 6 dB on a hit). Hits/subs on a line start are short (0.8 s) and soft.
+- (23 Nov, v8) Cinematic grade by default: colorbalance teal shadows / warm highlights, curves medium_contrast, saturation 1.22, light sharpen, vignette, grain.
+- Card cutout (fx "card"): the clip inside a white-bordered, tilted card that scales in, over a blurred darker copy. Use on ~1 in 4 shots, alternate with full-screen shots.
+- Never show console/platform logos or "Out Now" promo text from trailers (PS5/Xbox); check every trailer clip frame.
+- Real subject cutouts (background removal) need the rembg package; not installed yet.

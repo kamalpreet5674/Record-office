@@ -121,6 +121,14 @@ def effects_filter(fx, vis):
     if "shake" in names:
         out += (f",scale={int(W * 1.06)}:-2,crop={W}:{H}:x='(iw-{W})/2+14*sin(t*75)*lt(t\\,0.45)'"
                 f":y='(ih-{H})/2+12*cos(t*63)*lt(t\\,0.45)'")
+    if "card" in names:
+        # cutout card: the shot inside a white-bordered, slightly tilted card over a blurred, darker copy of itself
+        ang = 0.04 if int(vis * 100) % 2 else -0.04
+        out += (f",split[cbg][cfg];[cbg]boxblur=22:2,eq=brightness=-0.12:saturation=1.3[cb];"
+                f"[cfg]crop=iw:iw*1.15,scale=860:-2,pad=iw+28:ih+28:14:14:white,"
+                f"rotate={ang}:c=none:ow=rotw({ang}):oh=roth({ang}),"
+                f"scale=w='trunc(iw*(0.86+0.14*min(1\\,t/0.3))/2)*2':h=-2:eval=frame[cf];"
+                f"[cb][cf]overlay=x=(W-w)/2:y=(H-h)/2-120:format=auto")
     if "flash" in names:
         out += ",fade=t=in:st=0:d=0.22:color=white"
     if "glitch" in names:  # RGB split for the first frames
@@ -441,7 +449,10 @@ def main():
         voice = f"{b}/mix.wav"
 
     write_ass(timings, captions, f"{b}/captions.ass")
-    grade = os.environ.get("GRADE", "eq=contrast=1.06:saturation=1.15,vignette=PI/5,noise=alls=4:allf=t")
+    # cinematic grade: teal shadows, warm highlights, punchy contrast and colour, a touch of sharpness
+    grade = os.environ.get("GRADE", "colorbalance=rs=-0.06:gs=-0.01:bs=0.09:rh=0.07:gh=0.02:bh=-0.06,"
+                                    "curves=preset=medium_contrast,eq=saturation=1.22:contrast=1.04,"
+                                    "unsharp=5:5:0.6,vignette=PI/4.5,noise=alls=5:allf=t")
     run(["ffmpeg", "-y", "-i", f"{b}/video.mp4", "-i", voice, "-vf", (grade + "," if grade else "") + f"ass={b}/captions.ass",
          "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
          "-c:a", "aac", "-b:a", "192k", "-af", "loudnorm=I=-14:TP=-2:LRA=11,alimiter=limit=0.70:level=disabled",
