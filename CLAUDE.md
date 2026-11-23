@@ -209,6 +209,9 @@ Commit and push, then end the run. Do **not** continue to step 6.
    72 hours set `status=expired` (Current Affairs scripts go stale).
 5. If nothing is pending, end quickly with no changes.
 
+**Phone notifications (owner's rule, every time):** every email you send, every upload, every
+reminder and every problem also goes to the phone with `mail.py notify`. No silent runs that change something.
+
 ### 6. Voiceover
 `python scripts/voiceover.py videos/<dir>` makes one audio file per line with ElevenLabs and
 writes `audio/timings.tsv`. Check the total duration it prints:

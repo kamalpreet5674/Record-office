@@ -1,7 +1,7 @@
 # Prompts for the routines (claude.ai/code → Routines)
 
 Every routine: repo **Record-office**, environment **Records office**, time zone **Dubai**,
-allow pushing to main. Times come from `config/settings.md` (morning slot 07:00, evening slot 17:30).
+allow pushing to main. Times come from `config/settings.md` (morning slot 08:15, evening slot 19:00).
 
 ## Routine A1: "RO evening script (Short 1)", every day 8:00 PM
 ```
@@ -21,7 +21,7 @@ Verify every fact with two sources; if a topic fails a gate, pick another.
 Email the script to me for approval, update data/pending.csv, commit and push. Then stop.
 ```
 
-## Routine B: "RO check replies + make videos", daily at 6 AM, 10 AM, 12 PM, 2 PM, 3 PM, 4 PM, 9 PM, 11 PM
+## Routine B: "RO check replies + make videos", daily at 5 AM, 6 AM, 10 AM, 12 PM, 2 PM, 4 PM, 5 PM, 9 PM
 (If the app allows only one time per routine, make it "every hour" or create a few copies.)
 ```
 Phase B (check run). Follow CLAUDE.md in this repo exactly. Read my email replies to the
