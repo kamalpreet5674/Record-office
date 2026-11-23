@@ -1,4 +1,4 @@
-Iran blockade and India's oil bill · Current affairs, story-led · Short · v3 (owner's final, 1 fact fix pending OK)
+Iran blockade and India's oil bill · Current affairs, story-led · Short · v3 FINAL (owner approved 23 Nov incl. fact fix; ~85 sec OK by owner)
 
 Socho... Iran ke ek tapu par chaudah tel ke jahaaz taiyaar khade hain.
 Aur unke saamne... America ki Navy.
