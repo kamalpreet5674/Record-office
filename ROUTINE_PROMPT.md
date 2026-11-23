@@ -21,7 +21,7 @@ Verify every fact with two sources; if a topic fails a gate, pick another.
 Email the script to me for approval, update data/pending.csv, commit and push. Then stop.
 ```
 
-## Routine B: "RO check replies + make videos", daily at 5 AM, 10 AM, 12 PM, 2 PM, 3 PM, 4 PM, 9 PM, 11 PM
+## Routine B: "RO check replies + make videos", daily at 6 AM, 10 AM, 12 PM, 2 PM, 3 PM, 4 PM, 9 PM, 11 PM
 (If the app allows only one time per routine, make it "every hour" or create a few copies.)
 ```
 Phase B (check run). Follow CLAUDE.md in this repo exactly. Read my email replies to the

@@ -1,0 +1,51 @@
+# Trending now (IN)
+
+- Diviki Diviki - January 12 Vidudala| Venkatesh,Kalyan Ram,Keerthy, Krithi| Anil Ravipudi| GV Prakash | Zee Music South | 11191623 views | https://youtu.be/UckZ7N_Zt28
+- Cosmic Samson Trailer | Sandeep Pradeep | Abhijith Joseph | Sibi Mathew Alex | Weekend Blockbusters | Think Music India | 1563689 views | https://youtu.be/EA-a7RR-7DY
+- MY GIRLFRIEND IS BACK | GTA 6 GAMEPLAY #3 | Techno Gamerz | 10768859 views | https://youtu.be/1O_GCgCu-j4
+- तुलसी माता की आरती Tulsi Mata Ki Aarti - Jai Jai Tulsi Mata Aarti | Tulsi Vivah Song | Tulsi Aarti | Nova Spiritual India | 829653 views | https://youtu.be/eoreyvVBX0o
+- BHOGI Official Trailer | Sharwanand | Sampath Nandi | Anupama | Dimple Hayathi | Bheems Ceciroleo | Aditya Music | 1390713 views | https://youtu.be/dWOYaZ2gb9I
+- Finally Playing GTA 6 😍 First Time  | Sourav Joshi Vlogs | 8140807 views | https://youtu.be/PPWTwGU-cqQ
+- #Video | दिलवा के दुखवा | #Pawan Singh & #Khushi Kakkar | Dilwa Ke Dukhwa | New Bhojpuri Sad Song | Gannayak Films | 1938682 views | https://youtu.be/d8zrrgmIZYo
+- MAYAN Chapter 1 - Trailer | Jayasurya | Jithin K Jose | Rajeev Govindan | Nyla Usha | Mujeeb Majeed | Universal Music South | 1333229 views | https://youtu.be/Y488C2KfdmQ
+- కార్తీక  సోమవారం రోజు ఈ పాటలు వింటే అష్టఐశ్వర్యాలు పొందుతారు SIVA MANASASMARAMI BHAKTHI SONGS | భక్తి పాటలు తెలుగు - Bhakthi Patalu Telugu | 291523 views | https://youtu.be/DNZzpsxRNhw
+- OFF SCREEN | Official trailer | Round2hell | R2h  | Round2hell Vlog | 9740656 views | https://youtu.be/q3hRvPUkgxc
+- GTA 5 LIVE  #gta5 #gtav #gaming | PAJI IS LIVE | 3872199 views | https://youtu.be/fLbM7fJLmPk
+- जय जय तुलसी माता आरती | Jai Jai Tulsi Mata Aarti | Tulsi Aarti | Tulsi Vivah | Tulsi Pooja Aarti | Bhajan India | 951549 views | https://youtu.be/7jVEcnSY6a4
+- Prempaatta Official Trailer | Joemon Jyothir, Saiju Kurup, Anusree | Ankit Menon | Aamir Pallikkal | Divo Music | 522266 views | https://youtu.be/CPjV-msik-A
+- GTA 5 LIVE #gta5 #gtav #gaming | Raajoo Gaming | 5105947 views | https://youtu.be/dBiKIdPKmF0
+- DJ Pe Morni (Official Video) Ajay Hooda | Gori Nagori | New Haryanvi Dj Song 2026 | Ajay Hooda | 1961981 views | https://youtu.be/lsBcMKVj18c
+- Ab Pagal Hojao!! 🔥 - Abhay 2027 Official Trailer | Check Description | Next Toppers | 1090157 views | https://youtu.be/xtxj1c25LlU
+- 🔴EXPLORING VICE CITY - GTA 6 STREAM (EASTER EGGS) | IShowSpeed | 9414661 views | https://youtu.be/izXcd-bU72k
+- तुलसा की आई है बारात मेरे आंगन में | Tulsa Ki Aayi Hai Barat | तुलसी माता भजन | Tulsi Vivah Bhajan | Bajao Bhakti  | 1802075 views | https://youtu.be/TkgID59s8cI
+- Yeh Prem Mol Liya – Official Trailer | Ayushmann, Sharvari, Sooraj Barjatya | Himesh Reshammiya | Rajshri | 42817501 views | https://youtu.be/vdhNar4uxm4
+- If You Steal a Car in GTA 6, I’ll Pay For It! | MrBeast Gaming | 21286940 views | https://youtu.be/Ra6sNe8s2Hc
+- #Video - खून पानी | #Ashish Yadav | Ft, #Updated Biharan | Khoon Pani | Magahi #Rangdari Song 2026 | Shanti Films | 412207 views | https://youtu.be/xpfIn1hFcQY
+- Navoria - Official Teaser | Vemal | Ann Sheetal | Chimbudeven | D. Imman | Saregama Tamil | 5507904 views | https://youtu.be/IMMVeOImVk0
+- 80K UC BENTLEY CAR OPENING | CONQUEROR TODAY? | GTA LATER @LoLzZzGaming | LoLzZz Gaming | 815221 views | https://youtu.be/UNZXyDuwWTU
+- Ramayana: Mangal Rang (Full Video) | Namit M,Nitesh T| Ranbir K,Sai |AR Rahman,Arijit,Shreya,Kumar V | T-Series | 1532736 views | https://youtu.be/tdGLInZJF9I
+- Project 45 2027🔥 - OFFICIAL TRAILER || Strongest Crash Course for Class 10th 2027 Students 💀 | Physics Wallah Foundation | 1203462 views | https://youtu.be/wxurTOmcTSk
+- I Went To a PRIVATE ISLAND Just For GTA 6 | SlayyPop | SlayyPop | 1970756 views | https://youtu.be/rSG17rN0Yp4
+- तुळशी विवाह मंगलाष्टके || Tulsi Vivah Mangalashtak || Mangalashtak Marathi | SB Music Studio | 123284 views | https://youtu.be/9nsUMb7edMM
+- Cosmic Samson Official Trailer Reaction | Sandeep Pradeep Abhijith Joseph Miya Entertainment Kizhi | Entertainment Kizhi | 27882 views | https://youtu.be/tDdJ0S4Upc8
+- 🌿FREE FIRE LIVE🌿PLAYING BR-RANKED😎2X AWM SPEED GAME PLAY 🎮🎯 ON LIVE - GARENA FREE FIRE | DAD I AM OK GAMING | 1169412 views | https://youtu.be/o5c4kK8wdFY
+- Dilruba Dilnasheen - Rito Riba (Lyrics) | 7clouds | 647190 views | https://youtu.be/_5KLn99WKTI
+- MAYAN Chapter 1 Trailer Reaction | Jayasurya Jithin K Jose Mujeeb Majeed | @UnniVlogs | Unni Vlogs Cinephile | 65630 views | https://youtu.be/-Xub4FkRDjw
+- Stealing Divine Egg From DOORBIN GORILLA KING in Minecraft.. | Carry Depie | 746395 views | https://youtu.be/jvkDnEYCJyI
+- तुळशीची आरती Tulsi Aarti Marathi - Jay Devi Jay Devi Jay Mai Tulsi | Tulsi Vivah Song | Tulsi Aarti | Nova Marathi Bhakti | 389921 views | https://youtu.be/Ww7Z3lpvPMo
+- Fool in Love | Trailer EP.15 | Can Yok Win Ing's Heart Back?! | iQIYI Unlabeled | iQIYI Unlabeled - Get the iQIYI APP | 83374 views | https://youtu.be/Za5jX7JmYr0
+- Doorbin Became MILLIONAIRE And Hide It From POOR Friends in Minecraft.. | Karry Kraft | 1390455 views | https://youtu.be/RW5yiIgcosA
+- KUNDHIYAN (official video) | RANJIT BAWA | KAPTAAN | BLACK VIRUS | NAVJIT BUTTAR | NEW PUNJABI SONGS | Ranjit Bawa Music | 6293864 views | https://youtu.be/tz8nh-16JWg
+- GTA 6 Breaks Records, Doomsday Final Trailer, Batman 3 Cancelled, One Piece | Nerdy News 442 | DesiNerd | 210898 views | https://youtu.be/7RW3mPs_9hA
+- Exploring GTA 6 SUPERCARS and FULL MAP! GTA 6 LIVE with Mythpat | Mythpat | 3549732 views | https://youtu.be/jSZK6H7AgBI
+- सोमवार के दिन अपने घर में ये सुंदरकांड चलाकर रख देना कर्ज ,बीमारी खत्म और धन वर्षा शुरू | Sunder Path | 21875 views | https://youtu.be/EnD-UcoE40s
+- Film Talk | OM 2 Days BOXOFFICE, Cosmic Samson Trailer, Hello Kadhal Trailer, Ramayana | Updates | Trendswood Tv | 36061 views | https://youtu.be/uTO3GD2clEs
+- Last to Survive SQUID GAME Wins 😱 | The Roamer Amit | 2172102 views | https://youtu.be/BAmX3sb6GDA
+- तुलसी विवाह बधाई गीत | Tulsi Vivah Song 2026 | Upasna Mehta | Tulsi ji ke bhajan | Tulsi Bhajan 2026 | Bhakti Sadhna भक्ति साधना | 997682 views | https://youtu.be/4JGdp09QTyY
+- Jumanji: Open World | Trailer - Hindi | Coming Soon | Sony Pictures Entertainment - Hindi | 739795 views | https://youtu.be/sa9J0BeZOkU
+- [HI] FFWS Global Finals 2026 - KO Phase 2 | Day 4 | Free Fire India Esports | 1540655 views | https://youtu.be/1S1djFMSRwA
+- Ishq de Fanniyar - Female | Jyotica Tangri - Topic | 267598 views | https://youtu.be/xE8ODUxS7hA
+- Haraaa Mirchaaa Prankkk | SATVIK | 1295778 views | https://youtu.be/ANFyofas0Qg
+- #Video | मौत के असली खेल | #Raushan Rohi | #Srishti Bharti | Maut Ke Asli Khel | Rangdari Song 2026 | JSR FILMS | 362770 views | https://youtu.be/d7t9xhgMALg
+- I Busted 12 Myths in GTA 6..! 😱| Malayalam | GAME THERAPIST | 226017 views | https://youtu.be/S9HAtWI6VsE
+- 🎵 BARATI MEIN DHUAA DHUAA | GUNJAN SINGH & SHILPI RAJ | KHUSHI YADAV | NEW BHOJPURI SONG 2026 | T-Series Hamaar Bhojpuri | 719168 views | https://youtu.be/5HUNW0Ocgl0
