@@ -119,9 +119,10 @@ Write `videos/<dir>/EMAIL.md` in simple Hinglish:
 - planned title
 - the **full script** (Roman Hinglish), word count and estimated length
 - fact check: status, every qualifier or flag, and the 3 to 6 main source links
-- **Flow prompts (optional for the owner):** 3 to 5 numbered prompts `F1..F5` for the scenes
-  where no real photo, document or clip exists: image prompts for Google Flow (Nano Banana) and
-  at most 2 short video prompts (Veo, 8 sec), 9:16 vertical, bright cool natural look, no text in
+- **Flow prompts (the owner wants a professional look, so be generous):** 6 to 10 numbered
+  prompts `F1..F10` for every scene that would otherwise be a plain card or a weak stock photo:
+  image prompts for Google Flow (Nano Banana) and 2 to 4 short video prompts (Veo, 8 sec, slow
+  cinematic camera move), the hook scene first, 9:16 vertical, bright cool natural look, no text in
   the image, no real people's faces, no logos. Say which script line each one is for.
   Tell the owner: "Flow images/videos banao toh isi email ke reply mein attach kar do (phone se bhi)."
 Send it: `python scripts/mail.py send --subject "[RO-SCRIPT <dir>] <title>" --body-file videos/<dir>/EMAIL.md`
