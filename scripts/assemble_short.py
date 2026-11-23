@@ -19,6 +19,7 @@ Look settings come from environment variables so EDIT_STYLE.md can change them:
 import csv
 import glob
 import os
+import re
 import subprocess
 import sys
 import textwrap
@@ -89,6 +90,35 @@ def make_overlay(text, path):
         d.text((110, y), ln, font=f, fill=hexrgb(ACCENT) + (255,))
         y += 80
     img.save(path)
+
+
+def make_sticker(src, path, tilt=2.0):
+    """Cutout/sticker look: the photo with a thick white border, a soft shadow and a slight tilt,
+    on a blurred, darkened copy of itself."""
+    from PIL import ImageFilter
+    im = Image.open(src).convert("RGB")
+    bg = im.copy()
+    r = max(W / bg.width, H / bg.height)
+    bg = bg.resize((int(bg.width * r) + 1, int(bg.height * r) + 1)).crop((0, 0, W, H)).filter(ImageFilter.GaussianBlur(28))
+    bg = Image.blend(bg, Image.new("RGB", (W, H), hexrgb(BG)), 0.35)
+    fw = int(W * 0.84)
+    fh = int(im.height * fw / im.width)
+    if fh > int(H * 0.62):
+        fh = int(H * 0.62)
+        fw = int(im.width * fh / im.height)
+    fg = im.resize((fw, fh))
+    bd = 16
+    card = Image.new("RGBA", (fw + 2 * bd, fh + 2 * bd), (255, 255, 255, 255))
+    card.paste(fg, (bd, bd))
+    card = card.rotate(tilt, expand=True, resample=Image.BICUBIC)
+    sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+    sh.paste((0, 0, 0, 160), mask=card.split()[3])
+    sh = sh.filter(ImageFilter.GaussianBlur(18))
+    out = bg.convert("RGBA")
+    x, y = (W - card.width) // 2, int(H * 0.40 - card.height / 2)
+    out.alpha_composite(sh, (x + 14, y + 22))
+    out.alpha_composite(card, (x, y))
+    out.convert("RGB").save(path)
 
 
 def make_doc(src, path):
@@ -179,21 +209,41 @@ def main():
     if missing:
         sys.exit(f"SHOTS.tsv has no shot for lines: {', '.join(missing)}")
 
-    seg_list, wav_list, seg_lens = [], [], []
+    # Build the picture track as "parts": a line's source may list several visuals separated by "|",
+    # each optionally typed ("video:assets/x.mp4@3", "sticker:assets/y.jpg", "card:TEXT", "doc:...").
+    # The line's time is split between them, so the picture changes every 2-3 seconds.
+    parts, wav_list, line_lens = [], [], []
     for n, i in enumerate(ids):
         t, s = timings[i], shots[i]
         seg = float(t["duration"]) + float(t["gap"]) + (0.6 if n == len(ids) - 1 else 0)
-        seg_lens.append(seg)
-        # each picture runs TRANS seconds longer so the next one can cross over it (total length unchanged)
-        vis = seg + (TRANS if TRANS and n < len(ids) - 1 else 0)
+        line_lens.append(seg)
+        items = [x.strip() for x in s["source"].split("|") if x.strip()]
+        motions = [m.strip() for m in (s.get("motion") or "").split("|")]
+        for k, it in enumerate(items):
+            kind = s["type"].strip()
+            m = re.match(r"^(video|image|doc|card|sticker):(.*)$", it)
+            if m:
+                kind, it = m.group(1), m.group(2)
+            parts.append({"line": i, "k": k, "kind": kind, "src": it, "len": seg / len(items),
+                          "motion": motions[k] if k < len(motions) and motions[k] else motions[0],
+                          "overlay": (s.get("overlay") or "").strip() if k == 0 else "",
+                          "trans": (s.get("trans") or "").strip() if k == 0 else "",
+                          "sfx": (s.get("sfx") or "").strip() if k == 0 else "whoosh"})
+        wav = f"{b}/a_{i}.wav"
+        run(["ffmpeg", "-y", "-i", f"{d}/audio/{i}.mp3", "-af", f"apad=whole_dur={seg:.3f}", "-t", f"{seg:.3f}",
+             "-ar", "48000", "-ac", "2", wav])
+        wav_list.append(wav)
+
+    seg_list, seg_lens = [], []
+    for n, pt in enumerate(parts):
+        tag = f"{pt['line']}_{pt['k']}"
+        vis = pt["len"] + (TRANS if TRANS and n < len(parts) - 1 else 0)
         frames = max(int(round(vis * FPS)), 1)
-        src = s["source"]
-        out = f"{b}/seg_{i}.mp4"
-        kind = s["type"].strip()
-        start = 0.0
+        kind, src, start = pt["kind"], pt["src"], 0.0
+        out = f"{b}/seg_{tag}.mp4"
         if kind == "card":
-            src = f"{b}/card_{i}.png"
-            make_card(s["source"], src)
+            src = f"{b}/card_{tag}.png"
+            make_card(pt["src"], src)
         else:
             if kind == "video" and "@" in src:
                 src, st = src.rsplit("@", 1)
@@ -201,20 +251,26 @@ def main():
             if not os.path.isabs(src) and not os.path.exists(src):
                 src = os.path.join(d, src)
         if not os.path.exists(src):
-            sys.exit(f"Line {i}: file not found: {src}")
+            sys.exit(f"Line {pt['line']}: file not found: {src}")
         if kind == "doc":
-            framed = f"{b}/doc_{i}.png"
+            framed = f"{b}/doc_{tag}.png"
             make_doc(src, framed)
             src = framed
+        if kind == "sticker":
+            framed = f"{b}/sticker_{tag}.png"
+            make_sticker(src, framed, tilt=(-2.5 if n % 2 else 2.0))
+            src = framed
         if kind == "video":
-            vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},setsar=1")
+            # cover the frame, then a slow push-in so even static clips move
+            vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},setsar=1,"
+                  f"scale={int(W * 1.12)}:-2,crop={W}:{H}:x='(iw-{W})/2*(1-t/{max(vis, 0.5):.2f})':y='(ih-{H})/2'")
             cmd = ["ffmpeg", "-y", "-stream_loop", "-1", "-ss", f"{start:.2f}", "-i", src]
         else:
-            vf = motion_filter(s.get("motion") or "zoomin", frames)
+            vf = motion_filter(pt["motion"] or "zoomin", frames)
             cmd = ["ffmpeg", "-y", "-loop", "1", "-i", src]
-        if (s.get("overlay") or "").strip():
-            ov = f"{b}/ov_{i}.png"
-            make_overlay(s["overlay"].strip(), ov)
+        if pt["overlay"]:
+            ov = f"{b}/ov_{tag}.png"
+            make_overlay(pt["overlay"], ov)
             cmd += ["-loop", "1", "-i", ov, "-filter_complex", f"[0:v]{vf}[bg];[bg][1:v]overlay=0:0,format=yuv420p[v]",
                     "-map", "[v]"]
         else:
@@ -222,10 +278,7 @@ def main():
         run(cmd + ["-frames:v", str(frames), "-r", str(FPS), "-c:v", "libx264", "-preset", "veryfast",
                    "-crf", "18", "-an", out])
         seg_list.append(out)
-        wav = f"{b}/a_{i}.wav"
-        run(["ffmpeg", "-y", "-i", f"{d}/audio/{i}.mp3", "-af", f"apad=whole_dur={seg:.3f}", "-t", f"{seg:.3f}",
-             "-ar", "48000", "-ac", "2", wav])
-        wav_list.append(wav)
+        seg_lens.append(pt["len"])
 
     for name, items in (("video.txt", seg_list), ("audio.txt", wav_list)):
         open(f"{b}/{name}", "w").write("".join(f"file '{os.path.abspath(p)}'\n" for p in items))
@@ -236,7 +289,7 @@ def main():
             inputs += ["-i", p]
         for k in range(1, len(seg_list)):
             off += seg_lens[k - 1]
-            tr = (shots[ids[k]].get("trans") or "").strip() or TRANS_CYCLE[k % len(TRANS_CYCLE)]
+            tr = parts[k]["trans"] or TRANS_CYCLE[k % len(TRANS_CYCLE)]
             out_l = f"[x{k}]" if k < len(seg_list) - 1 else "[vout]"
             fc.append(f"{prev}[{k}:v]xfade=transition={tr}:duration={TRANS}:offset={off - TRANS / 2:.3f}{out_l}")
             prev = out_l
@@ -253,15 +306,17 @@ def main():
         if lib:
             import random
             music = [random.Random(d).choice(lib)]  # stable pick per video
-    # sound effects: a soft whoosh on every cut, an impact on lines whose SHOTS "sfx" column says hit
+    # sound effects: a whoosh on every cut (softer on cuts inside a line), an impact where SHOTS "sfx" says hit
     sfx_dir = f"{d}/assets/sfx"
     whooshes = sorted(glob.glob(f"{sfx_dir}/whoosh*.mp3"))
     hits = sorted(glob.glob(f"{sfx_dir}/hit*.mp3"))
     events, t0 = [], 0.0
-    for n, i in enumerate(ids):
-        mode = (shots[i].get("sfx") or "").strip() or ("whoosh" if n else "none")
+    for n, pt in enumerate(parts):
+        mode = pt["sfx"] or ("whoosh" if n else "none")
+        if n == 0 and not pt["sfx"]:
+            mode = "none"
         if mode == "whoosh" and whooshes:
-            events.append((max(t0 - 0.35, 0), whooshes[n % len(whooshes)], SFX_VOL))
+            events.append((max(t0 - 0.3, 0), whooshes[n % len(whooshes)], SFX_VOL * (1 if pt["k"] == 0 else 0.6)))
         elif mode == "hit" and hits:
             events.append((t0, hits[0], SFX_VOL * 1.4))
         t0 += seg_lens[n]
@@ -282,7 +337,7 @@ def main():
         run(["ffmpeg", "-y", "-i", voice, "-stream_loop", "-1", "-i", music[0], "-i", voice_for_duck, "-filter_complex",
              f"[1:a]volume={MUSIC_VOL * 2.2}[m];[2:a]asplit=1[sc];"
              f"[m][sc]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[md];"
-             f"[0:a][md]amix=inputs=2:duration=first:normalize=0,afade=t=out:st={sum(seg_lens) - 1.2:.2f}:d=1.2[a]",
+             f"[0:a][md]amix=inputs=2:duration=first:normalize=0,afade=t=out:st={sum(line_lens) - 1.2:.2f}:d=1.2[a]",
              "-map", "[a]", f"{b}/mix.wav"])
         voice = f"{b}/mix.wav"
 
@@ -291,7 +346,7 @@ def main():
          "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
          "-c:a", "aac", "-b:a", "192k", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
          "-shortest", "-movflags", "+faststart", f"{d}/final/short.mp4"])
-    total = sum(float(timings[i]["duration"]) + float(timings[i]["gap"]) for i in ids) + 0.6
+    total = sum(line_lens)
     print(f"Built {d}/final/short.mp4  (~{total:.1f} s, {len(ids)} lines)")
 
 

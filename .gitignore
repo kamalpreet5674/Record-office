@@ -8,3 +8,4 @@ client_secret*.json
 .env
 __pycache__/
 library/
+videos/**/assets/stock/*.mp4
