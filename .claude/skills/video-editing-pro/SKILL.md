@@ -77,3 +77,4 @@ and `index-example.html` (scene hosts, captions host, VO fx chain, ducked music,
 Added by the pipeline from the owner's feedback (newest last). These override the general advice above, but never the fact or copyright rules.
 - See also `style/EDIT_STYLE.md`, `style/LEARNINGS.md` and the Owner learnings in `kamal-video-style` (GTA 6 edit rules, 23 Nov 2026).
 - Pipeline note: final file must still pass CLAUDE.md step 8 (58-72 s, 1080x1920, 30 fps).
+- 2026-11-23 (owner): run sync_assets.py first; use motion backgrounds from the owner's Drive library behind cards, numbers, doc screenshots and cutouts (no flat backgrounds), plus the library's effects/overlays/sfx where they fit.
