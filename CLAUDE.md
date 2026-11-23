@@ -31,7 +31,7 @@ fail there. **Use the Gmail connector for all email** (it works over HTTPS). Own
   `[RO-AUDIT <date>]`), body = the text of the .md file. End every email you send with the line
   `-- RO-BOT` so your own messages can be told apart from the owner's replies.
   Save the returned `threadId` in `data/pending.csv` (column `thread_id`).
-- **Read replies:** `search_threads` with `subject:(RO-SCRIPT OR RO-DONE) newer_than:4d`, then `get_thread`
+- **Read replies:** `search_threads` with `subject:(RO-SCRIPT OR RO-LONG OR RO-DONE) newer_than:4d`, then `get_thread`
   for each. A reply is any message in the thread that does not end with `-- RO-BOT`. Use its message id
   in `reply_seen`. Read only the new text, not the quoted old mail.
 - **Attachments** (Flow images/videos, screenshots of what the owner did not like): `download_gmail_attachment`,
@@ -308,6 +308,42 @@ Routine C runs every 3 days. Do this, then stop:
    to the table in `config/growth_plan.md`, compare with the target line, and say in the audit email
    whether we are ahead or behind and which test from the plan to run next.
 7. Commit and push.
+
+## Growth tests (owner approved all 5 on 23 Nov 2026; see config/growth_plan.md)
+1. **Soft follow line (A/B test, 24 Nov to 30 Nov):** this overrides the style's "no like/subscribe" rule
+   only for this test. On even dates Short 1, on odd dates Short 2 ends with one story-style follow line
+   in the owner's voice, e.g. "Aise hi records roz kholte hain." (never "like, share, subscribe").
+   The other Short ends normally. Write `followline=yes/no` in the `status` column of
+   `data/topics_log.csv`. Phase C compares subscribers gained per 1,000 views between the two groups
+   and asks the owner whether to keep it.
+2. **Pinned comment:** for every Short write one short question comment in Hinglish that invites an
+   opinion (not "subscribe"), e.g. "Aapke hisaab se India ko kya karna chahiye?". Put it in the
+   `[RO-DONE]` email as "Pinned comment (copy, post, pin):". The API cannot post or pin it; the owner does.
+3. **Weekly long video (Phase L):** see below.
+4. **Comment replies:** every Phase B run, `python scripts/comments.py --hours 24`. For comments we have
+   not replied to, draft a short friendly Hinglish reply (facts only from our sources; no fights, no
+   politics) and send the owner one email `[RO-COMMENTS <date>]` with link + comment + suggested reply,
+   plus a phone notification. Skip if there are no new comments. Never invent facts in a reply.
+5. **Paid promotion:** in every Phase C audit, name the one Short that holds 65%+ average viewed and
+   has the best subscribers per view, and suggest a small Google Ads (YouTube) test budget for it.
+   The owner runs the ad; never claim an ad was run.
+
+## Phase L: weekly long video (owner approved)
+Routine L runs once a week. It does Phase A for one **long video**, 6 to 8 minutes, 16:9:
+- Topic: the best-performing Short of the last 7 to 14 days (or its strongest follow-up question),
+  checked with `audit.py`/`channel_insights.md`, then topic-validator, research, Gate 1, script
+  (about 900 to 1,150 spoken words at 1.10x, chapters, a strong cold open, the same style and fact rules),
+  Gate 2, LINES.tsv and CAPTIONS.tsv. Workspace `videos/<date>-long-<slug>/`.
+- Email it as `[RO-LONG <dir>] <title>` with the script, sources, 10 to 15 Flow prompts, and one
+  thumbnail idea plus a Flow image prompt for the thumbnail. Row in `data/pending.csv` as usual.
+- Phase B treats `RO-LONG` replies like `RO-SCRIPT`. When approved: voice with
+  `ELEVENLABS_MAX_CHARS=9000 python scripts/voiceover.py videos/<dir>`, visuals (same order as step 7,
+  a new visual every 4 to 6 seconds), then `LANDSCAPE=1 python scripts/assemble_short.py videos/<dir>`
+  (1920x1080), check 6 frames, upload private with `category_id` 27 and chapters in the description,
+  for the Sunday 19:00 slot. In the `[RO-DONE]` email remind the owner to add the thumbnail in Studio.
+- Before voicing, check ElevenLabs characters left (check_setup.py prints them). If the month cannot
+  cover the long video and the next 7 days of Shorts (about 1,100 characters per Short), email the owner
+  and wait; Shorts come first.
 
 ## Learning loop (owner feedback → rules → skills)
 The owner's feedback is the most valuable data this pipeline has. Every Phase B run, and every normal

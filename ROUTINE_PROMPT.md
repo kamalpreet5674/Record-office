@@ -27,7 +27,9 @@ Email the script to me for approval, update data/pending.csv, commit and push. T
 Phase B (check run). Follow CLAUDE.md in this repo exactly. Read my email replies to the
 RO-SCRIPT emails. Approved scripts: make voiceover, video and upload for its publish slot,
 then email me the link and notify my phone. Scripts with changes: revise, re-check facts, and
-email the new version. Update data/pending.csv, commit and push. If nothing is pending, end quickly.
+email the new version. Also handle RO-LONG and RO-DONE replies (feedback → rules and skills),
+and send me reply drafts for new comments. Update data/pending.csv, commit and push.
+If nothing is pending and there are no new comments, end quickly.
 ```
 
 ## Routine C: "RO audit", every 3 days at 10:30 PM
@@ -35,6 +37,13 @@ email the new version. Update data/pending.csv, commit and push. If nothing is p
 Phase C (audit run). Follow CLAUDE.md "Phase C" exactly: run the audit, learn from the numbers
 (including posting time), update style/LEARNINGS.md, data/channel_insights.md and the publish slots
 in config/settings.md if the data clearly says so, email me the audit, commit and push.
+```
+
+## Routine L: "RO long video script", every Thursday 9:00 PM
+```
+Phase L (long script run). Follow CLAUDE.md "Phase L" exactly: pick the topic from our best
+recent Short, research, fact-check, write a 6 to 8 minute script in my style, email it to me
+as RO-LONG with Flow and thumbnail prompts, update data/pending.csv, commit and push. Then stop.
 ```
 
 ## Setup check (run once, any time, in a normal session)

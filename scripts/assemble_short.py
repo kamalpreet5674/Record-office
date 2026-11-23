@@ -1,4 +1,4 @@
-"""Build a 1080x1920 Short from LINES/audio/SHOTS/CAPTIONS.
+"""Build a 1080x1920 Short (or, with LANDSCAPE=1, a 1920x1080 long video) from LINES/audio/SHOTS/CAPTIONS.
 
   python scripts/assemble_short.py videos/<dir>
 
@@ -25,7 +25,8 @@ import textwrap
 
 from PIL import Image, ImageDraw, ImageFont
 
-W, H, FPS = 1080, 1920, 30
+LANDSCAPE = os.environ.get("LANDSCAPE") == "1"  # 1 = 1920x1080 long video, else 1080x1920 Short
+W, H, FPS = (1920, 1080, 30) if LANDSCAPE else (1080, 1920, 30)
 FONT = os.environ.get("CAPTION_FONT", "DejaVu Sans")
 CAP_SIZE = int(os.environ.get("CAPTION_SIZE", 78))
 CAP_WORDS = int(os.environ.get("CAPTION_WORDS", 3))
@@ -59,11 +60,12 @@ def hexrgb(h):
 def make_card(text, path):
     img = Image.new("RGB", (W, H), hexrgb(BG))
     d = ImageDraw.Draw(img)
-    d.rectangle([90, 540, 250, 556], fill=hexrgb(ACCENT))
+    top = int(H * 0.28)
+    d.rectangle([90, top, 250, top + 16], fill=hexrgb(ACCENT))
     size = 150 if len(text) <= 12 else 110 if len(text) <= 30 else 84
     f = bold_font(size)
-    lines = textwrap.wrap(text, width=max(6, int(900 / (size * 0.58))))
-    y = 600
+    lines = textwrap.wrap(text, width=max(6, int((W - 180) / (size * 0.58))))
+    y = top + 60
     for ln in lines:
         d.text((90, y), ln, font=f, fill=(255, 255, 255))
         y += int(size * 1.2)
@@ -76,9 +78,10 @@ def make_overlay(text, path):
     f = bold_font(64)
     lines = textwrap.wrap(text.upper(), width=22)
     box_h = 60 + 80 * len(lines)
-    d.rectangle([60, 230, W - 60, 230 + box_h], fill=hexrgb(BG) + (215,))
-    d.rectangle([60, 230, 76, 230 + box_h], fill=hexrgb(ACCENT) + (255,))
-    y = 260
+    oy = 80 if LANDSCAPE else 230
+    d.rectangle([60, oy, W - 60, oy + box_h], fill=hexrgb(BG) + (215,))
+    d.rectangle([60, oy, 76, oy + box_h], fill=hexrgb(ACCENT) + (255,))
+    y = oy + 30
     for ln in lines:
         d.text((110, y), ln, font=f, fill=hexrgb(ACCENT) + (255,))
         y += 80
@@ -91,13 +94,14 @@ def make_doc(src, path):
     doc = Image.open(src).convert("RGB")
     bg = doc.resize((W, H)).filter(ImageFilter.GaussianBlur(30))
     bg = Image.blend(bg, Image.new("RGB", (W, H), hexrgb(BG)), 0.45)
-    dw = 940
+    max_w, max_h = (1500, 900) if LANDSCAPE else (940, 1150)
+    dw = max_w
     dh = int(doc.height * dw / doc.width)
-    if dh > 1150:
-        dh = 1150
+    if dh > max_h:
+        dh = max_h
         dw = int(doc.width * dh / doc.height)
     doc = doc.resize((dw, dh))
-    x, y = (W - dw) // 2, 420
+    x, y = (W - dw) // 2, ((H - dh) // 2 if LANDSCAPE else 420)
     shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(shadow).rectangle([x - 4, y + 18, x + dw + 22, y + dh + 34], fill=(0, 0, 0, 150))
     bg = Image.alpha_composite(bg.convert("RGBA"), shadow.filter(ImageFilter.GaussianBlur(14))).convert("RGB")
@@ -132,7 +136,7 @@ PlayResY: {H}
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Cap,{FONT},{CAP_SIZE},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,6,2,2,80,80,{int(os.environ.get('CAPTION_MARGIN_V', 720))},1
+Style: Cap,{FONT},{CAP_SIZE},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,6,2,2,80,80,{int(os.environ.get('CAPTION_MARGIN_V', 90 if LANDSCAPE else 720))},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text

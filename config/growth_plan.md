@@ -26,7 +26,7 @@ will not reach it; the plan is to make every Short a strong attempt and learn fa
 5. **Learn every 3 days** (Phase C) and double down on what wins: if one topic type wins twice, make more.
 6. **Owner feedback becomes rules the same day** (see "Learning loop" in CLAUDE.md).
 
-## Tests that need the owner's OK (tell Claude yes or no)
+## Tests (owner said YES to all 5 on 23 Nov 2026; rules in CLAUDE.md "Growth tests")
 - **Soft follow line:** the style says never "like/subscribe". Test a story-style last line instead,
   for example "Aise hi records roz kholte hain." on half the Shorts for 1 week.
 - **Pinned comment with a question** under every Short (owner pins it in Studio, 10 seconds).
@@ -39,3 +39,8 @@ will not reach it; the plan is to make every Short a strong attempt and learn fa
 ## Experiments log (Claude writes the result here)
 | Started | Test | Result |
 |---|---|---|
+| 24 Nov | Soft follow line on half the Shorts (until 30 Nov) | |
+| 24 Nov | Pinned question comment on every Short | |
+| 24 Nov | Comment reply drafts every check run | |
+| week of 24 Nov | First weekly long video (Sunday 19:00) | |
+| first audit | Paid promotion suggestion for the best Short | |
