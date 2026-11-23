@@ -28,3 +28,11 @@ Snapshot shared by the owner on 23 Nov 2026. Update when new data comes.
   avoid abstract titles, lead with a concrete number, place or India angle.
 - Topic priority for now: Geopolitics with India angle > Finance with big numbers > Tech/hidden
   systems > pure History.
+
+## Competitor benchmark (from vidIQ, 23 Nov 2026)
+- Our average: ~267 views per video.
+- Similar small channels ahead of us on average views (4 to 8x): Prachi Pradhan (2,040), Goldenlens09 (1,555),
+  Prachin Lìshǐ (1,532), CitySutra (1,505), Terranomics (1,224). Study their titles, hooks and topics in every run.
+- Fastest growing in the last 30 days: GenZ Pov (+360%), THE STORY FILES (+346%), Real Diplomatic (+200%),
+  Gyaan Anukon (+200%). Check what they posted recently; that is what the audience wants right now.
+- Style reference: Nitish Rajput (titles, teaser-style intro), Dhruv Rathee (big topics like "Bhopal").
