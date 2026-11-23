@@ -36,7 +36,10 @@ def env(k):
 
 def notify(title, message, click=None):
     """Phone push notification through the free ntfy app (optional secret NTFY_TOPIC)."""
-    topic = os.environ.get("NTFY_TOPIC")
+    topic = (os.environ.get("NTFY_TOPIC") or "").strip()
+    if topic.startswith("NTFY_TOPIC="):  # value pasted together with its name
+        topic = topic[len("NTFY_TOPIC="):].strip()
+    topic = topic.rsplit("/", 1)[-1]  # a full https://ntfy.sh/<topic> URL also works
     if not topic:
         return
     import urllib.request

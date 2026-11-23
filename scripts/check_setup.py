@@ -79,15 +79,43 @@ def mail_test():
     mail.send("[RO-TEST] Records Office setup check",
               "Setup check from Claude Code. If you got this email, sending works.\n\n" + lines +
               "\n\nNo reply needed.")
-    return "test email + phone notification sent"
+    return "test email sent"
 
 
 check("secrets", secrets)
 check("YouTube Data API", yt)
 check("YouTube Analytics API", yta)
 check("ElevenLabs (no credits used)", eleven)
-check("Gmail read", gmail)
-check("Gmail send + ntfy", mail_test)
+def ntfy_test():
+    import mail
+    if not os.environ.get("NTFY_TOPIC"):
+        return "NTFY_TOPIC not set; phone alerts off"
+    import io, contextlib
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        mail.notify("Records Office setup check", "Phone notification works. No action needed.",
+                    "https://studio.youtube.com")
+    if "failed" in buf.getvalue():
+        raise RuntimeError(buf.getvalue().strip())
+    return "test notification sent to your phone"
+
+
+def mail_ports_open():
+    import socket
+    try:
+        socket.create_connection(("imap.gmail.com", 993), timeout=5).close()
+        return True
+    except OSError:
+        return False
+
+
+check("Phone notification (ntfy)", ntfy_test)
+if mail_ports_open():
+    check("Gmail read", gmail)
+    check("Gmail send", mail_test)
+else:
+    results.append(("Gmail", True, "mail ports closed here (cloud), so email goes through the Gmail "
+                    "connector. Test it in a session: send yourself an RO-TEST email with the connector."))
 for n, ok, m in results:
     print(f"{'OK  ' if ok else 'FAIL'} {n}: {m}")
 sys.exit(0 if all(ok for _, ok, _ in results) else 1)
