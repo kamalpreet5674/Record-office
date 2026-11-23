@@ -15,3 +15,4 @@ RULE (2026-11-23): Use as many online visuals as possible: official press/media 
 RULE (2026-11-23): Never use game trailers, gameplay video, film clips or their audio (Content ID). Official screenshots as stills with motion are the safe trick, credited "© <owner>".
 RULE (2026-11-23): Every video gets transitions on every cut, sticker/cutout frames for photos, push-in motion on clips, whoosh on cuts, impact on big reveals, and a BGM that ducks under the voice.
 RULE (2026-11-23): Owner rejected plain edits. Every Short: pro hook in first 3 s, script-literal video B-roll, effect on every cut (punch/flash/shake/zoomout), pop captions, strong BGM + layered SFX (riser, hit, cash, pop, camera, whoosh). See EDIT_STYLE.md "Pro edit upgrade".
+RULE (2026-11-23): Videos over stills, always; aim for 40+ shots per 70 s Short. For a game/film/brand topic, official trailer footage muted is allowed by the owner (credited); never its audio.

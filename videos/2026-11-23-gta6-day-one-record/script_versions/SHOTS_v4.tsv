@@ -1,0 +1,21 @@
+id	type	source	motion	overlay	trans	sfx	fx
+01	video	video:assets/stock/game-controller_48097.mp4@1|video:assets/flow/F1_controller_cinema.mp4@0|image:assets/rockstar/Vice_City_01.jpg|video:assets/stock/countdown_18045.mp4@1	|||	big:EK GAME./EK DIN.		boom	punch,flash|punch|punch,shake|punch
+02	video	video:assets/stock/cinema-audience_24575.mp4@1|video:assets/stock/movie-theater_33312.mp4@1|video:assets/stock/money_47005.mp4@1					punch|punch|zoomout
+03	video	video:assets/stock/counting-money_23725.mp4@1|video:assets/stock/wallet_18297.mp4@1				glitch	punch|punch
+04	video	video:assets/stock/calendar_17412.mp4@1|image:assets/rockstar/Vice_City_08.jpg|video:assets/flow/F9_spotlight.mp4@0	|panright|	19 NOVEMBER 2026			punch|punch|zoomout
+06	doc	doc:assets/doc_retail.png|video:assets/stock/money_45703.mp4@1	zoomin|			riser,hit	punch,shake,flash|punch
+07	image	sticker:assets/flow/F4_notes.jpg|video:assets/stock/counting-money_46985.mp4@1	zoomin|			money	punch|punch
+10	video	doc:assets/doc_ormax.png|video:assets/stock/cinema-audience_21830.mp4@1|video:assets/stock/fireworks_4157.mp4@2	zoomin||	INDIA BOX OFFICE 2025			punch|punch|punch
+11	image	sticker:assets/flow/F5_split.jpg|video:assets/stock/gamer_43524.mp4@1	zoomin|			boom	zoomout|punch,shake
+12	video	video:assets/stock/spotlight_50458.mp4@0		big:ASLI JHATKA	fadewhite	riser,hit	flash,shake
+13	video	video:assets/stock/document_45923.mp4@1|doc:assets/doc_379.png	|zoomin			camera	punch|punch
+14	card	card:RETAIL SALES	none		zoomin	hit	punch,shake
+15	video	video:assets/flow/F7_buy.mp4@0|video:assets/stock/credit-card_21780.mp4@1				money	punch|punch
+16	video	video:assets/stock/accountant_47416.mp4@1					zoomout
+17	video	video:assets/stock/calculator_34126.mp4@1|card:NET BOOKINGS	|none				punch|punch,flash
+18	video	video:assets/stock/calendar_42629.mp4@1|doc:assets/doc_q3.png	|panleft	TAKE-TWO KA ANDAZA			punch|punch
+19	doc	doc:assets/doc_outlook.png|video:assets/stock/stock-market_9607.mp4@1|video:assets/flow/F3_coins.mp4@0	zoomin||				punch|punch|zoomout
+20	video	video:assets/stock/miami-night_12028.mp4@1					punch
+21	video	video:assets/stock/wallet_18299.mp4@1|video:assets/stock/accountant_47735.mp4@1					punch|punch
+23	video	sticker:assets/rockstar/Vice_City_24.jpg|video:assets/stock/time-lapse-city_15659.mp4@1	zoomin|				punch|zoomout
+24	video	video:assets/stock/spotlight_4344.mp4@1|video:assets/stock/game-controller_2404.mp4@1			circleopen		punch|punch,flash

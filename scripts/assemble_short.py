@@ -119,6 +119,10 @@ def effects_filter(fx, vis):
                 f":y='(ih-{H})/2+12*cos(t*63)*lt(t\\,0.45)'")
     if "flash" in names:
         out += ",fade=t=in:st=0:d=0.22:color=white"
+    if "glitch" in names:  # RGB split for the first frames
+        out += ",rgbashift=rh=-16:bh=16:gv=6:enable='lt(t\\,0.22)',noise=alls=40:allf=t:enable='lt(t\\,0.12)'"
+    if "blurin" in names:
+        out += ",boxblur=14:enable='lt(t\\,0.10)',boxblur=6:enable='between(t\\,0.10\\,0.18)'"
     return out
 
 
@@ -406,7 +410,8 @@ def main():
         voice = f"{b}/mix.wav"
 
     write_ass(timings, captions, f"{b}/captions.ass")
-    run(["ffmpeg", "-y", "-i", f"{b}/video.mp4", "-i", voice, "-vf", f"ass={b}/captions.ass",
+    grade = os.environ.get("GRADE", "eq=contrast=1.06:saturation=1.15,vignette=PI/5,noise=alls=4:allf=t")
+    run(["ffmpeg", "-y", "-i", f"{b}/video.mp4", "-i", voice, "-vf", (grade + "," if grade else "") + f"ass={b}/captions.ass",
          "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
          "-c:a", "aac", "-b:a", "192k", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
          "-shortest", "-movflags", "+faststart", f"{d}/final/short.mp4"])

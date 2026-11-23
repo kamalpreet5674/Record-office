@@ -47,3 +47,6 @@ cue placement. Claude can add these to `scripts/assemble_short.py` once the basi
 - Every shot enters with an effect (SHOTS `fx`: punch default, zoomout, flash, shake). Big reveals: flash+shake.
 - Captions pop in (scale 72% -> 108% -> 100%).
 - Sound design: energetic BGM started at its full-energy part (MUSIC_START), MUSIC_VOL 0.22 with gentle ducking; riser into reveals, hit/boom on reveals, cash on money lines, camera click on documents, pop on titles, glitch on questions, whoosh on cuts.
+- (23 Nov, v5) Owner approved using official trailer footage MUTED (Content ID risk accepted by owner). Cut vertical 1080x1920 crops straight from the 4K official file (remove letterbox: cropdetect), 2.6 s each, no audio. Skip shots with weapons. Credit in description.
+- New fx: glitch (RGB split + noise, first 0.2 s), blurin; global grade eq contrast 1.06 / saturation 1.15 + vignette + light grain (GRADE env).
+- Hook first frame must be bright and clear behind the big title (not a logo, not a dark shot).
