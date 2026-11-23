@@ -40,3 +40,10 @@ cue placement. Claude can add these to `scripts/assemble_short.py` once the basi
 - Transitions on every cut (assembler TRANS=0.3, TRANS_CYCLE); `fadewhite` on "asli jhatka", `circleopen` at the end.
 - Sound: whoosh on every cut (assets/sfx/whoosh*.mp3), impact (hit*.mp3) on the 2-3 biggest reveals (SHOTS sfx=hit), BGM in assets/music ducked under voice.
 - Visual sources in order: official media kits/newsrooms, free stock clips (Mixkit/Pexels/Pixabay), owner's Flow, document screenshots. Credits in the description.
+
+## Pro edit upgrade (23 Nov 2026, owner said v3 was weak)
+- Hook (0-3 s): 3-4 cuts of ~0.8 s, a big pop title (overlay "big:LINE1/LINE2", stays over all hook cuts), flash + shake, boom SFX. Must work on mute.
+- Visuals must show literally what the line says (controller for "game", audience for "cinema", wallet for "jeb", calendar for a date, calculator for "kamai"). Video clips first; stills only when no clip exists.
+- Every shot enters with an effect (SHOTS `fx`: punch default, zoomout, flash, shake). Big reveals: flash+shake.
+- Captions pop in (scale 72% -> 108% -> 100%).
+- Sound design: energetic BGM started at its full-energy part (MUSIC_START), MUSIC_VOL 0.22 with gentle ducking; riser into reveals, hit/boom on reveals, cash on money lines, camera click on documents, pop on titles, glitch on questions, whoosh on cuts.

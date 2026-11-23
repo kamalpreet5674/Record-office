@@ -34,8 +34,8 @@ CAP_WORDS = int(os.environ.get("CAPTION_WORDS", 3))
 ACCENT = os.environ.get("ACCENT", "F5C518")
 BG = os.environ.get("BG", "111111")
 MUSIC_VOL = float(os.environ.get("MUSIC_VOL", 0.16))
-TRANS = float(os.environ.get("TRANS", 0.3))  # crossover transition length in seconds (0 = hard cuts)
-TRANS_CYCLE = os.environ.get("TRANS_CYCLE", "smoothleft,zoomin,smoothup,slideleft,circleopen,smoothright").split(",")
+TRANS = float(os.environ.get("TRANS", 0.25))  # crossover transition length in seconds (0 = hard cuts)
+TRANS_CYCLE = os.environ.get("TRANS_CYCLE", "zoomin,smoothleft,fadewhite,slideup,radial,smoothright,zoomin,wipeup,hblur").split(",")
 SFX_VOL = float(os.environ.get("SFX_VOL", 0.35))
 
 
@@ -89,6 +89,51 @@ def make_overlay(text, path):
     for ln in lines:
         d.text((110, y), ln, font=f, fill=hexrgb(ACCENT) + (255,))
         y += 80
+    img.save(path)
+
+
+def audio_len(f):
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", f],
+                       capture_output=True, text=True)
+    try:
+        return float(r.stdout.strip())
+    except ValueError:
+        return 1.0
+
+
+def effects_filter(fx, vis):
+    """Entry/emphasis effects added after a shot's own motion. fx = comma list of
+    punch (zoom-punch in, default), zoomout (starts wide, punches out), flash (white flash in),
+    shake (camera shake on impact), none."""
+    out = ""
+    names = [x.strip() for x in fx.split(",") if x.strip()]
+    if "none" in names:
+        return out
+    if "punch" in names:
+        out += (f",scale=w='trunc(iw*(1+0.22*max(0\\,1-t/0.28))/2)*2':h=-2:eval=frame,"
+                f"crop={W}:{H}")
+    if "zoomout" in names:
+        out += (f",scale=w='trunc(iw*(1.25-0.25*min(1\\,t/0.35))/2)*2':h=-2:eval=frame,crop={W}:{H}")
+    if "shake" in names:
+        out += (f",scale={int(W * 1.06)}:-2,crop={W}:{H}:x='(iw-{W})/2+14*sin(t*75)*lt(t\\,0.45)'"
+                f":y='(ih-{H})/2+12*cos(t*63)*lt(t\\,0.45)'")
+    if "flash" in names:
+        out += ",fade=t=in:st=0:d=0.22:color=white"
+    return out
+
+
+def make_big_text(text, path):
+    """Hook title: big centred words with a thick outline, for the first seconds."""
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    f = bold_font(132)
+    lines = [x.strip() for x in text.upper().split("/")] if "/" in text else textwrap.wrap(text.upper(), width=11)
+    y = int(H * 0.30) - len(lines) * 75
+    for n, ln in enumerate(lines):
+        w = d.textlength(ln, font=f)
+        col = hexrgb(ACCENT) if n % 2 else (255, 255, 255)
+        d.text(((W - w) / 2, y), ln, font=f, fill=col + (255,), stroke_width=10, stroke_fill=(0, 0, 0, 255))
+        y += 150
     img.save(path)
 
 
@@ -191,7 +236,8 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             # highlight numbers / years in the accent colour
             txt = " ".join(f"{{\\c{acc}}}{w}{{\\c&H00FFFFFF&}}" if any(ch.isdigit() for ch in w) else w
                            for w in txt.split())
-            ev.append(f"Dialogue: 0,{ass_time(cur)},{ass_time(cur + seg)},Cap,,0,0,0,,{{\\fad(40,0)}}{txt}")
+            ev.append(f"Dialogue: 0,{ass_time(cur)},{ass_time(cur + seg)},Cap,,0,0,0,,"
+                      f"{{\\fscx72\\fscy72\\t(0,90,\\fscx108\\fscy108)\\t(90,150,\\fscx100\\fscy100)}}{txt}")
             cur += seg
     open(path, "w", encoding="utf-8").write(head + "\n".join(ev) + "\n")
 
@@ -226,9 +272,10 @@ def main():
                 kind, it = m.group(1), m.group(2)
             parts.append({"line": i, "k": k, "kind": kind, "src": it, "len": seg / len(items),
                           "motion": motions[k] if k < len(motions) and motions[k] else motions[0],
-                          "overlay": (s.get("overlay") or "").strip() if k == 0 else "",
+                          "overlay": (s.get("overlay") or "").strip() if (k == 0 or (s.get("overlay") or "").startswith("big:")) else "",
                           "trans": (s.get("trans") or "").strip() if k == 0 else "",
-                          "sfx": (s.get("sfx") or "").strip() if k == 0 else "whoosh"})
+                          "sfx": (s.get("sfx") or "").strip() if k == 0 else "whoosh",
+                          "fx": ((s.get("fx") or "").split("|") + [""] * 9)[k].strip()})
         wav = f"{b}/a_{i}.wav"
         run(["ffmpeg", "-y", "-i", f"{d}/audio/{i}.mp3", "-af", f"apad=whole_dur={seg:.3f}", "-t", f"{seg:.3f}",
              "-ar", "48000", "-ac", "2", wav])
@@ -268,9 +315,13 @@ def main():
         else:
             vf = motion_filter(pt["motion"] or "zoomin", frames)
             cmd = ["ffmpeg", "-y", "-loop", "1", "-i", src]
+        vf += effects_filter(pt["fx"] or "punch", vis)
         if pt["overlay"]:
             ov = f"{b}/ov_{tag}.png"
-            make_overlay(pt["overlay"], ov)
+            if pt["overlay"].startswith("big:"):
+                make_big_text(pt["overlay"][4:], ov)
+            else:
+                make_overlay(pt["overlay"], ov)
             cmd += ["-loop", "1", "-i", ov, "-filter_complex", f"[0:v]{vf}[bg];[bg][1:v]overlay=0:0,format=yuv420p[v]",
                     "-map", "[v]"]
         else:
@@ -310,21 +361,34 @@ def main():
     sfx_dir = f"{d}/assets/sfx"
     whooshes = sorted(glob.glob(f"{sfx_dir}/whoosh*.mp3"))
     hits = sorted(glob.glob(f"{sfx_dir}/hit*.mp3"))
+    bank = {name: sorted(glob.glob(f"{sfx_dir}/{name}*.mp3")) for name in
+            ("whoosh", "hit", "riser", "money", "pop", "camera", "boom", "glitch", "swoosh", "transition")}
     events, t0 = [], 0.0
     for n, pt in enumerate(parts):
-        mode = pt["sfx"] or ("whoosh" if n else "none")
-        if n == 0 and not pt["sfx"]:
-            mode = "none"
-        if mode == "whoosh" and whooshes:
-            events.append((max(t0 - 0.3, 0), whooshes[n % len(whooshes)], SFX_VOL * (1 if pt["k"] == 0 else 0.6)))
-        elif mode == "hit" and hits:
-            events.append((t0, hits[0], SFX_VOL * 1.4))
+        modes = [m.strip() for m in (pt["sfx"] or ("whoosh" if n else "")).split(",") if m.strip()]
+        if pt["overlay"] and "pop" not in modes:
+            modes.append("pop")
+        for mode in modes:
+            files = bank.get(mode) or []
+            if not files:
+                continue
+            f = files[n % len(files)]
+            if mode == "riser":  # ends exactly on the cut
+                dur = min(audio_len(f), 2.5)
+                events.append((max(t0 - dur, 0), f, SFX_VOL * 0.9, dur))
+            elif mode in ("whoosh", "swoosh", "transition"):
+                events.append((max(t0 - 0.25, 0), f, SFX_VOL * (1.0 if pt["k"] == 0 else 0.7), 1.2))
+            elif mode in ("hit", "boom"):
+                events.append((t0, f, SFX_VOL * 1.6, 2.5))
+            else:
+                events.append((t0, f, SFX_VOL * 1.1, 1.5))
         t0 += seg_lens[n]
     if events:
         ins, fc = ["-i", voice], []
-        for k, (at, f, vol) in enumerate(events, start=1):
+        for k, (at, f, vol, ln) in enumerate(events, start=1):
             ins += ["-i", f]
-            fc.append(f"[{k}:a]atrim=0:1.6,volume={vol},adelay={int(at * 1000)}|{int(at * 1000)}[s{k}]")
+            fc.append(f"[{k}:a]atrim=0:{ln},afade=t=out:st={max(ln - 0.3, 0)}:d=0.3,volume={vol},"
+                      f"adelay={int(at * 1000)}|{int(at * 1000)}[s{k}]")
         fc.append("".join(f"[s{k}]" for k in range(1, len(events) + 1)) +
                   f"amix=inputs={len(events)}:normalize=0[sfx];[0:a][sfx]amix=inputs=2:duration=first:normalize=0[a]")
         run(["ffmpeg", "-y", *ins, "-filter_complex", ";".join(fc), "-map", "[a]", f"{b}/voice_sfx.wav"])
@@ -334,9 +398,9 @@ def main():
         voice_for_duck = voice
     if music:
         # music ducks under the voice (sidechain) so words stay clear
-        run(["ffmpeg", "-y", "-i", voice, "-stream_loop", "-1", "-i", music[0], "-i", voice_for_duck, "-filter_complex",
+        run(["ffmpeg", "-y", "-i", voice, "-stream_loop", "-1", "-ss", os.environ.get("MUSIC_START", "0"), "-i", music[0], "-i", voice_for_duck, "-filter_complex",
              f"[1:a]volume={MUSIC_VOL * 2.2}[m];[2:a]asplit=1[sc];"
-             f"[m][sc]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[md];"
+             f"[m][sc]sidechaincompress=threshold=0.05:ratio=4:attack=15:release=300[md];"
              f"[0:a][md]amix=inputs=2:duration=first:normalize=0,afade=t=out:st={sum(line_lens) - 1.2:.2f}:d=1.2[a]",
              "-map", "[a]", f"{b}/mix.wav"])
         voice = f"{b}/mix.wav"

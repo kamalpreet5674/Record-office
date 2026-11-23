@@ -76,3 +76,4 @@ Store confirmed preferences in the relevant reference section, keep observations
 Added by the pipeline from the owner's feedback (newest last). These override the general advice above,
 but never the fact or copyright rules.
 - 2026-11-23: Owner wants a new visual every 2-3 s with many online clips, sticker/cutout photos, transitions, whoosh/impact SFX and BGM. For games/brands use the official media kit stills (credited), never trailers or gameplay video.
+- 2026-11-23: Pro edit: hook = 3-4 fast cuts + big pop title + flash/shake + boom; B-roll literal to each line, video over stills; fx on every cut; layered SFX; energetic BGM from its drop.
