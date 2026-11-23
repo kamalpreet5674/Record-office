@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="hi" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #flash { position: absolute; inset: 0; background: #fff8ec; opacity: 0; z-index: 50; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24" data-width="1080" data-height="1920" data-motion-blur="on">
+      <div id="s1" data-composition-id="s1" data-composition-src="compositions/s1.html" data-start="0" data-duration="4.2" data-track-index="0" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:1"></div>
+      <div id="s2" data-composition-id="s2" data-composition-src="compositions/s2.html" data-start="3.8" data-duration="4.2" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:2"></div>
+      <div id="s3" data-composition-id="s3" data-composition-src="compositions/s3.html" data-start="8" data-duration="4.2" data-track-index="0" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:3"></div>
+      <div id="s4" data-composition-id="s4" data-composition-src="compositions/s4.html" data-start="12" data-duration="4.2" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:4"></div>
+      <div id="s5" data-composition-id="s5" data-composition-src="compositions/s5.html" data-start="16" data-duration="4.2" data-track-index="0" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:5"></div>
+      <div id="s6" data-composition-id="s6" data-composition-src="compositions/s6.html" data-start="20" data-duration="4" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920" style="z-index:6"></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="24" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index:20"></div>
+      <div id="flash" class="clip" data-start="19.9" data-duration="0.5" data-track-index="3"></div>
+
+      <audio id="vo" data-start="0" data-duration="24" data-track-index="10" data-volume="1" data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;highpass&quot;,&quot;id&quot;:&quot;hp&quot;,&quot;label&quot;:&quot;Remove rumble&quot;,&quot;params&quot;:{&quot;frequency&quot;:90}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;mud&quot;,&quot;label&quot;:&quot;Less mud&quot;,&quot;params&quot;:{&quot;frequency&quot;:300,&quot;gain&quot;:-3,&quot;q&quot;:1}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;pres&quot;,&quot;label&quot;:&quot;Clarity&quot;,&quot;params&quot;:{&quot;frequency&quot;:3000,&quot;gain&quot;:2.5,&quot;q&quot;:1}},{&quot;type&quot;:&quot;compressor&quot;,&quot;id&quot;:&quot;comp&quot;,&quot;label&quot;:&quot;Level&quot;,&quot;params&quot;:{&quot;threshold&quot;:-20,&quot;ratio&quot;:3,&quot;attack&quot;:0.01,&quot;release&quot;:0.12}},{&quot;type&quot;:&quot;limiter&quot;,&quot;id&quot;:&quot;lim&quot;,&quot;params&quot;:{&quot;limit&quot;:-1}}]}" src="assets/audio/vo_raw.wav"></audio>
+      <audio id="bgm" data-timeline-role="music" data-start="0" data-duration="24" data-track-index="11" data-volume="1" data-fade-in="0.3" data-fade-out="1.2" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:1.0},{&quot;t&quot;:0.22,&quot;v&quot;:1.0},{&quot;t&quot;:0.3,&quot;v&quot;:0.3},{&quot;t&quot;:1.9,&quot;v&quot;:0.3},{&quot;t&quot;:2.35,&quot;v&quot;:1.0},{&quot;t&quot;:3.6,&quot;v&quot;:0.3},{&quot;t&quot;:4.05,&quot;v&quot;:1.0},{&quot;t&quot;:4.22,&quot;v&quot;:1.0},{&quot;t&quot;:4.3,&quot;v&quot;:0.3},{&quot;t&quot;:5.9,&quot;v&quot;:0.3},{&quot;t&quot;:6.35,&quot;v&quot;:1.0},{&quot;t&quot;:7.6,&quot;v&quot;:0.3},{&quot;t&quot;:8.05,&quot;v&quot;:1.0},{&quot;t&quot;:8.22,&quot;v&quot;:1.0},{&quot;t&quot;:8.3,&quot;v&quot;:0.3},{&quot;t&quot;:9.9,&quot;v&quot;:0.3},{&quot;t&quot;:10.35,&quot;v&quot;:1.0},{&quot;t&quot;:11.6,&quot;v&quot;:0.3},{&quot;t&quot;:12.05,&quot;v&quot;:1.0},{&quot;t&quot;:12.22,&quot;v&quot;:1.0},{&quot;t&quot;:12.3,&quot;v&quot;:0.3},{&quot;t&quot;:13.9,&quot;v&quot;:0.3},{&quot;t&quot;:14.35,&quot;v&quot;:1.0},{&quot;t&quot;:15.6,&quot;v&quot;:0.3},{&quot;t&quot;:16.05,&quot;v&quot;:1.0},{&quot;t&quot;:16.22,&quot;v&quot;:1.0},{&quot;t&quot;:16.3,&quot;v&quot;:0.3},{&quot;t&quot;:17.9,&quot;v&quot;:0.3},{&quot;t&quot;:18.35,&quot;v&quot;:1.0},{&quot;t&quot;:19.6,&quot;v&quot;:0.3},{&quot;t&quot;:20.05,&quot;v&quot;:1.0},{&quot;t&quot;:20.22,&quot;v&quot;:1.0},{&quot;t&quot;:20.3,&quot;v&quot;:0.3},{&quot;t&quot;:21.9,&quot;v&quot;:0.3},{&quot;t&quot;:22.35,&quot;v&quot;:1.0},{&quot;t&quot;:23.6,&quot;v&quot;:0.3},{&quot;t&quot;:24.0,&quot;v&quot;:1.0}]}]}" src="assets/audio/bgm.wav"></audio>
+      <audio id="sfx-whoosh1" data-start="3.65" data-duration="0.6" data-track-index="12" data-volume="0.8" src="assets/audio/whoosh.wav"></audio>
+      <audio id="sfx-whoosh2" data-start="15.65" data-duration="0.6" data-track-index="12" data-volume="0.7" src="assets/audio/whoosh.wav"></audio>
+      <audio id="sfx-impact" data-start="20.033" data-duration="1.2" data-track-index="12" data-volume="0.9" src="assets/audio/impact.wav"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      // white flash hides the cut at 20.0: rise ~1 frame, recovery ~9 frames, one event only
+      tl.fromTo("#flash", {opacity:0}, {opacity:1, duration:0.04, ease:"none"}, 19.96);
+      tl.to("#flash", {opacity:0, duration:0.3, ease:"power2.out"}, 20.0);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

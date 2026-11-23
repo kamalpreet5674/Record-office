@@ -64,6 +64,7 @@ Wherever this file says `mail.py send` or `mail.py replies`, do the connector st
 | Fact check, Gate 1 and Gate 2 | `facts-checker` |
 | Script + LINES.tsv | `video-scripter` |
 | Visual plan and edit | `kamal-video-style` |
+| Edit craft, audio mix, grade, captions, QC | `video-editing-pro` (owner's v2, Nov 2026) |
 | Title, description, tags | `yt-seo` |
 | Hook and loop for a Short | `yt-shorts` (its "Writing each one" rules) |
 

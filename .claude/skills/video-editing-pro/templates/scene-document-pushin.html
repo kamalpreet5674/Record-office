@@ -1,0 +1,27 @@
+<template>
+<style>
+@font-face{font-family:'Noto Sans Devanagari';src:url('assets/fonts/noto-sans-devanagari-devanagari-800-normal.woff2') format('woff2');font-weight:800;font-display:block;}
+#root{position:absolute;inset:0;overflow:hidden;background:#111;}
+#s3-cam{position:absolute;inset:0;transform-origin:744px 525px;}
+#s3-paper{position:absolute;left:-460px;top:-50px;width:1700px;height:auto;}
+#s3-mark{position:absolute;left:396px;top:502px;width:692px;height:78px;background:#FFD400;mix-blend-mode:multiply;opacity:.85;transform-origin:0% 50%;rotate:24deg;border-radius:6px;}
+.src{position:absolute;left:120px;top:300px;width:768px;font-family:Inter,sans-serif;font-weight:700;font-size:30px;color:#fff;background:rgba(0,0,0,.55);padding:12px 18px;border-radius:8px;opacity:0;}
+</style>
+<div id="root" data-composition-id="s3" data-width="1080" data-height="1920">
+  <div id="s3-shot" class="clip" data-start="0" data-duration="4.2">
+    <div id="s3-cam">
+      <img id="s3-paper" src="assets/raw/Land_on_the_Moon_7_21_1969-repair.jpg" alt="Girl reading the Washington Post, 21 July 1969">
+      <div id="s3-mark"></div>
+    </div>
+    <div class="src" id="s3-src">SOURCE: The Washington Post, 21 July 1969 · Photo: Jack Weir · PD</div>
+  </div>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  tl.fromTo("#s3-cam", {scale:1, x:0, y:0}, {scale:1.02, duration:1.0, ease:"none"}, 0);
+  tl.to("#s3-cam", {scale:1.9, x:-204, y:235, duration:1.2, ease:"power2.inOut"}, 1.0);
+  tl.fromTo("#s3-mark", {scaleX:0}, {scaleX:1, duration:0.45, ease:"power2.out"}, 2.35);
+  tl.fromTo("#s3-src", {opacity:0, y:10}, {opacity:1, y:0, duration:0.3, ease:"power3.out"}, 0.4);
+  window.__timelines["s3"] = tl;
+</script>
+</template>

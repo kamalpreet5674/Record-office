@@ -1,0 +1,37 @@
+<template>
+<style>
+@font-face{font-family:'Noto Sans Devanagari';src:url('assets/fonts/noto-sans-devanagari-devanagari-800-normal.woff2') format('woff2');font-weight:800;font-display:block;}
+#root{position:absolute;inset:0;overflow:hidden;background:#0d0f14;}
+.num{position:absolute;left:120px;width:768px;top:420px;text-align:center;font-family:Oswald,sans-serif;font-weight:700;font-size:260px;color:#FFD400;line-height:1;}
+.layer{position:absolute;inset:0;}
+#s5-r .num{color:#ff2a55;} #s5-c .num{color:#22e5ff;}
+#s5-r,#s5-c{mix-blend-mode:screen;opacity:0;}
+.line{position:absolute;left:120px;width:768px;top:760px;text-align:center;font-family:'Noto Sans Devanagari',sans-serif;font-weight:800;font-size:84px;line-height:1.45;color:#fff;
+  -webkit-mask-image:linear-gradient(90deg,#000 var(--p),transparent calc(var(--p) + 18%));mask-image:linear-gradient(90deg,#000 var(--p),transparent calc(var(--p) + 18%));--p:-18%;}
+</style>
+<div id="root" data-composition-id="s5" data-width="1080" data-height="1920">
+  <div id="s5-shot" class="clip" data-start="0" data-duration="4.2">
+    <div class="layer" id="s5-r"><div class="num">1969</div></div>
+    <div class="layer" id="s5-c"><div class="num">1969</div></div>
+    <div class="layer" id="s5-m"><div class="num" id="s5-num">1900</div></div>
+    <div class="line" id="s5-line">सबूत असली हैं।</div>
+  </div>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  const counter = { v: 1900 };
+  tl.fromTo(counter, {v:1900}, {v:1969, duration:1.1, ease:"power3.out",
+    onUpdate(){ document.getElementById("s5-num").textContent = Math.round(counter.v); }}, 0.2);
+  // deterministic glitch: 4 frames of RGB split + slice, then clean
+  const g = 1.35, f = 1/30, off = [14,-10,18,-6];
+  off.forEach((dx,i)=>{
+    tl.set("#s5-r", {x:dx, opacity:0.9}, g+i*f).set("#s5-c", {x:-dx, opacity:0.9}, g+i*f)
+      .set("#s5-m", {clipPath:`inset(${8+i*14}% 0 ${50-i*9}% 0)`, x:dx*0.4}, g+i*f);
+  });
+  tl.set(["#s5-r","#s5-c"], {opacity:0, x:0}, g+4*f).set("#s5-m", {clipPath:"inset(0% 0 0% 0)", x:0}, g+4*f);
+  // gradient (luma-style) wipe reveal of the line
+  tl.fromTo("#s5-line", {"--p":"-18%"}, {"--p":"100%", duration:0.7, ease:"power2.inOut"}, 1.8);
+  tl.to("#s5-shot > *", {opacity:0, duration:0.15, ease:"power2.in"}, 3.95);
+  window.__timelines["s5"] = tl;
+</script>
+</template>
