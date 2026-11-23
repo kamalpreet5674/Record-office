@@ -145,7 +145,7 @@ Re-running only re-voices lines whose text changed, so never use `--force` unles
 - ElevenLabs credits are paid. Voice is made **only after the owner approves the script**, once per line,
   and is cached (`audio/manifest.json`). Never regenerate unchanged lines. A video over
   ELEVENLABS_MAX_CHARS (2500 characters) stops instead of spending more.
-- Everything else uses free resources: Wikimedia Commons and Pexels images, text cards made by the
+- Everything else uses free resources: Wikimedia Commons and Openverse images (Pexels if keyed), text cards made by the
   assembler, free YouTube Data API, Gmail. No paid image or video generation (Flow, Veo, Imagen)
   unless the owner adds a key and asks for it.
 
