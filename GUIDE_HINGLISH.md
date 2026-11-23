@@ -135,7 +135,8 @@ PEXELS_API_KEY=xxxx
 6. **Setup script** box mein ye paste karo:
    ```
    apt-get update && apt-get install -y ffmpeg fonts-dejavu fonts-noto-core || true
-   pip install google-api-python-client google-auth google-auth-oauthlib requests Pillow
+   pip install google-api-python-client google-auth google-auth-oauthlib requests Pillow playwright
+   python -m playwright install --with-deps chromium || true
    ```
 7. **Save**.
 
