@@ -118,3 +118,4 @@ See `references/quality-rubric.md` for a repeatable editorial checklist.
 ## Owner learnings
 Added by the pipeline from the owner's feedback (newest last). These override the general advice above,
 but never the fact or copyright rules.
+- 2026-11-23: Make the first draft a bit more dramatic (Socho opener, "..." pauses, "Par ruko..." question, "asli jhatka" before the twist, short punchy reveal lines). Drama in delivery only; facts unchanged.
