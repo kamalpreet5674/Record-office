@@ -1,9 +1,10 @@
 """Find and download free images for a shot.
 
-  python scripts/fetch_visuals.py "Pokhran desert 1998" --out videos/<dir>/assets --n 5 [--source wikimedia|pexels|both]
+  python scripts/fetch_visuals.py "Pokhran desert 1998" --out videos/<dir>/assets --n 5 [--source wikimedia|openverse|pexels|all]
 
 Wikimedia Commons (archives, history, documents) needs no key.
-Pexels (general modern scenes) needs secret PEXELS_API_KEY.
+Openverse (millions of free-licence photos, general scenes) needs no key.
+Pexels is optional: used only if secret PEXELS_API_KEY is set.
 Saves images as <slug>_<n>.jpg and appends licence + credit lines to assets/CREDITS.md.
 Always open the images and check they really show what the line says.
 """
@@ -35,10 +36,20 @@ def wikimedia(q, n):
     return out
 
 
+def openverse(q, n):
+    r = requests.get("https://api.openverse.org/v1/images/", headers=UA, timeout=30, params={
+        "q": q, "page_size": n, "license_type": "commercial,modification", "mature": "false"})
+    if not r.ok:
+        print("Openverse error", r.status_code)
+        return []
+    return [(i["url"], f"Openverse: {i.get('title') or 'image'} | {i.get('creator') or '?'} | "
+                       f"{(i.get('license') or '').upper()} {i.get('license_version') or ''} | {i.get('foreign_landing_url')}")
+            for i in r.json().get("results", [])]
+
+
 def pexels(q, n):
     key = os.environ.get("PEXELS_API_KEY")
     if not key:
-        print("PEXELS_API_KEY not set, skipping Pexels")
         return []
     r = requests.get("https://api.pexels.com/v1/search", headers={"Authorization": key}, timeout=30,
                      params={"query": q, "per_page": n, "orientation": "portrait"})
@@ -51,14 +62,24 @@ def main():
     ap.add_argument("query")
     ap.add_argument("--out", required=True)
     ap.add_argument("--n", type=int, default=5)
-    ap.add_argument("--source", default="both")
+    ap.add_argument("--source", default="all")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     found = []
-    if a.source in ("wikimedia", "both"):
-        found += wikimedia(a.query, a.n)
-    if a.source in ("pexels", "both"):
-        found += pexels(a.query, a.n)
+
+    def safe(fn):
+        try:
+            return fn(a.query, a.n)
+        except Exception as e:  # one source failing should not stop the others
+            print(f"{fn.__name__} failed: {e}")
+            return []
+
+    if a.source in ("wikimedia", "all", "both"):
+        found += safe(wikimedia)
+    if a.source in ("openverse", "all"):
+        found += safe(openverse)
+    if a.source in ("pexels", "all", "both"):
+        found += safe(pexels)
     with open(f"{a.out}/CREDITS.md", "a") as credits:
         for i, (url, credit) in enumerate(found, 1):
             name = f"{slug(a.query)}_{i}.jpg"

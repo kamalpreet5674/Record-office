@@ -154,7 +154,7 @@ Follow `kamal-video-style` and `style/EDIT_STYLE.md`. For each line, decide one 
 `SHOTS.tsv` with columns `id`, `type`, `source`, `motion`, `overlay`:
 - `type=image`: `source` is a file path under `videos/<dir>/assets/`.
   Find images with `python scripts/fetch_visuals.py "<query>" --out videos/<dir>/assets --n 5`
-  (Wikimedia Commons first for history and documents, Pexels for general scenes). It writes
+  (Wikimedia Commons first for history and documents, Openverse for general scenes; Pexels only if its key is set). It writes
   `assets/CREDITS.md`; check licences and add credits to the description where required.
 - `type=card`: `source` is the card text (big number, date or short phrase in English or Roman
   Hinglish), rendered by the assembler.

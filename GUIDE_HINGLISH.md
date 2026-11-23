@@ -16,7 +16,7 @@ Kahin bhi chat mein key paste mat karna.
 | 6 | `OWNER_EMAIL` | Aapka email jisse aap "OK" reply karoge | Claude Code environment variables |
 | 7 | `ELEVENLABS_API_KEY` | ElevenLabs → API Keys (Step 5) | Claude Code environment variables |
 | 8 | `ELEVENLABS_VOICE_ID` | ElevenLabs → Voices → aapki voice (Step 5) | Claude Code environment variables |
-| 9 | `PEXELS_API_KEY` | pexels.com/api (Step 6) | Claude Code environment variables |
+| 9 | `PEXELS_API_KEY` (optional, skip kar sakte ho) | pexels.com/api (Step 6) | Claude Code environment variables |
 
 Tip: ek Notepad file kholo, upar wale 9 naam likh lo, aur har step ke baad value bharte jao.
 Last mein (Step 7) poora ek saath paste karna hai. Kaam khatam hone ke baad Notepad file delete kar dena.
@@ -104,7 +104,10 @@ Isse Claude aapko script email karega aur aapka reply padhega.
    Create → key copy (`sk_...`) → Notepad mein `ELEVENLABS_API_KEY=`.
 3. Voice ID ready hai (aapki "Kamal" professional voice): `ELEVENLABS_VOICE_ID=qrQDmG9I6ONIs4PYfwRs`
 
-## Step 6: Pexels (2 min, free)
+## Step 6: Pexels (OPTIONAL, skip kar sakte ho)
+Pexels abhi naye keys nahi de raha. Koi baat nahi: images Wikimedia Commons aur Openverse se aayengi (dono free, bina key).
+Baad mein key mile toh `PEXELS_API_KEY` add kar dena.
+
 1. Kholo: https://www.pexels.com/api → **Get started** / Your API key (free account bana lo).
 2. Form bharo (description: "YouTube documentary shorts images") → key copy →
    Notepad mein `PEXELS_API_KEY=`.
