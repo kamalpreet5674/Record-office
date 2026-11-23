@@ -9,3 +9,4 @@ RULE (2026-11-23, GTA 6 Short): Owner wants scripts a bit more dramatic: open wi
 RULE (2026-11-23): After every email to the owner also send the ntfy phone notification, and always answer his reply in the same thread so he knows it was seen.
 RULE (2026-11-23): Every owner reply gets an email answer in the same thread AND a phone ping "Reply mila: ...". Every email also goes with a phone ping.
 RULE (2026-11-23, Iran Short): Clarity first. One central question, then a step-by-step chain (what happened -> what it means -> the number -> the India impact). Max 4-5 numbers per Short; cut numbers that do not move the story.
+RULE (2026-11-23): Video previews go to the owner in the chat session (not by email; Gmail attachments over ~3 MB fail). Upload only after his OK.
