@@ -10,7 +10,22 @@
       "Bash(git push *)",
       "Bash(mkdir *)",
       "WebSearch",
-      "WebFetch"
+      "WebFetch",
+      "Bash(python scripts/*:*)"
+    ],
+    "deny": [
+      "WebFetch(domain:pornhub.com)",
+      "WebFetch(domain:xvideos.com)",
+      "WebFetch(domain:xnxx.com)",
+      "WebFetch(domain:onlyfans.com)",
+      "WebFetch(domain:bet365.com)",
+      "WebFetch(domain:1xbet.com)",
+      "WebFetch(domain:stake.com)",
+      "WebFetch(domain:thepiratebay.org)",
+      "WebFetch(domain:1337x.to)",
+      "WebFetch(domain:rarbg.to)",
+      "WebFetch(domain:yts.mx)",
+      "WebFetch(domain:torrentgalaxy.to)"
     ]
   }
 }

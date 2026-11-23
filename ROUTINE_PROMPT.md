@@ -17,6 +17,12 @@ Scripts with changes: revise, re-check facts, and email the new version.
 Update data/pending.csv, commit and push. If nothing is pending, end quickly.
 ```
 
+## Routine C: "Records Office: 3-day audit", every 3 days at 9:00 PM
+```
+Phase C (audit run). Follow CLAUDE.md "Phase C" exactly: run the audit, learn from the numbers,
+update style/LEARNINGS.md and data/channel_insights.md, email me the audit, commit and push.
+```
+
 ## Manual test prompt (first time, in a normal Claude Code session)
 ```
 Test run. Follow CLAUDE.md Phase A but make only Short 1, and email it to me.
