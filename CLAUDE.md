@@ -187,6 +187,11 @@ more than twice. Then write
 Look at every image you pick (open it) to check it shows what the line says. A wrong picture is a
 factual error.
 
+### 7b. Owner's own assets
+At the start of Phase B run `python scripts/sync_assets.py`. It downloads the owner's Drive folder
+into `library/` (music, sfx, clips, logo). Prefer the owner's music and clips over anything else.
+The assembler picks a track from `library/music/` automatically if the video has none.
+
 ### 8. Assemble
 `python scripts/assemble_short.py videos/<dir>` builds `final/short.mp4` with voice, captions,
 motion and optional music from `assets/music/` (royalty-free only). Then check it:

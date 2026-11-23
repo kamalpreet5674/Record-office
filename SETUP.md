@@ -74,7 +74,7 @@ Total setup time: about 1 hour, one time only. The kit is already in your repo
 6. **Setup script:** paste:
    ```
    apt-get update && apt-get install -y ffmpeg fonts-dejavu fonts-noto-core || true
-   pip install google-api-python-client google-auth google-auth-oauthlib requests Pillow playwright
+   pip install google-api-python-client google-auth google-auth-oauthlib requests Pillow playwright gdown
    python -m playwright install --with-deps chromium || true
    ```
 7. Save.

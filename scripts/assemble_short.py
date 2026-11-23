@@ -224,6 +224,11 @@ def main():
 
     voice = f"{b}/voice.wav"
     music = sorted(glob.glob(f"{d}/assets/music/*.mp3"))
+    if not music:  # fall back to the owner's own library synced from Drive
+        lib = sorted(glob.glob("library/**/music/*.mp3", recursive=True) + glob.glob("library/music/*.mp3"))
+        if lib:
+            import random
+            music = [random.Random(d).choice(lib)]  # stable pick per video
     if music:
         run(["ffmpeg", "-y", "-i", voice, "-stream_loop", "-1", "-i", music[0], "-filter_complex",
              f"[1:a]volume={MUSIC_VOL}[m];[0:a][m]amix=inputs=2:duration=first:normalize=0[a]",

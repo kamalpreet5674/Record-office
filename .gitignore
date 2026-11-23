@@ -7,3 +7,4 @@ videos/**/assets/music/
 client_secret*.json
 .env
 __pycache__/
+library/
