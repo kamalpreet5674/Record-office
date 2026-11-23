@@ -26,6 +26,16 @@ def duration(path):
     return float(out.stdout.strip())
 
 
+PAUSE_MAX = float(os.environ.get("PAUSE_MAX", 0.28))  # longest pause kept inside a line (seconds)
+
+
+def tighten(src, dst):
+    af = (f"silenceremove=start_periods=1:start_threshold=-38dB:start_silence=0.05,"
+          f"silenceremove=stop_periods=-1:stop_duration={PAUSE_MAX}:stop_threshold=-38dB:stop_silence={PAUSE_MAX}")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-af", af, "-ar", "44100", "-b:a", "128k", dst],
+                   check=True)
+
+
 def tts(text, path):
     key, voice = os.environ.get("ELEVENLABS_API_KEY"), os.environ.get("ELEVENLABS_VOICE_ID")
     if not key or not voice:
@@ -67,6 +77,15 @@ def main():
         tts(r["text"], f"{d}/audio/{r['id']}.mp3")
         manifest[r["id"]] = key(r["text"])
         json.dump(manifest, open(mpath, "w"), indent=1)
+
+    # Tighten long pauses (the "..." in the script) without new credits: the raw clip is kept in
+    # audio/raw/, the clip used in the video has every pause longer than PAUSE_MAX cut down to it.
+    os.makedirs(f"{d}/audio/raw", exist_ok=True)
+    for row in rows:
+        p, raw = f"{d}/audio/{row['id']}.mp3", f"{d}/audio/raw/{row['id']}.mp3"
+        if row in todo or not os.path.exists(raw):
+            os.replace(p, raw)
+        tighten(raw, p)
 
     t, out = 0.0, []
     for row in rows:

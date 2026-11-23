@@ -18,7 +18,7 @@ if not url:
     print("DRIVE_ASSETS_URL not set; skipping owner assets")
     sys.exit(0)
 os.makedirs("library", exist_ok=True)
-gdown.download_folder(url=url, output="library", quiet=True, remaining_ok=True, resume=True)
+gdown.download_folder(url=url, output="library", quiet=True, resume=True)
 for root, _, files in os.walk("library"):
     for f in files:
         print(os.path.join(root, f))

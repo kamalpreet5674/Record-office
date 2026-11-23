@@ -33,6 +33,9 @@ CAP_WORDS = int(os.environ.get("CAPTION_WORDS", 3))
 ACCENT = os.environ.get("ACCENT", "F5C518")
 BG = os.environ.get("BG", "111111")
 MUSIC_VOL = float(os.environ.get("MUSIC_VOL", 0.16))
+TRANS = float(os.environ.get("TRANS", 0.3))  # crossover transition length in seconds (0 = hard cuts)
+TRANS_CYCLE = os.environ.get("TRANS_CYCLE", "smoothleft,zoomin,smoothup,slideleft,circleopen,smoothright").split(",")
+SFX_VOL = float(os.environ.get("SFX_VOL", 0.35))
 
 
 def run(cmd):
@@ -176,11 +179,14 @@ def main():
     if missing:
         sys.exit(f"SHOTS.tsv has no shot for lines: {', '.join(missing)}")
 
-    seg_list, wav_list = [], []
+    seg_list, wav_list, seg_lens = [], [], []
     for n, i in enumerate(ids):
         t, s = timings[i], shots[i]
         seg = float(t["duration"]) + float(t["gap"]) + (0.6 if n == len(ids) - 1 else 0)
-        frames = max(int(round(seg * FPS)), 1)
+        seg_lens.append(seg)
+        # each picture runs TRANS seconds longer so the next one can cross over it (total length unchanged)
+        vis = seg + (TRANS if TRANS and n < len(ids) - 1 else 0)
+        frames = max(int(round(vis * FPS)), 1)
         src = s["source"]
         out = f"{b}/seg_{i}.mp4"
         kind = s["type"].strip()
@@ -223,7 +229,21 @@ def main():
 
     for name, items in (("video.txt", seg_list), ("audio.txt", wav_list)):
         open(f"{b}/{name}", "w").write("".join(f"file '{os.path.abspath(p)}'\n" for p in items))
-    run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", f"{b}/video.txt", "-c", "copy", f"{b}/video.mp4"])
+    if TRANS and len(seg_list) > 1:
+        # crossover transitions between every picture (xfade); offsets keep the picture in sync with the voice
+        inputs, fc, prev, off = [], [], "[0:v]", 0.0
+        for k, p in enumerate(seg_list):
+            inputs += ["-i", p]
+        for k in range(1, len(seg_list)):
+            off += seg_lens[k - 1]
+            tr = (shots[ids[k]].get("trans") or "").strip() or TRANS_CYCLE[k % len(TRANS_CYCLE)]
+            out_l = f"[x{k}]" if k < len(seg_list) - 1 else "[vout]"
+            fc.append(f"{prev}[{k}:v]xfade=transition={tr}:duration={TRANS}:offset={off - TRANS / 2:.3f}{out_l}")
+            prev = out_l
+        run(["ffmpeg", "-y", *inputs, "-filter_complex", ";".join(fc), "-map", "[vout]", "-r", str(FPS),
+             "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", f"{b}/video.mp4"])
+    else:
+        run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", f"{b}/video.txt", "-c", "copy", f"{b}/video.mp4"])
     run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", f"{b}/audio.txt", "-c", "copy", f"{b}/voice.wav"])
 
     voice = f"{b}/voice.wav"
@@ -233,9 +253,36 @@ def main():
         if lib:
             import random
             music = [random.Random(d).choice(lib)]  # stable pick per video
+    # sound effects: a soft whoosh on every cut, an impact on lines whose SHOTS "sfx" column says hit
+    sfx_dir = f"{d}/assets/sfx"
+    whooshes = sorted(glob.glob(f"{sfx_dir}/whoosh*.mp3"))
+    hits = sorted(glob.glob(f"{sfx_dir}/hit*.mp3"))
+    events, t0 = [], 0.0
+    for n, i in enumerate(ids):
+        mode = (shots[i].get("sfx") or "").strip() or ("whoosh" if n else "none")
+        if mode == "whoosh" and whooshes:
+            events.append((max(t0 - 0.35, 0), whooshes[n % len(whooshes)], SFX_VOL))
+        elif mode == "hit" and hits:
+            events.append((t0, hits[0], SFX_VOL * 1.4))
+        t0 += seg_lens[n]
+    if events:
+        ins, fc = ["-i", voice], []
+        for k, (at, f, vol) in enumerate(events, start=1):
+            ins += ["-i", f]
+            fc.append(f"[{k}:a]atrim=0:1.6,volume={vol},adelay={int(at * 1000)}|{int(at * 1000)}[s{k}]")
+        fc.append("".join(f"[s{k}]" for k in range(1, len(events) + 1)) +
+                  f"amix=inputs={len(events)}:normalize=0[sfx];[0:a][sfx]amix=inputs=2:duration=first:normalize=0[a]")
+        run(["ffmpeg", "-y", *ins, "-filter_complex", ";".join(fc), "-map", "[a]", f"{b}/voice_sfx.wav"])
+        voice_for_duck = f"{b}/voice.wav"
+        voice = f"{b}/voice_sfx.wav"
+    else:
+        voice_for_duck = voice
     if music:
-        run(["ffmpeg", "-y", "-i", voice, "-stream_loop", "-1", "-i", music[0], "-filter_complex",
-             f"[1:a]volume={MUSIC_VOL}[m];[0:a][m]amix=inputs=2:duration=first:normalize=0[a]",
+        # music ducks under the voice (sidechain) so words stay clear
+        run(["ffmpeg", "-y", "-i", voice, "-stream_loop", "-1", "-i", music[0], "-i", voice_for_duck, "-filter_complex",
+             f"[1:a]volume={MUSIC_VOL * 2.2}[m];[2:a]asplit=1[sc];"
+             f"[m][sc]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[md];"
+             f"[0:a][md]amix=inputs=2:duration=first:normalize=0,afade=t=out:st={sum(seg_lens) - 1.2:.2f}:d=1.2[a]",
              "-map", "[a]", f"{b}/mix.wav"])
         voice = f"{b}/mix.wav"
 
