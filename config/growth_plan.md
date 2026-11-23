@@ -16,6 +16,14 @@ will not reach it; the plan is to make every Short a strong attempt and learn fa
 | 21 Dec | 620 | | |
 | 30 Dec | 1000 | | |
 
+## First audit, 23 Nov 2026 (data/audits/2026-11-23.md)
+- Retention decides views: every Short at about 60% average viewed got 670 to 1,460 views; every Short
+  under 50% stayed under 260. Target 65%+.
+- Winners were timely shocks with a concrete number or event (US midterms "7 Seats", "358 Billion Litre",
+  Microsoft outage, Malacca). Losers: English titles, "Explained"/"samjhiye" framing, 100+ second length.
+- Subscribers per Short are still tiny (0 to 3), so growth must come from more Shorts reaching 1,000+ views.
+- Posting time: 15:00-18:00 Dubai did best, so the evening slot moved to 17:30 (19:00 IST).
+
 ## What the pipeline does for it (automatic)
 1. **2 Shorts every day, no gaps.** Consistency feeds the Shorts algorithm.
 2. **Retention first:** 60 to 70 s, hook in 2 s, a new visual every 2 to 4 s, no slow middle.
