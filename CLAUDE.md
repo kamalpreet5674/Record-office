@@ -15,8 +15,10 @@ Facts first, always.
 
 ## Two phases with an email approval in between
 The owner approves every script by email before any voice or video is made.
-- **Phase A, "script run"** (6:00 AM): research, validate, fact-check and write both scripts, then
-  email them to the owner and stop. Steps 1 to 5 and 5b below.
+- **Phase A, "script run"**: research, validate, fact-check and write the script(s), then
+  email them to the owner and stop. Steps 1 to 5 and 5b below. The run prompt may say "only Short 1"
+  or "only Short 2": then make only that one. Schedule (Dubai time, see `config/settings.md`):
+  Short 1 script at 8 PM for the next morning's slot, Short 2 script at 9 AM for the evening slot.
 - **Phase B, "check run"** (several times a day): read the owner's email replies. Approved scripts
   go through steps 6 to 10. Scripts with changes are revised, re-checked and emailed again.
 The run prompt says which phase you are. Never make voice, video or uploads for a script whose
@@ -96,7 +98,8 @@ Find the original source and use it only if its licence allows.
 If a page looks suspicious, close it and use another source.
 
 ## The run, step by step
-Every run starts with `git pull` and `bash scripts/setup.sh`.
+Every run starts with `git pull` and `bash scripts/setup.sh`. Several runs can overlap, so always
+`git pull --rebase` right before every `git push` (retry up to 3 times on a conflict).
 
 **Phase A** does steps 1 to 5 and 5b for Short 1, then for Short 2, then commits and pushes.
 
@@ -171,6 +174,11 @@ Commit and push, then end the run. Do **not** continue to step 6.
    upload only if one shows a realistic scene of a real event.
 3. For every `approved` row not yet `uploaded`: regenerate LINES.tsv/CAPTIONS.tsv if the script
    changed, then do steps 6 to 10, then set `status=uploaded` and the video id.
+   **Timing:** Short 1 belongs to the morning slot, Short 2 to the evening slot (`config/settings.md`).
+   Build a video as soon as it is approved. In `scheduled` mode set `publish_at` to its next slot.
+   In `private` mode upload it private and send the phone notification
+   "Short ready, make it public at <slot time>" with the Studio link
+   (`python scripts/mail.py notify --title ... --message ... --click https://studio.youtube.com`).
 4. If a row has waited more than 36 hours with no reply, send one short reminder email; after
    72 hours set `status=expired` (Current Affairs scripts go stale).
 5. If nothing is pending, end quickly with no changes.
@@ -230,7 +238,7 @@ motion and optional music from `assets/music/` (royalty-free only). Then check i
 - `yt-seo`: title (under 70 characters, Hinglish, no clickbait the facts cannot back), the first two
   description lines, Sources list, 10 to 15 tags. Save `seo/SEO.md`. Include `#Shorts`.
 - Upload: `python scripts/youtube_upload.py --file final/short.mp4 --meta seo/upload.json`
-  where `upload.json` has `title`, `description`, `tags`, `privacy`, `publish_at` (from settings).
+  where `upload.json` has `title`, `description`, `tags`, `privacy`, `publish_at` (from the publish slots in `config/settings.md`).
   Set `synthetic: true` only if a realistic AI image of a real event or person was used.
 - Append a row to `data/topics_log.csv`: date, slug, category, title, video id, status.
 - Email the owner a one-line note with the YouTube link (`[RO-DONE <dir>]` subject). mail.py also
@@ -257,8 +265,14 @@ Routine C runs every 3 days. Do this, then stop:
    - `HYPOTHESIS:` for a pattern seen in 2 videos; promote to `RULE:` only when 3+ videos agree.
    - Remove nothing the owner wrote. Mark your own disproved hypotheses as `DROPPED:`.
 4. Update `data/channel_insights.md` topic priority if the data clearly says so.
+4b. **Posting time:** the audit has a "views by posting hour" table. When 6+ Shorts show that one
+   time window clearly does better (and it's not just one viral video), move the publish slots in
+   `config/settings.md` (keep 2 slots, at least 8 hours apart) and write why in the "Slot history" there.
+   The routines' run times are set by the owner in claude.ai/code, so if a slot moves, list the new
+   routine times in the audit email (script run about 11 hours before its slot, check runs before it).
+   If the owner sent a Studio screenshot of "When your viewers are on YouTube", use it too.
 5. Email the owner a short audit (`[RO-AUDIT <date>]`): top 3 and bottom 3 videos with numbers,
-   3 lessons, 3 changes you made, and anything you need from them (assets, decisions).
+   3 lessons, 3 changes you made (including any slot change), and anything you need from them.
 6. Commit and push.
 
 ## Learning loop

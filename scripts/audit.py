@@ -17,6 +17,19 @@ import os
 from yt_common import youtube
 
 
+DUBAI = dt.timezone(dt.timedelta(hours=4))
+
+
+def local(v):
+    return dt.datetime.fromisoformat(v["snippet"]["publishedAt"].replace("Z", "+00:00")).astimezone(DUBAI)
+
+
+def iso_seconds(d):
+    import re
+    m = re.match(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", d or "")
+    return sum(int(x or 0) * k for x, k in zip(m.groups(), (3600, 60, 1))) if m else 0
+
+
 def analytics(video_ids, start, end):
     try:
         from google.oauth2.credentials import Credentials
@@ -64,14 +77,29 @@ def main():
     with open(a.out, "w", encoding="utf-8") as f:
         f.write(f"# Audit {dt.date.today()} (uploads from the last {a.days} days)\n\n")
         f.write(f"Channel: {ch['statistics'].get('subscriberCount')} subscribers, {ch['statistics'].get('viewCount')} total views\n\n")
-        f.write("| published | title | category | views | likes | comments | avg view % | avg view s | subs | shares |\n")
+        f.write("| published (Dubai) | title | category | views | likes | comments | avg view % | avg view s | subs | shares |\n")
         f.write("|---|---|---|---|---|---|---|---|---|---|\n")
         for v in sorted(vids, key=lambda v: int(v["statistics"].get("viewCount", 0)), reverse=True):
             s, x = v["statistics"], an.get(v["id"], {})
-            f.write(f"| {v['snippet']['publishedAt'][:10]} | {v['snippet']['title'][:60]} | "
+            f.write(f"| {local(v):%Y-%m-%d %H:%M} | {v['snippet']['title'][:60]} | "
                     f"{log.get(v['id'], {}).get('category', '?')} | {s.get('viewCount', 0)} | {s.get('likeCount', 0)} | "
                     f"{s.get('commentCount', 0)} | {x.get('averageViewPercentage', '-')} | {x.get('averageViewDuration', '-')} | "
                     f"{x.get('subscribersGained', '-')} | {x.get('shares', '-')} |\n")
+        # views by posting hour (Dubai), Shorts only (<= 3 min), for the publish-slot decision
+        buckets = {}
+        for v in vids:
+            if iso_seconds(v["contentDetails"].get("duration", "")) > 180:
+                continue
+            h = local(v).hour
+            b = f"{h - h % 3:02d}-{h - h % 3 + 3:02d}h"
+            x = an.get(v["id"], {})
+            buckets.setdefault(b, []).append((int(v["statistics"].get("viewCount", 0)), x.get("averageViewPercentage")))
+        f.write("\n## Shorts: views by posting hour (Dubai)\n\n| window | Shorts | avg views | median views | avg view % |\n|---|---|---|---|---|\n")
+        for b in sorted(buckets):
+            vs = sorted(n for n, _ in buckets[b])
+            pc = [p for _, p in buckets[b] if p is not None]
+            f.write(f"| {b} | {len(vs)} | {sum(vs) // len(vs)} | {vs[len(vs) // 2]} | "
+                    f"{round(sum(pc) / len(pc), 1) if pc else '-'} |\n")
     print(f"audit -> {a.out} ({len(vids)} videos)")
 
 
