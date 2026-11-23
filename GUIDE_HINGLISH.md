@@ -94,10 +94,15 @@ Isse Claude aapko script email karega aur aapka reply padhega.
 
 ## Step 5: ElevenLabs (3 min)
 1. Kholo: https://elevenlabs.io → login.
-2. Left neeche profile/settings → **API Keys** (ya developers section) → **Create API key** →
-   naam `records-office` → Create → key copy → Notepad mein `ELEVENLABS_API_KEY=`.
-3. Left menu **Voices** → **My Voices** → aapki cloned voice → **⋯ / ID copy** button →
-   Notepad mein `ELEVENLABS_VOICE_ID=`.
+2. https://elevenlabs.io/app/settings/api-keys → **Create API key** → naam `records-office`.
+   Credits bachane ke liye **Restrict key** ON karo aur sirf ye access do:
+   - **Text to Speech:** Access
+   - **Voices:** Read
+   - **User:** Read
+   - baaki sab: No access
+   **Credit limit** (agar option ho): 30,000 per month (2 Shorts roz ke liye kaafi).
+   Create → key copy (`sk_...`) → Notepad mein `ELEVENLABS_API_KEY=`.
+3. Voice ID ready hai (aapki "Kamal" professional voice): `ELEVENLABS_VOICE_ID=qrQDmG9I6ONIs4PYfwRs`
 
 ## Step 6: Pexels (2 min, free)
 1. Kholo: https://www.pexels.com/api → **Get started** / Your API key (free account bana lo).
@@ -113,7 +118,7 @@ GMAIL_ADDRESS=aapka@gmail.com
 GMAIL_APP_PASSWORD=abcdefghijklmnop
 OWNER_EMAIL=aapka@gmail.com
 ELEVENLABS_API_KEY=sk_xxxx
-ELEVENLABS_VOICE_ID=xxxx
+ELEVENLABS_VOICE_ID=qrQDmG9I6ONIs4PYfwRs
 PEXELS_API_KEY=xxxx
 ```
 

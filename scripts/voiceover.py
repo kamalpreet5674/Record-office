@@ -6,6 +6,8 @@ Needs secrets ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID (your cloned voice).
 Writes videos/<dir>/audio/<id>.mp3 and audio/timings.tsv (id, start, duration, gap).
 """
 import csv
+import hashlib
+import json
 import os
 import subprocess
 import sys
@@ -15,6 +17,7 @@ import requests
 
 MODEL = os.environ.get("ELEVENLABS_MODEL", "eleven_multilingual_v2")
 SPEED = float(os.environ.get("ELEVENLABS_SPEED", 1.1))  # owner prefers 1.10x
+MAX_CHARS = int(os.environ.get("ELEVENLABS_MAX_CHARS", 2500))  # credit guard per video
 
 
 def duration(path):
@@ -47,18 +50,34 @@ def main():
     force = "--force" in sys.argv
     os.makedirs(f"{d}/audio", exist_ok=True)
     rows = list(csv.DictReader(open(f"{d}/LINES.tsv", encoding="utf-8"), delimiter="\t"))
+    mpath = f"{d}/audio/manifest.json"
+    manifest = json.load(open(mpath)) if os.path.exists(mpath) else {}
+
+    def key(text):
+        return hashlib.sha1(f"{text}|{os.environ.get('ELEVENLABS_VOICE_ID')}|{MODEL}|{SPEED}".encode()).hexdigest()
+
+    # Only lines that are new or whose text changed cost credits.
+    todo = [r for r in rows if force or manifest.get(r["id"]) != key(r["text"])
+            or not os.path.exists(f"{d}/audio/{r['id']}.mp3")]
+    chars = sum(len(r["text"]) for r in todo)
+    print(f"{len(todo)} of {len(rows)} lines need new audio ({chars} characters)")
+    if chars > MAX_CHARS:
+        sys.exit(f"Stopping: {chars} characters is over the {MAX_CHARS} limit per video. Shorten the script.")
+    for r in todo:
+        tts(r["text"], f"{d}/audio/{r['id']}.mp3")
+        manifest[r["id"]] = key(r["text"])
+        json.dump(manifest, open(mpath, "w"), indent=1)
+
     t, out = 0.0, []
     for row in rows:
         p = f"{d}/audio/{row['id']}.mp3"
-        if force or not os.path.exists(p):
-            tts(row["text"], p)
         dur, gap = duration(p), float(row.get("gap") or 0.35)
         out.append((row["id"], t, dur, gap))
         t += dur + gap
     with open(f"{d}/audio/timings.tsv", "w") as f:
         f.write("id\tstart\tduration\tgap\n")
-        for i, s, du, g in out:
-            f.write(f"{i}\t{s:.3f}\t{du:.3f}\t{g:.2f}\n")
+        for i, s0, du, g in out:
+            f.write(f"{i}\t{s0:.3f}\t{du:.3f}\t{g:.2f}\n")
     print(f"{len(rows)} lines, total {t:.1f} s (target 60-70 s)")
 
 

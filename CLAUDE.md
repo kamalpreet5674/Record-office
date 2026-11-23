@@ -137,8 +137,17 @@ Commit and push, then end the run. Do **not** continue to step 6.
 ### 6. Voiceover
 `python scripts/voiceover.py videos/<dir>` makes one audio file per line with ElevenLabs and
 writes `audio/timings.tsv`. Check the total duration it prints:
-- under 58 s: add one verified line or raise gaps slightly, re-run.
-- over 72 s: cut the weakest line, re-run.
+- under 58 s: first raise the `gap` values in LINES.tsv (free); only if still short, add one verified line.
+- over 72 s: first lower gaps, then delete the weakest line from LINES.tsv (free, no new audio).
+Re-running only re-voices lines whose text changed, so never use `--force` unless the voice itself is wrong.
+
+## Saving credits and money (owner's rule)
+- ElevenLabs credits are paid. Voice is made **only after the owner approves the script**, once per line,
+  and is cached (`audio/manifest.json`). Never regenerate unchanged lines. A video over
+  ELEVENLABS_MAX_CHARS (2500 characters) stops instead of spending more.
+- Everything else uses free resources: Wikimedia Commons and Pexels images, text cards made by the
+  assembler, free YouTube Data API, Gmail. No paid image or video generation (Flow, Veo, Imagen)
+  unless the owner adds a key and asks for it.
 
 ### 7. Visuals
 Follow `kamal-video-style` and `style/EDIT_STYLE.md`. For each line, decide one shot and write
