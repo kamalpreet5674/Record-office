@@ -283,7 +283,7 @@ def main():
         motions = [m.strip() for m in (s.get("motion") or "").split("|")]
         for k, it in enumerate(items):
             kind = s["type"].strip()
-            m = re.match(r"^(video|image|doc|card|sticker):(.*)$", it)
+            m = re.match(r"^(video|image|doc|card|sticker|cutout):(.*)$", it)
             if m:
                 kind, it = m.group(1), m.group(2)
             parts.append({"line": i, "k": k, "kind": kind, "src": it, "len": seg / len(items),
@@ -308,6 +308,14 @@ def main():
         if kind == "card":
             src = f"{b}/card_{tag}.png"
             make_card(pt["src"], src)
+        elif kind == "cutout":
+            # "cutout:fg.png~bg.mp4@start": outlined subject (rembg) popping in over a blurred moving background
+            fg, bgv = src.split("~", 1)
+            if "@" in bgv:
+                bgv, st = bgv.rsplit("@", 1)
+                start = float(st or 0)
+            fg = fg if os.path.exists(fg) else os.path.join(d, fg)
+            src = bgv if os.path.exists(bgv) else os.path.join(d, bgv)
         else:
             if kind == "video" and "@" in src:
                 src, st = src.rsplit("@", 1)
@@ -324,7 +332,11 @@ def main():
             framed = f"{b}/sticker_{tag}.png"
             make_sticker(src, framed, tilt=(-2.5 if n % 2 else 2.0))
             src = framed
-        if kind == "video":
+        if kind == "cutout":
+            vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},setsar=1,"
+                  f"boxblur=18:2,eq=brightness=-0.15:saturation=1.35")
+            cmd = ["ffmpeg", "-y", "-stream_loop", "-1", "-ss", f"{start:.2f}", "-i", src]
+        elif kind == "video":
             # cover the frame, then a slow push-in so even static clips move
             vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},setsar=1,"
                   f"scale={int(W * 1.12)}:-2,crop={W}:{H}:x='(iw-{W})/2*(1-t/{max(vis, 0.5):.2f})':y='(ih-{H})/2'")
@@ -337,6 +349,11 @@ def main():
             vf = f"setpts=PTS/{CLIP_SPEED}," + vf  # a little faster = more energy
         vf += effects_filter(pt["fx"] or "punch", vis)
         fc, last, nin = [f"[0:v]{vf}[bg]"], "[bg]", 1
+        if kind == "cutout":
+            cmd += ["-loop", "1", "-i", fg]
+            fc.append(f"[{nin}:v]format=rgba,scale=w='trunc(iw*(0.7+0.3*min(1\\,t/0.3))/2)*2':h=-2:eval=frame[fgs];"
+                      f"{last}[fgs]overlay=x=(W-w)/2:y=250+12*sin(t*2.2):format=auto[cut]")
+            last, nin = "[cut]", nin + 1
         if "leak" in fxn and LEAKS:
             # light leak / lens flare laid over the shot in screen blend
             lk = LEAKS[n % len(LEAKS)]

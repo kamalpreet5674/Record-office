@@ -8,3 +8,4 @@ date,dir,area,owner_said,what_changed
 2026-11-23,2026-11-23-gta6-day-one-record,music+sfx+visuals,"Music, SFX, visuals sab strong chahiye","v6: bass-boosted trap BGM ~6 dB under voice, music drop before twist, sub/cine/riser/cash SFX, light leaks, 1.25x clips, limiter; rupee shot fixed (was euro)"
 2026-11-23,2026-11-23-gta6-day-one-record,voice/mix,"Voice sun hi nahi raha","v7: voice chain + music carved and ducked harder, softer accents; voice 10-15 dB above music+SFX"
 2026-11-23,2026-11-23-gta6-day-one-record,visuals,"Color grade aur cutouts jaise effects","v8: teal-orange grade, card cutouts on 9 clips, removed PS5/Xbox logo shot"
+2026-11-23,2026-11-23-gta6-day-one-record,visuals,"Install hyperframes and other tools; cutouts","v9: rembg cutouts (3 shots), tools added to setup.sh"

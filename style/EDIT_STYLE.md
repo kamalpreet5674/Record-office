@@ -58,3 +58,5 @@ cue placement. Claude can add these to `scripts/assemble_short.py` once the basi
 - Card cutout (fx "card"): the clip inside a white-bordered, tilted card that scales in, over a blurred darker copy. Use on ~1 in 4 shots, alternate with full-screen shots.
 - Never show console/platform logos or "Out Now" promo text from trailers (PS5/Xbox); check every trailer clip frame.
 - Real subject cutouts (background removal) need the rembg package; not installed yet.
+- (23 Nov, v9) Real cutouts: `rembg` (model isnet-general-use) removes the background from a still; make an outlined PNG (white stroke + shadow) and use SHOTS `cutout:fg.png~bg.mp4@start` (subject pops in over a blurred moving background, placed above the captions). Use 2-3 per Short on character/object lines.
+- Tools installed by setup.sh: rembg, librosa (beats), faster-whisper (word timing), hyperframes (HTML -> MP4 motion graphics).

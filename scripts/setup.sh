@@ -6,3 +6,6 @@ if ! command -v ffmpeg >/dev/null; then
 fi
 pip install -q google-api-python-client google-auth google-auth-oauthlib requests Pillow playwright gdown
 python -m playwright install --with-deps chromium >/dev/null 2>&1 || true
+# Editing tools (owner asked 23 Nov 2026): background removal for cutouts, beat detection, word timing, HTML-to-video
+pip install -q "rembg[cpu]" librosa faster-whisper >/dev/null 2>&1 || true
+command -v hyperframes >/dev/null || npm install -g hyperframes >/dev/null 2>&1 || true

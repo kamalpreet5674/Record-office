@@ -6,7 +6,7 @@ id	type	source	motion	overlay	trans	sfx	fx
 06	doc	doc:assets/doc_retail.png|video:assets/rockstar/clips/tr_street_car.mp4@0|video:assets/stock/money_45703.mp4@1	zoomin||			riser,hit,sub	punch,shake,flash|punch,leak|zoomout
 07	video	sticker:assets/flow/F4_notes.jpg	zoomin			money,sub	punch,leak
 10	video	doc:assets/doc_ormax.png|video:assets/stock/cinema-audience_21830.mp4@1|video:assets/stock/fireworks_4157.mp4@2	zoomin||	INDIA BOX OFFICE 2025		sub	punch|punch,card|blurin,leak
-11	video	video:assets/rockstar/clips/tr_car_jl.mp4@0|video:assets/stock/gamer_43524.mp4@1				boom,sub	zoomout,leak|punch,shake,card
+11	video	cutout:assets/rockstar/fg_Jason_and_Lucia_01.png~assets/rockstar/clips/tr_neon_street.mp4@0|video:assets/stock/gamer_43524.mp4@1				boom,sub	punch,leak|punch,shake,card
 12	video	video:assets/stock/spotlight_50458.mp4@0		big:ASLI/JHATKA	fadewhite	drop,riser,cine	flash,shake,glitch
 13	video	video:assets/stock/document_45923.mp4@1|doc:assets/doc_379.png	|zoomin			camera	punch,card|punch
 14	card	card:RETAIL SALES	none		zoomin	hit,sub	punch,shake
@@ -15,7 +15,7 @@ id	type	source	motion	overlay	trans	sfx	fx
 17	video	video:assets/stock/calculator_34126.mp4@1|card:NET BOOKINGS	|none				punch,card|punch,flash
 18	video	video:assets/stock/calendar_42629.mp4@1|doc:assets/doc_q3.png	|panleft	TAKE-TWO KA ANDAZA			punch|punch
 19	doc	doc:assets/doc_outlook.png|video:assets/stock/stock-market_9607.mp4@1|video:assets/flow/F3_coins.mp4@0	zoomin||			sub	punch|glitch|zoomout,leak
-20	video	video:assets/rockstar/clips/tr_jl_stand.mp4@0.3					blurin,leak
+20	video	cutout:assets/rockstar/fg_Vice_City_24.png~assets/rockstar/clips/tr_keys_sign.mp4@0					punch
 21	video	video:assets/stock/wallet_18299.mp4@1|video:assets/stock/accountant_47735.mp4@1					punch,card|punch
 23	video	video:assets/rockstar/clips/tr_convertible.mp4@0|video:assets/rockstar/clips/tr_sunset_silh.mp4@0|video:assets/stock/time-lapse-city_15659.mp4@1					punch,leak|punch|zoomout,card
-24	video	video:assets/stock/spotlight_4344.mp4@1|video:assets/stock/game-controller_2404.mp4@1|video:assets/rockstar/clips/tr_logo_end.mp4@0.8			circleopen	cine	punch|punch,leak|flash,punch
+24	video	cutout:assets/rockstar/fg_Jason_and_Lucia_03.png~assets/stock/spotlight_4344.mp4@1|video:assets/stock/game-controller_2404.mp4@1|video:assets/rockstar/clips/tr_logo_end.mp4@0.8			circleopen	cine	punch,leak|punch,leak|flash,punch
