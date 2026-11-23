@@ -5,7 +5,9 @@
 Reads:
   audio/timings.tsv   (from voiceover.py)  id, start, duration, gap
   audio/<id>.mp3
-  SHOTS.tsv           id, type(image|card), source, motion(zoomin|zoomout|panleft|panright|none), overlay
+  SHOTS.tsv           id, type(image|video|doc|card), source, motion(zoomin|zoomout|panleft|panright|none), overlay
+                      image: photo path · video: clip path, optional "@start" seconds (assets/x.webm@12)
+                      doc: screenshot of a real source page (framed like a document) · card: text
   CAPTIONS.tsv        id, caption   (Roman Hinglish on-screen text)
   assets/music/*.mp3  optional royalty-free background music
 Writes final/short.mp4 (and work files in build/).
@@ -83,6 +85,27 @@ def make_overlay(text, path):
     img.save(path)
 
 
+def make_doc(src, path):
+    """Real document screenshot on a blurred copy of itself, with a white border and shadow."""
+    from PIL import ImageFilter
+    doc = Image.open(src).convert("RGB")
+    bg = doc.resize((W, H)).filter(ImageFilter.GaussianBlur(30))
+    bg = Image.blend(bg, Image.new("RGB", (W, H), hexrgb(BG)), 0.45)
+    dw = 940
+    dh = int(doc.height * dw / doc.width)
+    if dh > 1150:
+        dh = 1150
+        dw = int(doc.width * dh / doc.height)
+    doc = doc.resize((dw, dh))
+    x, y = (W - dw) // 2, 420
+    shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(shadow).rectangle([x - 4, y + 18, x + dw + 22, y + dh + 34], fill=(0, 0, 0, 150))
+    bg = Image.alpha_composite(bg.convert("RGBA"), shadow.filter(ImageFilter.GaussianBlur(14))).convert("RGB")
+    ImageDraw.Draw(bg).rectangle([x - 10, y - 10, x + dw + 10, y + dh + 10], fill=(255, 255, 255))
+    bg.paste(doc, (x, y))
+    bg.save(path)
+
+
 def motion_filter(motion, frames):
     # Input is scaled to cover 2W x 2H, then zoompan renders W x H.
     z = {"zoomin": "1+0.12*on/{f}", "zoomout": "1.12-0.12*on/{f}"}.get(motion, "1.08").format(f=frames)
@@ -155,16 +178,30 @@ def main():
         seg = float(t["duration"]) + float(t["gap"]) + (0.6 if n == len(ids) - 1 else 0)
         frames = max(int(round(seg * FPS)), 1)
         src = s["source"]
-        if s["type"] == "card":
+        out = f"{b}/seg_{i}.mp4"
+        kind = s["type"].strip()
+        start = 0.0
+        if kind == "card":
             src = f"{b}/card_{i}.png"
             make_card(s["source"], src)
-        elif not os.path.isabs(src) and not os.path.exists(src):
-            src = os.path.join(d, src)
+        else:
+            if kind == "video" and "@" in src:
+                src, st = src.rsplit("@", 1)
+                start = float(st or 0)
+            if not os.path.isabs(src) and not os.path.exists(src):
+                src = os.path.join(d, src)
         if not os.path.exists(src):
-            sys.exit(f"Line {i}: image not found: {src}")
-        vf = motion_filter(s.get("motion") or "zoomin", frames)
-        out = f"{b}/seg_{i}.mp4"
-        cmd = ["ffmpeg", "-y", "-loop", "1", "-i", src]
+            sys.exit(f"Line {i}: file not found: {src}")
+        if kind == "doc":
+            framed = f"{b}/doc_{i}.png"
+            make_doc(src, framed)
+            src = framed
+        if kind == "video":
+            vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},setsar=1")
+            cmd = ["ffmpeg", "-y", "-stream_loop", "-1", "-ss", f"{start:.2f}", "-i", src]
+        else:
+            vf = motion_filter(s.get("motion") or "zoomin", frames)
+            cmd = ["ffmpeg", "-y", "-loop", "1", "-i", src]
         if (s.get("overlay") or "").strip():
             ov = f"{b}/ov_{i}.png"
             make_overlay(s["overlay"].strip(), ov)

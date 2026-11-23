@@ -80,7 +80,13 @@ Every run starts with `git pull` and `bash scripts/setup.sh`.
 - `python scripts/yt_research.py --own-uploads --out videos/_research/<date>` lists our own titles
   (to avoid repeats).
 - Web search today's news and "on this day" history for the four categories.
-- Shortlist 5 candidate topics: rising on competitor channels or in the news, not covered by us,
+- Check search demand for every candidate (free, replaces vidIQ):
+  `python scripts/demand.py "<english query>" "<hinglish query>" ... --out videos/_research/<date>/demand.md`
+  It shows YouTube autocomplete suggestions and views/day of the top results. Prefer topics with a
+  high score AND recent winners AND an angle nobody has done well in Hindi.
+- Read `data/channel_insights.md` (if it exists) for what works on our own channel.
+- Shortlist 5 candidate topics: rising on competitor channels or in the news, high demand, new and
+  interesting (a surprising record, a hidden system, money and power, India angle), not covered by us,
   fits the brand. Prefer topics where a competitor's Short is outperforming its channel average
   but our angle can add a real record or document.
 
@@ -113,13 +119,18 @@ Write `videos/<dir>/EMAIL.md` in simple Hinglish:
 - planned title
 - the **full script** (Roman Hinglish), word count and estimated length
 - fact check: status, every qualifier or flag, and the 3 to 6 main source links
+- **Flow prompts (optional for the owner):** 3 to 5 numbered prompts `F1..F5` for the scenes
+  where no real photo, document or clip exists: image prompts for Google Flow (Nano Banana) and
+  at most 2 short video prompts (Veo, 8 sec), 9:16 vertical, bright cool natural look, no text in
+  the image, no real people's faces, no logos. Say which script line each one is for.
+  Tell the owner: "Flow images/videos banao toh isi email ke reply mein attach kar do (phone se bhi)."
 Send it: `python scripts/mail.py send --subject "[RO-SCRIPT <dir>] <title>" --body-file videos/<dir>/EMAIL.md`
 (If a Gmail connector is available in the run you may use it instead, same subject format.)
 Add a row to `data/pending.csv`: `dir,title,sent_at,status=awaiting,reply_seen=`.
 Commit and push, then end the run. Do **not** continue to step 6.
 
 **Phase B** (check run):
-1. `python scripts/mail.py replies --tag RO-SCRIPT --days 3` and match each reply to a row in
+1. `python scripts/mail.py replies --tag RO-SCRIPT --days 3 --save-attachments videos` and match each reply to a row in
    `data/pending.csv` by the `<dir>` in the subject. Ignore replies already recorded in `reply_seen`.
 2. Read the reply like a person would (Hinglish is fine):
    - approval ("ok", "approved", "sahi hai", "done", "chalega", 👍): set `status=approved`.
@@ -128,6 +139,9 @@ Commit and push, then end the run. Do **not** continue to step 6.
      If a change would make a claim false or unverified, do not apply it; explain why in the email.
    - "skip", "cancel", "chhodo": set `status=dropped`.
    Record the reply's message id in `reply_seen`. Add lasting feedback to `style/LEARNINGS.md`.
+   Attached Flow images/videos are saved in `videos/<dir>/assets/flow/`. Open each one, match it to
+   its F-prompt and script line, and use it in SHOTS.tsv for that line. Set `synthetic: true` on
+   upload only if one shows a realistic scene of a real event.
 3. For every `approved` row not yet `uploaded`: regenerate LINES.tsv/CAPTIONS.tsv if the script
    changed, then do steps 6 to 10, then set `status=uploaded` and the video id.
 4. If a row has waited more than 36 hours with no reply, send one short reminder email; after
@@ -150,8 +164,18 @@ Re-running only re-voices lines whose text changed, so never use `--force` unles
   unless the owner adds a key and asks for it.
 
 ### 7. Visuals
-Follow `kamal-video-style` and `style/EDIT_STYLE.md`. For each line, decide one shot and write
-`SHOTS.tsv` with columns `id`, `type`, `source`, `motion`, `overlay`:
+Follow `kamal-video-style` and `style/EDIT_STYLE.md`. **Real material first, it is the channel's
+promise ("the record"):** for each line pick, in this order:
+1. `doc`: a screenshot of the real source of that fact (press release, report, archive record,
+   court order, news page) with the key words highlighted:
+   `python scripts/screenshot_doc.py "<url>" --out videos/<dir>/assets/doc_<n>.png --find "<exact words>"`
+2. `video`: a real archive clip (`fetch_visuals.py --kind video`, Wikimedia Commons / NASA), 2 to 4 sec.
+3. `image`: a real photo or map (Wikimedia Commons, Openverse, Pexels) or the owner's Flow images.
+4. `card`: a number/date card, only for short number beats.
+Aim for at least 2 `doc` shots and 2 `video` shots per Short when they exist. Never reuse one visual
+more than twice. Then write
+`SHOTS.tsv` with columns `id`, `type`, `source`, `motion`, `overlay`
+(`type` = doc, video, image or card; for video, `source` = `assets/clip.webm@<start sec>`):
 - `type=image`: `source` is a file path under `videos/<dir>/assets/`.
   Find images with `python scripts/fetch_visuals.py "<query>" --out videos/<dir>/assets --n 5`
   (Wikimedia Commons first for history and documents, Openverse for general scenes; Pexels only if its key is set). It writes
@@ -177,7 +201,8 @@ motion and optional music from `assets/music/` (royalty-free only). Then check i
   where `upload.json` has `title`, `description`, `tags`, `privacy`, `publish_at` (from settings).
   Set `synthetic: true` only if a realistic AI image of a real event or person was used.
 - Append a row to `data/topics_log.csv`: date, slug, category, title, video id, status.
-- Email the owner a one-line note with the YouTube link (`[RO-DONE <dir>]` subject).
+- Email the owner a one-line note with the YouTube link (`[RO-DONE <dir>]` subject). mail.py also
+  sends a phone notification when NTFY_TOPIC is set.
 
 ### 10. Run report
 At the end write `videos/<date>-RUN_REPORT.md` (append if it exists): for each Short the title, YouTube link, gate
