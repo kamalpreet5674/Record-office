@@ -1,0 +1,1 @@
+VOICE_TEMPO=1.06 (owner 24 Nov: halka sa speed badhao)

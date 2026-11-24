@@ -27,11 +27,14 @@ def duration(path):
 
 
 PAUSE_MAX = float(os.environ.get("PAUSE_MAX", 0.28))  # longest pause kept inside a line (seconds)
+VOICE_TEMPO = float(os.environ.get("VOICE_TEMPO", 1.0))  # extra speed-up on top of ElevenLabs speed, no new credits
 
 
 def tighten(src, dst):
     af = (f"silenceremove=start_periods=1:start_threshold=-38dB:start_silence=0.05,"
           f"silenceremove=stop_periods=-1:stop_duration={PAUSE_MAX}:stop_threshold=-38dB:stop_silence={PAUSE_MAX}")
+    if abs(VOICE_TEMPO - 1.0) > 1e-3:
+        af += f",atempo={VOICE_TEMPO}"
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-af", af, "-ar", "44100", "-b:a", "128k", dst],
                    check=True)
 

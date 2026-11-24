@@ -78,3 +78,4 @@ Added by the pipeline from the owner's feedback (newest last). These override th
 - See also `style/EDIT_STYLE.md`, `style/LEARNINGS.md` and the Owner learnings in `kamal-video-style` (GTA 6 edit rules, 23 Nov 2026).
 - Pipeline note: final file must still pass CLAUDE.md step 8 (58-72 s, 1080x1920, 30 fps).
 - 2026-11-23 (owner): run sync_assets.py first; use motion backgrounds from the owner's Drive library behind cards, numbers, doc screenshots and cutouts (no flat backgrounds), plus the library's effects/overlays/sfx where they fit.
+- 2026-11-24 (owner): new visual every 2-3 s matched to the line, real footage first (Mixkit tag pages: mixkit.co/free-stock-video/<tag>/, clip URL assets.mixkit.co/videos/<id>/<id>-720.mp4; US Navy/NASA PD video), real photo whenever a person/place/organisation is named; BGM chosen by punch/tempo analysis and started at its energetic part.

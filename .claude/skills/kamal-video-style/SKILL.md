@@ -79,3 +79,4 @@ but never the fact or copyright rules.
 - 2026-11-23: Pro edit: hook = 3-4 fast cuts + big pop title + flash/shake + boom; B-roll literal to each line, video over stills; fx on every cut; layered SFX; energetic BGM from its drop.
 - 2026-11-23: Check currency in money clips: a rupee line must never show euro/dollar notes (GTA 6 v6 fix).
 - 2026-11-23 (owner): run sync_assets.py first; use motion backgrounds from the owner's Drive library behind cards, numbers, doc screenshots and cutouts (no flat backgrounds), plus the library's effects/overlays/sfx where they fit.
+- 2026-11-24 (owner): new visual every 2-3 s matched to the line, real footage first (Mixkit tag pages: mixkit.co/free-stock-video/<tag>/, clip URL assets.mixkit.co/videos/<id>/<id>-720.mp4; US Navy/NASA PD video), real photo whenever a person/place/organisation is named; BGM chosen by punch/tempo analysis and started at its energetic part.
