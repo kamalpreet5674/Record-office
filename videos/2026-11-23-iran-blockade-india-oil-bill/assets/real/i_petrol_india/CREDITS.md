@@ -1,0 +1,4 @@
+- petrol-pump-india_1.jpg: Openverse: Sabzi Mandi (Vegetable Stall) @ Madhapur | Debajyoti_Das | BY-SA 2.0 | https://www.flickr.com/photos/64297698@N07/7566601778
+- petrol-pump-india_2.jpg: Openverse: Petrol Pump | paulhami | BY-SA 2.0 | https://www.flickr.com/photos/8306673@N02/5273372426
+- petrol-pump-india_3.jpg: Openverse: push the button | rabanito | BY 2.0 | https://www.flickr.com/photos/8787706@N04/3506215413
+- petrol-pump-india_4.jpg: Openverse: refill | rabanito | BY 2.0 | https://www.flickr.com/photos/8787706@N04/3507386396

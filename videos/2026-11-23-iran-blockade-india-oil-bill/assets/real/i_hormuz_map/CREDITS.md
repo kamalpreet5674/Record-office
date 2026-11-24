@@ -1,0 +1,2 @@
+- strait-of-hormuz-map_3.jpg: Wikimedia Commons: File:Strait of Hormuz OSM.webp | OpenStreetMap | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Strait_of_Hormuz_OSM.webp
+- strait-of-hormuz-map_4.jpg: Wikimedia Commons: File:Strait of hormuz full.jpg | ? | Public domain | https://commons.wikimedia.org/wiki/File:Strait_of_hormuz_full.jpg

@@ -1,0 +1,27 @@
+id	type	source	motion	overlay	trans	sfx	fx
+01	video	video:assets/flow/f_tankerdeck.mp4@0.5|sticker:assets/real/commons/kharg_nasa.jpg~library/motion_bg/Motion_Globe_HandTurningALuminous_Mixkit_21607.mp4@1|video:assets/flow/f_droneterminal.mp4@1	zoomin	big:14 TANKER/VS US NAVY		boom,sub	punch,flash|punch,glitch|punch,leak
+02	video	sticker:assets/real/commons/lincoln_hormuz.jpg~library/motion_bg/Motion_Globe_EarthGlobeRotatingOn_Mixkit_21617.mp4@1|video:assets/flow/f_warshipwaves.mp4@0.5	zoomin			whoosh,sub	punch,shake|punch
+03	video	sticker:assets/real/commons/cg56_hormuz.jpg~library/motion_bg/Backgrounds_Space_StarsInSpaceBackground_Mixkit_1610.mp4@1|video:assets/flow/f_twowarships.mp4@0.5	zoomin			whoosh	punch|zoomout
+04	video	video:assets/flow/f_rupeewallet.mp4@0.5|card:BILL BHARAT KA?~library/motion_bg/Animations_MoneyFalling_BanknotesFallingOnA_Mixkit_18305.mp4@1	zoomin			glitch	glitch,punch|punch,shake
+05	video	sticker:assets/real/i_hormuz_map/strait-of-hormuz-map_4.jpg~library/motion_bg/Motion_Globe_HandTurningALuminous_Mixkit_21607.mp4@1	zoomin		circleopen	whoosh,pop	punch
+06	video	sticker:assets/real/i_hormuz_map/strait-of-hormuz-map_3.jpg~library/motion_bg/Motion_Globe_EarthGlobeRotatingOn_Mixkit_21617.mp4@1|video:assets/flow/f_barrier.mp4@0.5	zoomin	APRIL 2026 SE NAAKEBANDI		camera	punch|punch,card
+07	video	video:assets/flow/f_tankeranchor.mp4@0.5|sticker:assets/real/commons/tanker_abot.jpg~library/motion_bg/Backgrounds_Bokeh_VerticalVideoOfBokeh_Mixkit_44694.mp4@0|video:assets/flow/f_dotsblocked.mp4@1	zoomin			whoosh	punch|punch|glitch
+08	video	card:≈4 CRORE BARREL ATKA~library/motion_bg/Animations_Particles_WhiteParticlesMovingOn_Mixkit_4407.mp4@0|video:assets/flow/f_oilrises.mp4@0.5|video:assets/flow/f_hourglass.mp4@0.5	zoomin			sub	punch,shake|punch|zoomout
+09	video	video:assets/flow/f_parliament.mp4@0.5|doc:assets/docs/doc_arabtimes_threat.png~library/motion_bg/Motion_Globe_HandTurningALuminous_Mixkit_21607.mp4@1|video:assets/flow/f_island.mp4@1	zoomin	SAANSAD KA DAAWA		camera	punch|punch|punch,leak
+10	video	video:assets/flow/f_podium.mp4@0.5|doc:assets/docs/doc_euronews_kharg.png~library/motion_bg/Motion_Globe_EarthGlobeRotatingOn_Mixkit_21617.mp4@1	zoomin			camera	punch,flash|punch
+11	video	doc:assets/docs/doc_euronews_trump.png~library/motion_bg/Animations_Smoke_BlackBackgroundWithSmoke_Mixkit_1968.mp4@1|video:assets/flow/f_sunken.mp4@0.5	zoomin			riser,hit	punch,shake|punch,leak
+12	video	video:assets/flow/f_refinery.mp4@0.5|card:KHAADI KA TEL NISHAANE PAR?~library/motion_bg/Animations_Sparks_SparksOfFireOn_Mixkit_3463.mp4@1|video:assets/flow/f_warshipsglow.mp4@0.5	zoomin			boom,sub	punch,shake|punch|punch,card
+13	video	video:assets/flow/f_ledger.mp4@0.5|sticker:assets/real/commons/tanker_abot.jpg~library/motion_bg/Motion_DataViz_ALaptopAndFour_Mixkit_50749.mp4@0	zoomin		fadewhite	drop,riser,cine	flash,shake|punch
+14	video	video:assets/flow/f_barrelhot.mp4@0.5	zoomin			whoosh,sub	punch,leak
+15	video	card:BRENT: ≈$124~library/motion_bg/mixkit_row-of-parallel-bars-casting-orange-light-rays-34057.mp4@0|doc:assets/docs/doc_maritime_bill.png~library/motion_bg/Motion_DataViz_ALaptopAndFour_Mixkit_50749.mp4@0	zoomin	OCTOBER 2026		hit,sub	punch,shake|punch
+16	video	card:1 SAAL PEHLE: $65~library/motion_bg/Backgrounds_Space_StarsInSpaceBackground_Mixkit_1610.mp4@1	zoomin			pop	punch,glitch
+17	video	video:assets/flow/f_scale.mp4@0.5|card:LAGBHAG 2X~library/motion_bg/mixkit_row-of-parallel-bars-casting-orange-light-rays-34057.mp4@0	zoomin			boom,sub	punch|punch,shake,flash
+18	video	card:BHARAT KA HISAAB~library/motion_bg/Motion_Tech_ComputerScreensDisplayGreen_Mixkit_50748.mp4@1	zoomin			camera	punch
+19	video	video:assets/flow/f_twotanks.mp4@0.5|card:+2.7% TEL~library/motion_bg/Motion_DataViz_ALaptopAndFour_Mixkit_50749.mp4@0|video:assets/flow/f_pipeline.mp4@0.5	zoomin	APRIL-OCTOBER		sub	punch|punch|punch,card
+20	video	video:assets/flow/f_notespipe.mp4@0.5|card:₹10.49 LAKH CRORE~library/motion_bg/Animations_MoneyFalling_BanknotesFallingOnA_Mixkit_18305.mp4@1	zoomin			riser,money,hit	punch|punch,shake,flash
+21	video	doc:assets/docs/doc_psuwatch_bill.png~library/motion_bg/Animations_Cash_ManCountingAWad_Mixkit_18296.mp4@1	zoomin			camera,sub	punch,shake
+22	video	card:5 MAHINE BAAKI~library/motion_bg/Backgrounds_Loop_SlowlyApproachingAClock_Mixkit_28897.mp4@0|video:assets/flow/f_barreldata.mp4@0.5	zoomin			sub	punch|punch
+23	video	doc:assets/docs/doc_almonitor_top.png~library/motion_bg/Backgrounds_Bokeh_VerticalVideoOfBokeh_Mixkit_44694.mp4@0|video:assets/flow/f_tankerdeck.mp4@3	zoomin			camera	punch|punch,leak
+24	video	sticker:assets/real/commons/navy_ships_hormuz.jpg~library/motion_bg/Motion_Globe_EarthGlobeRotatingOn_Mixkit_21617.mp4@1|video:assets/flow/f_warshipsglow.mp4@3	zoomin			riser	punch|punch,shake
+25	video	video:assets/flow/f_dotsblocked.mp4@3	zoomin			glitch	glitch
+26	video	video:assets/flow/scooter_nologo.mp4@0|sticker:assets/real/commons/kharg_nasa.jpg~library/motion_bg/Motion_Globe_HandTurningALuminous_Mixkit_21607.mp4@1	zoomin			drop,cine	flash,leak|punch,leak

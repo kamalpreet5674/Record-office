@@ -65,14 +65,20 @@ def hexrgb(h):
     return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 
 
-def make_card(text, path):
-    img = Image.new("RGB", (W, H), hexrgb(BG))
+def make_card(text, path, transparent=False):
+    img = Image.new("RGBA" if transparent else "RGB", (W, H), (0, 0, 0, 0) if transparent else hexrgb(BG))
     d = ImageDraw.Draw(img)
     top = int(H * 0.28)
+    if transparent:  # dark glass panel so the text reads over a moving background
+        d.rounded_rectangle([50, top - 50, W - 50, top + 560], radius=36, fill=hexrgb(BG) + (165,))
     d.rectangle([90, top, 250, top + 16], fill=hexrgb(ACCENT))
     size = 150 if len(text) <= 12 else 110 if len(text) <= 30 else 84
     f = bold_font(size)
     lines = textwrap.wrap(text, width=max(6, int((W - 180) / (size * 0.58))))
+    while size > 60 and max(d.textlength(ln, font=f) for ln in lines) > W - 200:  # never run off the card
+        size -= 8
+        f = bold_font(size)
+        lines = textwrap.wrap(text, width=max(6, int((W - 200) / (size * 0.62))))
     y = top + 60
     for ln in lines:
         d.text((90, y), ln, font=f, fill=(255, 255, 255))
@@ -153,7 +159,7 @@ def make_big_text(text, path):
     img.save(path)
 
 
-def make_sticker(src, path, tilt=2.0):
+def make_sticker(src, path, tilt=2.0, transparent=False):
     """Cutout/sticker look: the photo with a thick white border, a soft shadow and a slight tilt,
     on a blurred, darkened copy of itself."""
     from PIL import ImageFilter
@@ -175,19 +181,22 @@ def make_sticker(src, path, tilt=2.0):
     sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
     sh.paste((0, 0, 0, 160), mask=card.split()[3])
     sh = sh.filter(ImageFilter.GaussianBlur(18))
-    out = bg.convert("RGBA")
+    out = Image.new("RGBA", (W, H), (0, 0, 0, 0)) if transparent else bg.convert("RGBA")
     x, y = (W - card.width) // 2, int(H * 0.40 - card.height / 2)
     out.alpha_composite(sh, (x + 14, y + 22))
     out.alpha_composite(card, (x, y))
-    out.convert("RGB").save(path)
+    (out if transparent else out.convert("RGB")).save(path)
 
 
-def make_doc(src, path):
-    """Real document screenshot on a blurred copy of itself, with a white border and shadow."""
+def make_doc(src, path, transparent=False):
+    """Real document screenshot on a blurred copy of itself (or on a transparent canvas, to sit over a
+    motion background), with a white border and shadow."""
     from PIL import ImageFilter
     doc = Image.open(src).convert("RGB")
     bg = doc.resize((W, H)).filter(ImageFilter.GaussianBlur(30))
     bg = Image.blend(bg, Image.new("RGB", (W, H), hexrgb(BG)), 0.45)
+    if transparent:
+        bg = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     max_w, max_h = (1500, 900) if LANDSCAPE else (940, 1150)
     dw = max_w
     dh = int(doc.height * dw / doc.width)
@@ -198,8 +207,10 @@ def make_doc(src, path):
     x, y = (W - dw) // 2, ((H - dh) // 2 if LANDSCAPE else 420)
     shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(shadow).rectangle([x - 4, y + 18, x + dw + 22, y + dh + 34], fill=(0, 0, 0, 150))
-    bg = Image.alpha_composite(bg.convert("RGBA"), shadow.filter(ImageFilter.GaussianBlur(14))).convert("RGB")
-    ImageDraw.Draw(bg).rectangle([x - 10, y - 10, x + dw + 10, y + dh + 10], fill=(255, 255, 255))
+    bg = Image.alpha_composite(bg.convert("RGBA"), shadow.filter(ImageFilter.GaussianBlur(14)))
+    if not transparent:
+        bg = bg.convert("RGB")
+    ImageDraw.Draw(bg).rectangle([x - 10, y - 10, x + dw + 10, y + dh + 10], fill=(255, 255, 255, 255))
     bg.paste(doc, (x, y))
     bg.save(path)
 
@@ -283,7 +294,7 @@ def main():
         motions = [m.strip() for m in (s.get("motion") or "").split("|")]
         for k, it in enumerate(items):
             kind = s["type"].strip()
-            m = re.match(r"^(video|image|doc|card|sticker|cutout):(.*)$", it)
+            m = re.match(r"^(video|image|doc|card|sticker|cutout):(.*)$", it, re.S)
             if m:
                 kind, it = m.group(1), m.group(2)
             parts.append({"line": i, "k": k, "kind": kind, "src": it, "len": seg / len(items),
@@ -305,6 +316,25 @@ def main():
         frames = max(int(round(vis * FPS)), 1)
         kind, src, start = pt["kind"], pt["src"], 0.0
         out = f"{b}/seg_{tag}.mp4"
+        mfg = None  # motion background: "doc:x.png~bg.mp4@t", "card:TEXT~bg.mp4@t", "sticker:x.jpg~bg.mp4@t"
+        if kind in ("doc", "card", "sticker") and "~" in src:
+            fgsrc, bgv = src.split("~", 1)
+            if "@" in bgv:
+                bgv, st = bgv.rsplit("@", 1)
+                start = float(st or 0)
+            mfg = f"{b}/mfg_{tag}.png"
+            if kind == "card":
+                make_card(fgsrc, mfg, transparent=True)
+            else:
+                fgp = fgsrc if os.path.exists(fgsrc) else os.path.join(d, fgsrc)
+                if not os.path.exists(fgp):
+                    sys.exit(f"Line {pt['line']}: file not found: {fgp}")
+                if kind == "doc":
+                    make_doc(fgp, mfg, transparent=True)
+                else:
+                    make_sticker(fgp, mfg, tilt=(-2.5 if n % 2 else 2.0), transparent=True)
+            src = bgv if os.path.exists(bgv) else os.path.join(d, bgv)
+            kind = "motionbg"
         if kind == "card":
             src = f"{b}/card_{tag}.png"
             make_card(pt["src"], src)
@@ -332,7 +362,11 @@ def main():
             framed = f"{b}/sticker_{tag}.png"
             make_sticker(src, framed, tilt=(-2.5 if n % 2 else 2.0))
             src = framed
-        if kind == "cutout":
+        if kind == "motionbg":
+            vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},setsar=1,"
+                  f"boxblur=3:1,eq=brightness=-0.08:saturation=1.15")
+            cmd = ["ffmpeg", "-y", "-stream_loop", "-1", "-ss", f"{start:.2f}", "-i", src]
+        elif kind == "cutout":
             vf = (f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},setsar=1,"
                   f"boxblur=18:2,eq=brightness=-0.15:saturation=1.35")
             cmd = ["ffmpeg", "-y", "-stream_loop", "-1", "-ss", f"{start:.2f}", "-i", src]
@@ -345,10 +379,15 @@ def main():
             vf = motion_filter(pt["motion"] or "zoomin", frames)
             cmd = ["ffmpeg", "-y", "-loop", "1", "-i", src]
         fxn = [x.strip() for x in (pt["fx"] or "punch").split(",")]
-        if kind == "video" and ("fast" in fxn or FAST_CLIPS):
+        if kind in ("video", "motionbg") and ("fast" in fxn or FAST_CLIPS):
             vf = f"setpts=PTS/{CLIP_SPEED}," + vf  # a little faster = more energy
         vf += effects_filter(pt["fx"] or "punch", vis)
         fc, last, nin = [f"[0:v]{vf}[bg]"], "[bg]", 1
+        if kind == "motionbg":
+            cmd += ["-loop", "1", "-i", mfg]
+            fc.append(f"[{nin}:v]format=rgba,scale=w='trunc({W}*(0.9+0.1*min(1\\,t/0.3))/2)*2':h=-2:eval=frame[mf];"
+                      f"{last}[mf]overlay=x=(W-w)/2:y=(H-h)/2:format=auto[mbg]")
+            last, nin = "[mbg]", nin + 1
         if kind == "cutout":
             cmd += ["-loop", "1", "-i", fg]
             fc.append(f"[{nin}:v]format=rgba,scale=w='trunc(iw*(0.7+0.3*min(1\\,t/0.3))/2)*2':h=-2:eval=frame[fgs];"

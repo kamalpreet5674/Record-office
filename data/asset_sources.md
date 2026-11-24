@@ -8,3 +8,9 @@ Format: `- <topic type>: <site> — query "<query>" — <what it gave> — licen
 - Cinema: Mixkit tag cinema (2860 film reel, 49326 clapper, 25478 screen) — Mixkit free license
 - SFX: mixkit.co/free-sound-effects/whoosh (1489-1492) and /impact — Mixkit free license
 - Company filings as visuals: Take-Two IR PDFs (ir.take2games.com/node/<id>/pdf) rendered with PyMuPDF + highlight; SEC blocks automated browsers
+
+## 24 Nov 2026 (Iran blockade Short)
+- Wikimedia Commons via `.claude/skills/video-editing-pro/scripts/fetch_commons.py search/get` works when `fetch_visuals.py` gets 429/non-JSON (it backs off). Great PD finds: "Kharg Island" (NASA satellite), "USS Abraham Lincoln Strait of Hormuz" (US Navy Flickr imagery), "oil tanker Persian Gulf" (ABOT tanker).
+- Commons .webm via the API often 429s; budget time or skip.
+- Owner's Drive motion backgrounds: download single files by id with gdown (folder sync is slow). Skip "Klickpin.com" files (Pinterest re-posts, no licence).
+- Mixkit music by id: https://assets.mixkit.co/music/<id>/<id>.mp3 (846 "I Won't Surrender" = steady tense energy, 114 s).
