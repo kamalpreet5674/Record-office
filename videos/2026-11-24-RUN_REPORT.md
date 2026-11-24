@@ -11,3 +11,4 @@
 - Tools changed: assemble_short.py (motion backgrounds "doc/card/sticker:x~bg.mp4", card text auto-fit, sfx banks clock/paper/type/heart), voiceover.py (VOICE_TEMPO).
 - Not done: email preview attachment (connector 3 MB limit); Wikimedia blocked parliament/Gulf photos and 3 Navy videos (429).
 - Check: confirm the Short went public at 07:00; post and pin the comment.
+- 07:05 Dubai check: video is PUBLIC (API scheduling works for this channel).
