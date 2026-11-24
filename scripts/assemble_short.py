@@ -453,7 +453,8 @@ def main():
     whooshes = sorted(glob.glob(f"{sfx_dir}/whoosh*.mp3"))
     hits = sorted(glob.glob(f"{sfx_dir}/hit*.mp3"))
     bank = {name: sorted(glob.glob(f"{sfx_dir}/{name}*.mp3")) for name in
-            ("whoosh", "hit", "riser", "money", "pop", "camera", "boom", "glitch", "swoosh", "transition", "sub", "cine")}
+            ("whoosh", "hit", "riser", "money", "pop", "camera", "boom", "glitch", "swoosh", "transition", "sub", "cine",
+             "clock", "paper", "type", "heart")}
     events, t0, drops = [], 0.0, []
     for n, pt in enumerate(parts):
         modes = [m.strip() for m in (pt["sfx"] or ("whoosh" if n else "")).split(",") if m.strip()]
@@ -474,6 +475,8 @@ def main():
                 events.append((max(t0 - 0.25, 0), f, SFX_VOL * (1.0 if pt["k"] == 0 else 0.7), 1.2))
             elif mode == "drop":  # music stops just before this cut, comes back on it
                 pass
+            elif mode in ("clock", "heart", "type"):  # short beds that run under the line (tick-tock, heartbeat, typing)
+                events.append((t0, f, SFX_VOL * 0.5, min(audio_len(f), 2.2)))
             elif mode in ("hit", "boom", "sub", "cine"):
                 events.append((t0, f, SFX_VOL * (0.75 if mode in ("hit", "cine") else 0.5), 0.8))
             else:  # cash / pop / camera / glitch: short accents under the voice

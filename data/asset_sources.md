@@ -14,3 +14,5 @@ Format: `- <topic type>: <site> — query "<query>" — <what it gave> — licen
 - Commons .webm via the API often 429s; budget time or skip.
 - Owner's Drive motion backgrounds: download single files by id with gdown (folder sync is slow). Skip "Klickpin.com" files (Pinterest re-posts, no licence).
 - Mixkit music by id: https://assets.mixkit.co/music/<id>/<id>.mp3 (846 "I Won't Surrender" = steady tense energy, 114 s).
+- Owner's Drive library (24 Nov): root folder has Music_BGM (15 Mixkit tracks, named BGM_<Mood>_...), LUTs_Color_Grades (11 .cube), Sound_Effects (36, SFX_<Type>_...), Transitions (7 ink mattes), BRoll (18), Backgrounds, Motion_Graphics, Animations_Overlays. Fast path: Drive search by parent id + gdown per file id into library/new/<folder>/ (sync_assets.py folder sync takes 30+ min).
+- Picks that worked for geopolitics/finance: BGM_Investigation_FallenAsper_565 (steady, 295 s), LUT_ColdThriller_BlueTension (docs stay white, cool look). BigCinematicImpact 788 is too loud on a spoken line; use it only in a gap.
