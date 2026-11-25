@@ -1,0 +1,51 @@
+# Trending now (IN)
+
+- Karthigai Deepam 2026 Special Sivan Songs | Annamalaiyar Girivala Padalgal And 108 Potri | Emusic Abirami | 677578 views | https://youtu.be/dBLkWzMUq-Y
+- Avengers: Doomsday | Final Trailer | In Theaters December 18 | Marvel Entertainment | 47790012 views | https://youtu.be/Wb8Tq_HD4E8
+- TREASURE HUNTING IN THE OCEAN GONE WRONG! | GTA 6 GAMEPLAY #4 | Techno Gamerz | 10041652 views | https://youtu.be/Dz0naoD1QWo
+- #Video - जहिया जा हलो दिलीया कानो हलीयै जी | #Aashish Yadav का एक और देशी अंदाज में | Magahi Song | Swastik Records | 535110 views | https://youtu.be/fyvOWMxi4Fg
+- Panchayat Season 5 - Official Trailer | Jitendra Kumar, Raghubir Yadav, Neena Gupta, Sanvikaa | Prime Video India | 14569976 views | https://youtu.be/36a-E7A35F8
+- 2,00,000 BENTLEY CRATE OPENING | JONATHAN IS BACK!! | GTA LATER | JONATHAN GAMING | 2765064 views | https://youtu.be/iOP5J681W6k
+- बुधवार के दिन जरूर अपने घर में ये सुंदरकांड चलाकर रख देना कर्ज ,बीमारी खत्म और धन वर्षा शुरू | Sunder Path | 55269 views | https://youtu.be/GgqMuctfOhA
+- Avengers Doomsday Final Trailer Breakdown! | ComicVerse | 1879917 views | https://youtu.be/3tXrwPkXdZg
+- Gukesh vs Sindarov | Game 1 | Salesforce FIDE World Championship 2026 | ChessBase India | 2060931 views | https://youtu.be/UxY9Mv5nlWo
+- Uncha Nicha Rasta - Nonstop Haryanvi Dj Song 2026 | Raj Mawar, Komal C | Bharti Choudhary Dance | Seema Music | 564288 views | https://youtu.be/bNE9_x8HSgc
+- Family Pack - Official Teaser | Sree Vishnu, Sakkshi Mhadolkar | Ram Abbaraju | Mythri Movie Makers | Mythri Movie Makers | 2562722 views | https://youtu.be/H6THWs8RP2Q
+- Shinchan Eating All the Icecream! 🔥 | Tyro Gaming | 599655 views | https://youtu.be/xe2HikcDcew
+- GULZAAR CHHANIWALA - Daade ( Official Video ) | Manisha Sharma | New Haryanvi Song 2026 | T-SERIES HARYANVI | 586151 views | https://youtu.be/uqHCAhlwlX0
+- Avengers Doomsday Final Trailer Breakdown (தமிழ்) | Mokka Commentry | 590508 views | https://youtu.be/fFtEk0hYUu0
+- GTA 5 LIVE  #gta5 #gtav #gaming | SANGU IS LIVE | 2077624 views | https://youtu.be/jo3J_qshANA
+- तुळशी विवाह मंगलाष्टके || Tulsi Vivah Mangalashtak || Mangalashtak Marathi | SB Music Studio | 972594 views | https://youtu.be/9nsUMb7edMM
+- Avengers Doomsday final trailer breakdown: Thor’s new power | BnfTV | 1095922 views | https://youtu.be/CZkeklCEHwg
+- I PLAYED MIMIC PARTY WITH MY FRIENDS | Ujjwal | 2010973 views | https://youtu.be/h3_qyHYaYuc
+- 90s Purane Gane | 90s Hits Hindi Songs | 90s Old Is Gold | 90s Evergreen Songs | 90s Hindi Gane | Tips Official | 1851464 views | https://youtu.be/ZV9HJpTx-iA
+- BHOGI Official Trailer | Sharwanand | Sampath Nandi | Anupama | Dimple Hayathi | Bheems Ceciroleo | Aditya Music | 3984075 views | https://youtu.be/dWOYaZ2gb9I
+- GTA 5 LIVE 🔥 #shortsfeed #shorts #grandtheftauto5 |  NAITIK 09 | 4507084 views | https://youtu.be/c1758GPHR-E
+- #video सामा विदाई 2026 l अचके में आयल कहार l Babita Yadav l Sama Vidai geet l Sama chakeva song | Singer Babita Yadav official | 141606 views | https://youtu.be/uoT5-TBRgPE
+- Avengers Doomsday Final Trailer • Reaction | thePJ | 1276130 views | https://youtu.be/ZofzcwNE7-c
+- GTA 5 LIVE #gta5 #gtav #gaming | Raajoo Gaming | 3647010 views | https://youtu.be/PtM2RB11pHY
+- Thank GOD (Official Video) R Nait | Latest Punjabi Songs 2026 | R Nait | 1111146 views | https://youtu.be/1Hm7_L3kPv8
+- Jo Bachay Hain Sang Samait Lo | Official Trailer | Netflix | Netflix | 1780246 views | https://youtu.be/HGY8x0qy0aI
+- Minecraft But We Can Make HEARTS from BLOCKS.. | Carry Depie | 737192 views | https://youtu.be/LNseXz-SKPE
+- Diviki Diviki - January 12 Vidudala| Venkatesh,Kalyan Ram,Keerthy, Krithi| Anil Ravipudi| GV Prakash | Zee Music South | 22108721 views | https://youtu.be/UckZ7N_Zt28
+- Avengers Doomsday Final Trailer Review | Yogi Bolta Hai | YOGI BOLTA HAI | 715995 views | https://youtu.be/rfog9n__9Xw
+- Yeshanagula -  8K Video | The Paradise | Nani | Keerthy Suresh | Anirudh Ravichander | Srikanth | Saregama Telugu | 304892 views | https://youtu.be/JxZnF00GAJo
+- Baap Paihle Aa-Gaya! ⋮ Avengers Doomsday Final Trailer | PJ Explained | 900034 views | https://youtu.be/A46yjvbtrVU
+- Finally Playing GTA 6 😍 First Time  | Sourav Joshi Vlogs | 10235376 views | https://youtu.be/PPWTwGU-cqQ
+- राजा जीके राज बा | Sannu Kumar | Shilpi Raj | Pura Jila Mein Humra Raja Ji Ke Raj Ba | Bhojpuri Song | Sur Taal Bhakti | 644378 views | https://youtu.be/UDXJOGwq4-Q
+- Cosmic Samson Trailer | Sandeep Pradeep | Abhijith Joseph | Sibi Mathew Alex | Weekend Blockbusters | Think Music India | 3459815 views | https://youtu.be/EA-a7RR-7DY
+- STEALING MILLIONAIRES' CARS IN GTA 6 😱 | Scalpo | 883708 views | https://youtu.be/urhm2Iduezc
+- पूर्णिमा के दिन हर घर में सुनी जाती हैं कार्तिक पूर्णिमा अमृतधारा कथा | Kartik Purnima Katha 2026 | Aaj Ki Amritdhara | 1170794 views | https://youtu.be/0dl61c9fXtU
+- Avengers Doomsday FINAL TRAILER Breakdown! 3 Earths, Rune King Thor & The Endgame Connection | SuperSuper | 471608 views | https://youtu.be/I_Xf9lUIG-Q
+- Sheru Bhai Ne Ghar Mai Haag Diya 💩😂 | Indian Theft Auto Simulator 🔥🎮 | NK DesiStar | 310881 views | https://youtu.be/NUiwtRDl9xQ
+- కార్తీక  పౌర్ణమి రోజు ఈ పాటలు వింటే సకల సంపదలు, అష్ట ఐశ్వర్యాలు మీ సొంతం SIVA MANASASMARAMI songs | భక్తి పాటలు తెలుగు - Bhakthi Patalu Telugu | 660117 views | https://youtu.be/EgYecI4L_cs
+- Harivarasanam - Official Teaser | Malayalam | Saiju Kurup | Rajesh Nair | 15 Jan 2027 | Panorama Studios | 1162919 views | https://youtu.be/3yIDhy8KWbY
+- chain together live with @ARCANE-GAMING14 #shortslive #chaintogethergame | ARCANE GAMING  | 1195056 views | https://youtu.be/lDCigQl1_Ls
+- EETHA - MUSICAL TRAILER | Shraddha K | Randeep H | Ajay-Atul, Shreya G,Amitabh B | In Cinemas 4thDec | Universal Music India | 3311720 views | https://youtu.be/zPGAuSYRRec
+- Avengers Doomsday Trailer REVIEW | Deeksha Sharma | Filmi Indian | 662723 views | https://youtu.be/oihFqr7958U
+- 🌿FREE FIRE LIVE🌿PLAYING BR-RANKED😎2X AWM SPEED GAME PLAY 🎮🎯 ON LIVE - GARENA FREE FIRE | DAD I AM OK GAMING | 830284 views | https://youtu.be/F7trw9doCHM
+- #Video | दिलवा के दुखवा | #Pawan Singh & #Khushi Kakkar | Dilwa Ke Dukhwa | New Bhojpuri Sad Song | Gannayak Films | 3289716 views | https://youtu.be/d8zrrgmIZYo
+- MAYAN Chapter 1 - Trailer | Jayasurya | Jithin K Jose | Rajeev Govindan | Nyla Usha | Mujeeb Majeed | Universal Music South | 1911532 views | https://youtu.be/Y488C2KfdmQ
+- I CLEANED THE ENTIRE MOON WITH A TOOTHBRUSH 😱 | NotGamerFleet | 777840 views | https://youtu.be/9LT7AKYvAis
+- तुळशीची आरती मराठी | Tulshichi Aarti Marathi Lyrics | Tulsi Vivah Aarti Marathi तुळशी मातेची आरती | Vision Bhakti Marathi | 665638 views | https://youtu.be/euiMlrD142c
+- AVENGERS DOOMSDAY Final Trailer Breakdown & Hidden Details | DesiNerd | 433311 views | https://youtu.be/tdnUZmo2wos
