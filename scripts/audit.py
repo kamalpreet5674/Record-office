@@ -39,7 +39,7 @@ def analytics(video_ids, start, end):
                             token_uri="https://oauth2.googleapis.com/token")
         ya = build("youtubeAnalytics", "v2", credentials=creds, cache_discovery=False)
         r = ya.reports().query(ids="channel==MINE", startDate=start, endDate=end, dimensions="video",
-                               metrics="views,averageViewDuration,averageViewPercentage,subscribersGained,shares,likes",
+                               metrics="views,engagedViews,averageViewDuration,averageViewPercentage,subscribersGained,shares,likes",
                                filters="video==" + ",".join(video_ids[:200]), sort="-views", maxResults=200).execute()
         cols = [c["name"] for c in r["columnHeaders"]]
         return {row[0]: dict(zip(cols, row)) for row in r.get("rows", [])}
@@ -77,13 +77,18 @@ def main():
     with open(a.out, "w", encoding="utf-8") as f:
         f.write(f"# Audit {dt.date.today()} (uploads from the last {a.days} days)\n\n")
         f.write(f"Channel: {ch['statistics'].get('subscriberCount')} subscribers, {ch['statistics'].get('viewCount')} total views\n\n")
-        f.write("| published (Dubai) | title | category | views | likes | comments | avg view % | avg view s | subs | shares |\n")
-        f.write("|---|---|---|---|---|---|---|---|---|---|\n")
+        f.write("stayed % = engaged views / views: viewers who did not swipe away at the start (Shorts target 70+).\n\n")
+        f.write("| published (Dubai) | title | category | len s | views | stayed % | likes | comments | avg view % | avg view s | subs | shares |\n")
+        f.write("|---|---|---|---|---|---|---|---|---|---|---|---|\n")
         for v in sorted(vids, key=lambda v: int(v["statistics"].get("viewCount", 0)), reverse=True):
             s, x = v["statistics"], an.get(v["id"], {})
+            pct = x.get("averageViewPercentage")
+            pct = round(pct, 1) if isinstance(pct, (int, float)) else "-"
+            stayed = round(100 * x["engagedViews"] / x["views"]) if x.get("views") and "engagedViews" in x else "-"
             f.write(f"| {local(v):%Y-%m-%d %H:%M} | {v['snippet']['title'][:60]} | "
-                    f"{log.get(v['id'], {}).get('category', '?')} | {s.get('viewCount', 0)} | {s.get('likeCount', 0)} | "
-                    f"{s.get('commentCount', 0)} | {x.get('averageViewPercentage', '-')} | {x.get('averageViewDuration', '-')} | "
+                    f"{log.get(v['id'], {}).get('category', '?')} | {iso_seconds(v['contentDetails'].get('duration', ''))} | "
+                    f"{s.get('viewCount', 0)} | {stayed} | {s.get('likeCount', 0)} | "
+                    f"{s.get('commentCount', 0)} | {pct} | {x.get('averageViewDuration', '-')} | "
                     f"{x.get('subscribersGained', '-')} | {x.get('shares', '-')} |\n")
         # views by posting hour (Dubai), Shorts only (<= 3 min), for the publish-slot decision
         buckets = {}

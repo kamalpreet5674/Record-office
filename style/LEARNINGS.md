@@ -18,3 +18,6 @@ RULE (2026-11-23): Owner rejected plain edits. Every Short: pro hook in first 3 
 RULE (2026-11-23): Videos over stills, always; aim for 40+ shots per 70 s Short. For a game/film/brand topic, official trailer footage muted is allowed by the owner (credited); never its audio.
 RULE (2026-11-23): Strong sound = energetic BGM ~6 dB under voice + music drop before the twist + layered SFX (sub on numbers, riser->hit, cash, pop, camera). Measure: voice must stay the loudest element.
 RULE (2026-11-23): The voice must be clearly heard over everything (owner could not hear it in v6). Measure voice vs music+SFX in speech windows before sending; target 10+ dB gap.
+HYPOTHESIS (audit 2026-11-26, all 18 Shorts): The opening is our weakest point. Stayed % is 52-62% on every Short and relative retention at 5-10% is below YouTube's average on every one, while middles/ends are average or better. Frame 1 = the most striking moving visual + big hook text (number) from frame 1, voice at 0.0 s.
+HYPOTHESIS (audit 2026-11-26, GTA 6 / AI bill / Nvidia): Background or a second number in seconds 5-20 causes the biggest drop. Go hook -> stake -> first reveal; explain after.
+HYPOTHESIS (audit 2026-11-26, GTA 6 only): Heavy editing does not save a premise our news/power audience does not care about. Topic and hook first, edit second.

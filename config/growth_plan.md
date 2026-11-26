@@ -10,6 +10,7 @@ will not reach it; the plan is to make every Short a strong attempt and learn fa
 | Date | Target | Actual | Note |
 |---|---|---|---|
 | 23 Nov | 12 | 12 | start |
+| 26 Nov | ~45 | 13 | behind: only 3 Shorts in 7 days, no Short past 1,500 views (audit 26 Nov) |
 | 30 Nov | 80 | | |
 | 7 Dec | 200 | | |
 | 14 Dec | 380 | | |
